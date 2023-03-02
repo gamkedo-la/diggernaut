@@ -77,7 +77,8 @@ function pset(x,y){
     canvasContext.fillRect(x,y, 1, 1);
 }
 
-//line uses pset and breseham's line algorithm to draw a line between two points in a single color
+//line uses pset and breseham's line algorithm to draw a pixel line between two points in a single color
+//dynamically drawn objects and effects should use this instead of canvasContext.line, to avoid anti-aliasing.
 function line(x1,y1,x2,y2, color='#FF00FF'){
     x1 = Math.round(x1);
     y1 = Math.round(y1);

@@ -4,27 +4,27 @@ class Player {
         this.y = y;
         this.width = 20;
         this.height = 20;
-        this.speed = 1;
+        this.speed = .9;
         this.color = "red";
         this.xvel = 0;
         this.yvel = 0;
         this.xAccel = 0;
         this.yAccel = 0;
         this.limits = {
-            minXVel: -10,
-            maxXVel: 10,
-            minYVel: -10,
-            maxYVel: 10,
-            minXAccel: -10,
-            maxXAccel: 10,
-            minYAccel: -10,
-            maxYAccel: 10,
+            minXVel: -5,
+            maxXVel: 5,
+            minYVel: -5,
+            maxYVel: 5,
+            minXAccel: -3,
+            maxXAccel: 3,
+            minYAccel: -3,
+            maxYAccel: 3,
         }
-        this.friction = 0.95;
+        this.friction = 0.80;
     }
     draw() {
         canvasContext.fillStyle = this.color;
-        canvasContext.fillRect(this.x, this.y, this.width, this.height);
+        canvasContext.fillRect(Math.round(this.x), Math.round(this.y), this.width, this.height);
     }
     update() {
         this.xvel += this.xAccel;
