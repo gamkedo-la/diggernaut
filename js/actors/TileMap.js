@@ -1,15 +1,11 @@
-class World {
+class TileMap {
 
-    constructor(widthInTiles=100, heightInTiles=100, tileSize=8){
+    constructor(widthInTiles=100, heightInTiles=100, tileWidth=8, tileHeight=8){
     this.heightInTiles = heightInTiles;
     this.widthInTiles = widthInTiles;
-    this.tileSize = tileSize;
+    this.tileWidth = tileWidth;
+    this.tileHeight = tileHeight;
     this.data = new Uint16Array(widthInTiles * heightInTiles);
-    this.portals = [];
-    this.spawnPoints = [];
-    this.spawnPoints = [];
-    this.lightningSpawners = [];
-    this.entities = [];
 
     }
 
@@ -41,57 +37,57 @@ class World {
             y: Math.round(y / this.tileSize)
             }
     }
-//the following functions meant for use when you want to dynamically add tiles to the world. 
-//also good for prototyping before you have a map.
-drawLine( x1, x2, y1, y2, value ) {
-    
-    var x1 = x1|0;
-    var x2 = x2|0;
-    var y1 = y1|0;
-    var y2 = y2|0;
-    var value = value|0;
+    //the following functions meant for use when you want to dynamically add tiles to the world. 
+    //also good for prototyping before you have a map.
+    tileDrawLine( x1, x2, y1, y2, value ) {
+        
+        var x1 = x1|0;
+        var x2 = x2|0;
+        var y1 = y1|0;
+        var y2 = y2|0;
+        var value = value|0;
 
-    var dy = (y2 - y1);
-    var dx = (x2 - x1);
-    var stepx, stepy;
+        var dy = (y2 - y1);
+        var dx = (x2 - x1);
+        var stepx, stepy;
 
-    if (dy < 0) { dy = -dy; stepy = -1;
-    } else { stepy = 1; }
+        if (dy < 0) { dy = -dy; stepy = -1;
+        } else { stepy = 1; }
 
-    if (dx < 0) { dx = -dx; stepx = -1;
-    } else { stepx = 1; }
+        if (dx < 0) { dx = -dx; stepx = -1;
+        } else { stepx = 1; }
 
-    dy <<= 1;        // dy is now 2*dy
-    dx <<= 1;        // dx is now 2*dx
+        dy <<= 1;        // dy is now 2*dy
+        dx <<= 1;        // dx is now 2*dx
 
-    this.setTileAtPosition(x1, y1, value);
-
-    if (dx > dy) {
-      var fraction = dy - (dx >> 1);  // same as 2*dy - dx
-      while (x1 != x2) {
-        if (fraction >= 0) {
-          y1 += stepy;
-          fraction -= dx;          // same as fraction -= 2*dx
-        }
-        x1 += stepx;
-        fraction += dy;              // same as fraction -= 2*dy
         this.setTileAtPosition(x1, y1, value);
-      }
-      ;
-    } else {
-      fraction = dx - (dy >> 1);
-      while (y1 != y2) {
-        if (fraction >= 0) {
-          x1 += stepx;
-          fraction -= dy;
+
+        if (dx > dy) {
+        var fraction = dy - (dx >> 1);  // same as 2*dy - dx
+        while (x1 != x2) {
+            if (fraction >= 0) {
+            y1 += stepy;
+            fraction -= dx;          // same as fraction -= 2*dx
+            }
+            x1 += stepx;
+            fraction += dy;              // same as fraction -= 2*dy
+            this.setTileAtPosition(x1, y1, value);
         }
-        y1 += stepy;
-        fraction += dx;
-        this.setTileAtPosition(x1, y1, value);
-      }
+        ;
+        } else {
+        fraction = dx - (dy >> 1);
+        while (y1 != y2) {
+            if (fraction >= 0) {
+            x1 += stepx;
+            fraction -= dy;
+            }
+            y1 += stepy;
+            fraction += dx;
+            this.setTileAtPosition(x1, y1, value);
+        }
+        }
+
     }
-
-  }
 
     tileFillRect( tx, ty, width, height, value ){
         for(let i = ty; i <= ty + height; i++){
@@ -101,10 +97,10 @@ drawLine( x1, x2, y1, y2, value ) {
         }
     }
 
-    tileFillRectRandom(params = { tx: 0, ty: 0, width: 1, height: 1, rangeStart: 0, rangeEnd: 0 }){
-        for(let i = params.tx; i <= params.tx + params.width; i++){
-            for(let j = params.ty; j <= params.ty + params.height; j++){
-                this.data[j * this.widthInTiles + i] = Math.floor( Math.random() * (params.rangeEnd-params.rangeStart) ) + params.rangeStart
+    tileFillRectRandom(tx, ty, width, height, rangeStart, rangeEnd){
+        for(let i = tx; i <= tx + width; i++){
+            for(let j = ty; j <= ty + height; j++){
+                this.data[j * this.widthInTiles + i] = Math.floor( Math.random() * (rangeEnd-rangeStart) ) + rangeStart
             }
         }
     }

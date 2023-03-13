@@ -2,7 +2,6 @@
 var signal = new Signal();
 
 //canvas setup
-
 canvas = document.getElementById("canvas");
 canvasContext = canvas.getContext("2d");
 canvas.imageSmoothingEnabled = false;
@@ -16,6 +15,7 @@ const GAMESTATE_TITLE = 0
 const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;
 const GAMESTATE_CREDITS = 3;
+const FRAMERATE = 60;
 
 var gameState = GAMESTATE_TITLE;
 var ticker = 0;
@@ -58,6 +58,14 @@ function loadSounds(){
 function loadingComplete(){
     console.log('loading complete, starting game')
 
+    //create map
+    tileMap = new TileMap(100,100,16,16);
+    for(let i = 0; i < 100; i++){
+        for(let j = 0; j < 100; j++){
+            tileMap.setTileAtPosition(i,j, Math.floor(Math.random()*4));
+        }
+    }
+
      //create spriteFont
      gameFont = new spriteFont({
         width: 255,
@@ -78,7 +86,7 @@ function loadingComplete(){
     })
 
 
-    setInterval(gameLoop, 1000/60);
+    setInterval(gameLoop, 1000/FRAMERATE);
 }
 
 function gameLoop() {
@@ -104,8 +112,8 @@ function gameLoop() {
     Key.update();
 }
 
-window.addEventListener('keyup',    function (event) { Key.onKeyup(event); event.preventDefault() }, false);
-window.addEventListener('keydown',  function (event) { Key.onKeydown(event); event.preventDefault() }, false);
+window.addEventListener('keyup',    function (event) { Key.onKeyup(event); }, false);
+window.addEventListener('keydown',  function (event) { Key.onKeydown(event); }, false);
 window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 

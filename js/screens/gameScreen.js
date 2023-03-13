@@ -38,6 +38,9 @@ var gameScreen = {
             
         }
 
+        //draw the map
+        this.drawTileMap();
+
         //draw the counter
         tinyFont.drawText("Lights Out", { x: 10, y: 12 }, 0, 0);
         this.player.draw();
@@ -71,7 +74,22 @@ var gameScreen = {
         if (Key.isDown(Key.SPACE)) {
             this.player.stop();
         }
-    }     
+    },
+    
+    drawTileMap: function () {
+        for (let i = 0; i < tileMap.data.length; i++) {
+               //tileMap.data is 1d array
+            let tile = tileMap.data[i];
+            let x = i % tileMap.widthInTiles;
+            let y = Math.floor(i / tileMap.widthInTiles);
+            let tileX = x * tileMap.tileWidth;
+            let tileY = y * tileMap.tileHeight;
+            if (tile) {
+                canvasContext.fillStyle = 'white';
+                canvasContext.fillRect(tileX, tileY, tileMap.tileWidth, tileMap.tileHeight);        
+            }
+        }
+    }
 
 }
 
