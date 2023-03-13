@@ -39,15 +39,10 @@ var gameScreen = {
         }
 
         //draw the counter
-        tinyFont.drawText("Hit Z as many times as you can before the timer runs out!!", { x: 10, y: 12 }, 0, 0);
-        gameFont.drawText(`${this.hitCounter}`, this.box, 0, 0, 4);
-        canvasContext.fillStyle = 'green';
-        canvasContext.fillRect(this.timerbox.x, this.timerbox.y, this.timerbox.width, this.timerbox.height);
+        tinyFont.drawText("Lights Out", { x: 10, y: 12 }, 0, 0);
         this.player.draw();
     },
     update: function () {
-        this.timerbox.width -= 1;
-        if (this.timerbox.width <= 0) { this.timerbox.width = 320; }
         if(Key.justReleased(Key.z)){ 
             this.hitCounter += 1; 
             audio.playSound(loader.sounds.test1);
@@ -63,7 +58,6 @@ var gameScreen = {
     handlePlayerInput: function () {
         if (Key.isDown(Key.LEFT)) {
             this.player.moveLeft();
-            console.log("left");
         }   
         if (Key.isDown(Key.RIGHT)) {
             this.player.moveRight();
