@@ -42,7 +42,7 @@ var gameScreen = {
         this.drawTileMap();
 
         //draw the counter
-        tinyFont.drawText("Lights Out", { x: 10, y: 12 }, 0, 0);
+        tinyFont.drawText(`player:  x: ${this.player.x} y: ${this.player.y}`, { x: 10, y: 12 }, 0, 0);
         this.player.draw();
     },
     update: function () {
@@ -54,6 +54,7 @@ var gameScreen = {
         this.box.y = canvas.height/2 - 5;
         this.box.x += Math.sin(ticker/10) * 50;
         this.box.y += Math.cos(ticker/10) * 50;
+        this.followPlayer();
         this.handlePlayerInput();
         this.player.update();
     },
@@ -77,6 +78,7 @@ var gameScreen = {
     },
     
     drawTileMap: function () {
+        let fills = ['Black', 'DarkSlateGray', 'DimGray', 'White'];
         for (let i = 0; i < tileMap.data.length; i++) {
                //tileMap.data is 1d array
             let tile = tileMap.data[i];
@@ -84,11 +86,17 @@ var gameScreen = {
             let y = Math.floor(i / tileMap.widthInTiles);
             let tileX = x * tileMap.tileWidth;
             let tileY = y * tileMap.tileHeight;
-            if (tile) {
-                canvasContext.fillStyle = 'white';
-                canvasContext.fillRect(tileX, tileY, tileMap.tileWidth, tileMap.tileHeight);        
-            }
+            canvasContext.fillStyle = fills[tile]
+            canvasContext.fillRect(tileX - view.x, tileY - view.y, tileMap.tileWidth, tileMap.tileHeight);        
+            
         }
+    },
+
+    followPlayer: function () {
+        view.x = this.player.x - canvas.width / 2;
+        view.y = this.player.y - canvas.height / 2;
+        view.x = Math.floor(view.x);
+        view.y = Math.floor(view.y);
     }
 
 }

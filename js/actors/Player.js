@@ -2,10 +2,10 @@ class Player {
     constructor(x,y) {
         this.x = x;
         this.y = y;
-        this.width = 20;
-        this.height = 20;
+        this.width = 8;
+        this.height = 12;
         this.speed = .9;
-        this.color = "red";
+        this.color = "yellow";
         this.xvel = 0;
         this.yvel = 0;
         this.xAccel = 0;
@@ -24,7 +24,7 @@ class Player {
     }
     draw() {
         canvasContext.fillStyle = this.color;
-        canvasContext.fillRect(Math.round(this.x), Math.round(this.y), this.width, this.height);
+        canvasContext.fillRect(Math.round(this.x - view.x), Math.round(this.y - view.y), this.width, this.height);
     }
     update() {
         this.xvel += this.xAccel;

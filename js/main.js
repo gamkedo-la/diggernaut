@@ -16,6 +16,10 @@ const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;
 const GAMESTATE_CREDITS = 3;
 const FRAMERATE = 60;
+const view = {
+    x: 0,
+    y: 0,
+}
 
 var gameState = GAMESTATE_TITLE;
 var ticker = 0;
@@ -72,8 +76,7 @@ function loadingComplete(){
         height: 128,
         characterHeight: 9,
         characterWidth: 6,
-        image: img.smallFont
-        //remaining options are in spriteFont defaults
+        image: img["smallFont"]
     })
 
     tinyFont = new spriteFont({
@@ -82,7 +85,6 @@ function loadingComplete(){
         characterHeight: 6,
         characterWidth: 4,
         image: img["3x5font"]
-        //remaining options are in spriteFont defaults
     })
 
 
