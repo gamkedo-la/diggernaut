@@ -5,6 +5,7 @@ class TileMap {
     this.widthInTiles = widthInTiles;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
+    this.worldPosition = {x: 0, y: 0};
     this.data = new Uint16Array(widthInTiles * heightInTiles);
 
     }
@@ -22,12 +23,14 @@ class TileMap {
     }
 
     pixelToTileID(x, y){
-        return this.data[this.pixelToTileIndex(x, y)];
+        return this.data[this.pixelToTileIndex(x - this.worldPosition.x * this.tileWidth, y - this.worldPosition.y * this.tileHeight)];
     }
 
     pixelToTileIndex(x, y){
         let tx = Math.round(x / this.tileSize);
         let ty = Math.round(y / this.tileSize);
+        tx -= this.worldPosition.x;
+        ty -= this.worldPosition.y;
         return this.getIndexAtPosition(tx, ty);
     }
 

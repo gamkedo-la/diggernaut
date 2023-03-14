@@ -39,7 +39,7 @@ var gameScreen = {
         }
 
         //draw the map
-        this.drawTileMap();
+        this.drawMapChunks();
 
         //draw the counter
         tinyFont.drawText(`player:  x: ${this.player.x} y: ${this.player.y}`, { x: 10, y: 12 }, 0, 0);
@@ -57,6 +57,7 @@ var gameScreen = {
         this.followPlayer();
         this.handlePlayerInput();
         this.player.update();
+        this.updateMapChunkPositions();
     },
 
     handlePlayerInput: function () {
@@ -76,24 +77,57 @@ var gameScreen = {
             this.player.stop();
         }
     },
+
+    drawMapChunks: function () {
+        for (let i = 0; i < mapChunks.length; i++) {
+            this.drawTileMap(mapChunks[i]);
+        }
+    },
     
-    drawTileMap: function () {
-        let fills = ['Black', 'DarkSlateGray', 'DimGray', 'White'];
+    drawTileMap: function (tileMap) {
+        let fills = ['Black', 'DarkSlateGray', 'DimGray', 'Gray'];
         for (let i = 0; i < tileMap.data.length; i++) {
-               //tileMap.data is 1d array
             let tile = tileMap.data[i];
             let x = i % tileMap.widthInTiles;
             let y = Math.floor(i / tileMap.widthInTiles);
-            let tileX = x * tileMap.tileWidth;
-            let tileY = y * tileMap.tileHeight;
+            let tileX = (x + tileMap.worldPosition.x) * tileMap.tileWidth;
+            //create parallax effect in y axis for tiles closer to the left and right edges of the screen
+            let parallax = Math.abs(tileX - canvas.width/2) / (canvas.width/2) * 30;
+            let tileY = (y + tileMap.worldPosition.y) * tileMap.tileHeight;
             canvasContext.fillStyle = fills[tile]
-            canvasContext.fillRect(tileX - view.x, tileY - view.y, tileMap.tileWidth, tileMap.tileHeight);        
+            if(inView(tileX, tileY)){
+                canvasContext.fillRect(tileX - view.x, tileY - view.y - parallax, tileMap.tileWidth, tileMap.tileHeight);
+            }
             
         }
     },
 
+    updateMapChunkPositions: function () {
+        for (let i = 0; i < mapChunks.length; i++) {
+            //mapChunk.worldPosition is the top left corner of the chunk in tile units
+            //bottom edge of the chunk is worldPosition.y + heightInTiles
+
+            //if the bottom edge in pixels is off the top of the screen, move it under all the other chunks
+            let chunk = mapChunks[i];
+            let bottomEdge = (chunk.worldPosition.y + chunk.heightInTiles) * chunk.tileHeight;
+            if (bottomEdge - view.y < 0) {
+                //find total height of all chunks
+                let totalHeight = 0;
+                for (let j = 0; j < mapChunks.length; j++) {
+                    totalHeight += mapChunks[j].heightInTiles
+                }
+                //totalHeight is now the total height of all chunks in tile units, less the height of the chunk we're moving
+                totalHeight -= chunk.heightInTiles;
+                //move the chunk to the bottom of the map
+                chunk.worldPosition.y += totalHeight;
+                console.log('moved chunk')
+            }
+        }
+    },
+
+
     followPlayer: function () {
-        view.x = this.player.x - canvas.width / 2;
+        //view.x = this.player.x - canvas.width / 2;
         view.y = this.player.y - canvas.height / 2;
         view.x = Math.floor(view.x);
         view.y = Math.floor(view.y);

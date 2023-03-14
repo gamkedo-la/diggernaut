@@ -75,13 +75,13 @@ function pos(x, y){
     return G.pos;
 }
 function inView(x,y){
-    let screenX = x - G.view.x,
-        screenY = y - G.view.y,
+    let screenX = x - view.x,
+        screenY = y - view.y,
         padding = 200;
         return (screenX > -padding &&
-               screenX < (G.c.width + padding) &&
+               screenX < (canvas.width + padding) &&
                screenY > -padding &&
-               screenY < (G.c.height+padding))
+               screenY < canvas.height+padding);
 }
 function rectCollision(rect1, rect2) {
 

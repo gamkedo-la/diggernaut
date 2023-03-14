@@ -16,6 +16,7 @@ const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;
 const GAMESTATE_CREDITS = 3;
 const FRAMERATE = 60;
+const WORLD_HEIGHT_IN_CHUNKS = 7;
 const view = {
     x: 0,
     y: 0,
@@ -63,11 +64,16 @@ function loadingComplete(){
     console.log('loading complete, starting game')
 
     //create map
-    tileMap = new TileMap(100,100,16,16);
-    for(let i = 0; i < 100; i++){
-        for(let j = 0; j < 100; j++){
-            tileMap.setTileAtPosition(i,j, Math.floor(Math.random()*4));
+    mapChunks = [];
+    for(let i = 0; i < WORLD_HEIGHT_IN_CHUNKS; i++){
+        let tileMap = new TileMap(24,4,16,16);
+        for(let i = 0; i < 100; i++){
+            for(let j = 0; j < 100; j++){
+                tileMap.setTileAtPosition(i,j, Math.floor(Math.random()*4));
+            }
         }
+        tileMap.worldPosition.y = i * tileMap.heightInTiles
+        mapChunks.push(tileMap);
     }
 
      //create spriteFont

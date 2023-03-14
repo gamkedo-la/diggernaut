@@ -14,19 +14,21 @@ class Player {
             minXVel: -5,
             maxXVel: 5,
             minYVel: -5,
-            maxYVel: 5,
+            maxYVel: 2,
             minXAccel: -3,
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 3,
         }
         this.friction = 0.80;
+        this.gravity = .2;
     }
     draw() {
         canvasContext.fillStyle = this.color;
         canvasContext.fillRect(Math.round(this.x - view.x), Math.round(this.y - view.y), this.width, this.height);
     }
     update() {
+        this.yAccel += this.gravity;
         this.xvel += this.xAccel;
         this.yvel += this.yAccel;
         if (this.xvel > this.limits.maxXVel) { this.xvel = this.limits.maxXVel; }
@@ -37,7 +39,7 @@ class Player {
         if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
         
         this.xvel *= this.friction;
-        this.yvel *= this.friction;
+        //this.yvel *= this.friction;
         this.x += this.xvel;
         this.y += this.yvel;
         this.xAccel = 0;
