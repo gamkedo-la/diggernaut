@@ -8,7 +8,7 @@ signal.addEventListener('creditScreen', gotoCreditScreen);
 
 function startGame(event){
     console.log('startGame triggered');
-    gameScreen.reset();
+    playScreen.reset();
     gameState = GAMESTATE_PLAY;
 }
 

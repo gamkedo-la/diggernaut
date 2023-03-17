@@ -1,4 +1,4 @@
-var titleScreen = {
+const titleScreen = {
 
     box: {
         x: 0,

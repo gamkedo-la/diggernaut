@@ -1,5 +1,14 @@
 class TileMap {
 
+    /**
+     * Creates an instance of TileMap.
+     *
+     * @constructor
+     * @param {int} [widthInTiles=100]
+     * @param {int} [heightInTiles=100]
+     * @param {int} [tileWidth=8]
+     * @param {int} [tileHeight=8]
+     */
     constructor(widthInTiles=100, heightInTiles=100, tileWidth=8, tileHeight=8){
     this.heightInTiles = heightInTiles;
     this.widthInTiles = widthInTiles;

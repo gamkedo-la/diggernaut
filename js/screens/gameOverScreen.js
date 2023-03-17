@@ -1,4 +1,4 @@
-var gameOverScreen = {
+const gameOverScreen = {
     box: {
         x: 0,
         y: 0,

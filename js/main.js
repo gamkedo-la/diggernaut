@@ -10,18 +10,15 @@ canvas.width = 320;
 canvas.height = 180;
 
 //globals and constants
-
 const GAMESTATE_TITLE = 0
 const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;
 const GAMESTATE_CREDITS = 3;
 const FRAMERATE = 60;
-const WORLD_HEIGHT_IN_CHUNKS = 7;
 const view = {
     x: 0,
     y: 0,
 }
-
 var gameState = GAMESTATE_TITLE;
 var ticker = 0;
 var loader = new AssetLoader();
@@ -35,66 +32,48 @@ const imageList = [
 ]
 
 const soundList = [
-    { name: "test1", url:"snd/test1.mp3" },
-    { name: "test2", url:"snd/test2.mp3" }
+    { name: "test1", url: "snd/test1.mp3" },
+    { name: "test2", url: "snd/test2.mp3" }
 ]
 
-function init(){
-    
+function init() {
+
     loadImages();
-    
+
 }
 
-function loadImages(){
+function loadImages() {
     img = loader.loadImages(imageList, initAudio);
 }
 
-function initAudio(){
+function initAudio() {
     audio.init(loadSounds);
 }
 
 
-function loadSounds(){ 
+function loadSounds() {
     console.log('loading sounds');
-    loader.soundLoader({context: audio.context, urlList: soundList, callback: loadingComplete});
+    loader.soundLoader({ context: audio.context, urlList: soundList, callback: loadingComplete });
     loader.loadAudioBuffer();
 }
 
-function loadingComplete(){
+function loadingComplete() {
     console.log('loading complete, starting game')
 
     //create map
-    mapChunks = [];
-    for(let i = 0; i < WORLD_HEIGHT_IN_CHUNKS; i++){
-        let tileMap = new TileMap(24,4,16,16);
-        for(let i = 0; i < 100; i++){
-            for(let j = 0; j < 100; j++){
-                tileMap.setTileAtPosition(i,j, Math.floor(Math.random()*4));
-            }
+    tileMap = new TileMap(24, 1000, 16, 16);
+    for (let i = 0; i < 24; i++) {
+        for (let j = 0; j < 1000; j++) {
+            tileMap.setTileAtPosition(i, j, Math.floor(Math.random() * 4));
         }
-        tileMap.worldPosition.y = i * tileMap.heightInTiles
-        mapChunks.push(tileMap);
     }
 
-     //create spriteFont
-     gameFont = new spriteFont({
-        width: 255,
-        height: 128,
-        characterHeight: 9,
-        characterWidth: 6,
-        image: img["smallFont"]
-    })
+    //create spriteFont
+    gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
 
-    tinyFont = new spriteFont({
-        width: 320,
-        height: 240,
-        characterHeight: 6,
-        characterWidth: 4,
-        image: img["3x5font"]
-    })
+    tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
 
-
-    setInterval(gameLoop, 1000/FRAMERATE);
+    setInterval(gameLoop, 1000 / FRAMERATE);
 }
 
 function gameLoop() {
@@ -105,8 +84,8 @@ function gameLoop() {
             titleScreen.update();
             break;
         case GAMESTATE_PLAY:
-            gameScreen.draw();
-            gameScreen.update();
+            playScreen.draw();
+            playScreen.update();
             break;
         case GAMESTATE_GAME_OVER:
             gameOverScreen.draw();
@@ -120,9 +99,9 @@ function gameLoop() {
     Key.update();
 }
 
-window.addEventListener('keyup',    function (event) { Key.onKeyup(event); }, false);
-window.addEventListener('keydown',  function (event) { Key.onKeydown(event); }, false);
-window.addEventListener('blur',     function (event) { paused = true; }, false);
-window.addEventListener('focus',    function (event) { paused = false; }, false);
+window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);
+window.addEventListener('keydown', function (event) { Key.onKeydown(event); }, false);
+window.addEventListener('blur', function (event) { paused = true; }, false);
+window.addEventListener('focus', function (event) { paused = false; }, false);
 
 init();

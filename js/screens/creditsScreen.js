@@ -1,4 +1,4 @@
-var creditScreen = {
+const creditScreen = {
     box: {
         x: 0,
         y: 0,

@@ -1,35 +1,29 @@
 class Animation {
-  constructor({spriteSheet, frames, frameRate, loop = true} = {}) {
 
-    
+  /**
+   * Creates an instance of Animation.
+   * @date 3/17/2023 - 1:40:03 PM
+   *
+   * @constructor
+   * @param {{ spriteSheet: image; frames: int; frameRate: int; loop?: boolean; }} [{ spriteSheet, frames, frameRate, loop = true }={}]
+   */
+  constructor({ spriteSheet, frames, frameRate, loop = true } = {}) {
+
     this.spriteSheet = spriteSheet;
-
-   
     this.frames = frames;
-
-    
     this.frameRate = frameRate;
-
-    
     this.loop = loop;
 
     let { width, height, margin = 0 } = spriteSheet.frame;
 
-    
     this.width = width;
-
-    
     this.height = height;
-
-    
     this.margin = margin;
-
-    
     this.currentFrame = 0;
     this.accumulator = 0;
   }
 
-  
+
   clone() {
     return animationFactory(this);
   }
@@ -39,12 +33,11 @@ class Animation {
     this.accumulator = 0;
   }
 
-  update(dt = 1/60) {
-
+  update(dt = 1 / 60) {
     // if the animation doesn't loop we stop at the last frame
-    if (!this.loop && this.currentFrame == this.frames.length-1){
+    if (!this.loop && this.currentFrame == this.frames.length - 1) {
       return;
-    } 
+    }
 
     this.accumulator += dt;
 
@@ -55,7 +48,7 @@ class Animation {
     }
   }
 
-  render({x, y, width = this.width, height = this.height} = {}) {
+  render({ x, y, width = this.width, height = this.height } = {}) {
 
     // get the row and col of the frame
     let row = this.frames[this.currentFrame] / this.spriteSheet._f | 0;
