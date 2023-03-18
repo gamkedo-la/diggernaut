@@ -1,4 +1,5 @@
 class Player {
+    //todo: add a sprite sheet for the player
     constructor(x,y) {
         this.x = x;
         this.y = y;
