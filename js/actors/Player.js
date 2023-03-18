@@ -5,6 +5,7 @@ class Player {
         this.y = y;
         this.previousX = x;
         this.previousY = y;
+        this.canJump = false;
         this.width = 8;
         this.height = 12;
         this.speed = .9;
@@ -74,6 +75,8 @@ class Player {
             this.updateCollider(this.x, this.y)
             this.stop();
         }
+
+        this.canJump = this.checkFloor();
         this.xAccel = 0;
         this.yAccel = 0;
     }
@@ -149,12 +152,14 @@ class Player {
         }
         //tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] = 0;
     }
+    checkFloor() {
+        return tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] > 0;
+    }
     throw() {
         //TODO: implement throwing
     }
     jump() {
-        if(this.jumping) return;
-        this.jumping = true;
+        if(!this.canJump) return;
         this.yvel = -this.speed * 6;
     }
 
