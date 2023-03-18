@@ -9,7 +9,7 @@ const playScreen = {
 
     draw: function () {
         clearScreen("black");
-        this.drawTileMap(tileMap);
+        tileMap.draw();
         //player debug text
         tinyFont.drawText(`player:  x: ${this.player.x} y: ${this.player.y}`, { x: 10, y: 12 }, 0, 0);
         this.player.draw();
@@ -25,27 +25,29 @@ const playScreen = {
     },
 
     handlePlayerInput: function () {
-        if (Key.isDown(Key.LEFT)) { this.player.moveLeft(); }
-        if (Key.isDown(Key.RIGHT)) { this.player.moveRight(); }
-        if (Key.isDown(Key.UP)) { this.player.moveUp(); }
-        if (Key.isDown(Key.DOWN)) { this.player.moveDown(); }
-        if (Key.isDown(Key.SPACE)) { this.player.stop(); }
-        if (Key.justReleased(Key.z)) { this.player.dig(); }
-    },
-    
-    drawTileMap: function (tileMap) {
-        let fills = ['Black', 'DarkSlateGray', 'DimGray', 'Gray', 'White'];
-        for (let i = 0; i < tileMap.data.length; i++) {
-            let tile = tileMap.data[i];
-            let x = i % tileMap.widthInTiles;
-            let y = Math.floor(i / tileMap.widthInTiles);
-            let tileX = (x + tileMap.worldPosition.x) * tileMap.tileWidth;
-            let tileY = (y + tileMap.worldPosition.y) * tileMap.tileHeight;
-            canvasContext.fillStyle = fills[tile]
-            if(inView(tileX, tileY)){
-                canvasContext.fillRect(tileX - view.x, tileY - view.y, tileMap.tileWidth, tileMap.tileHeight);
-            }   
+        if (Key.isDown(Key.LEFT)) {
+            this.player.moveLeft();
+            if(Key.isDown(Key.z)){
+                this.player.dig(LEFT);
+            }
         }
+        if (Key.isDown(Key.RIGHT)) {
+            this.player.moveRight(); 
+            if(Key.isDown(Key.z)){
+                this.player.dig(RIGHT);
+            }
+        }
+        if (Key.isDown(Key.UP)) { this.player.jump(); }
+
+        if (Key.isDown(Key.DOWN)) {
+            this.player.moveDown();
+            if(Key.isDown(Key.z)){
+                this.player.dig(DOWN);
+            }
+        }
+
+        if (Key.justReleased(Key.SPACE)) { this.player.jump(); }
+        //if (Key.justReleased(Key.z)) { this.player.dig(); }
     },
 
     followPlayer: function () {

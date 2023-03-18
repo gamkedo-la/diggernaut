@@ -10,6 +10,11 @@ canvas.width = 320;
 canvas.height = 180;
 
 //globals and constants
+const LEFT = 0;
+const RIGHT = 1;
+const UP = 2;
+const DOWN = 3;
+
 const GAMESTATE_TITLE = 0
 const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;
@@ -18,12 +23,21 @@ const FRAMERATE = 60;
 const view = {
     x: 0,
     y: 0,
+    width: 320,
+    height: 180,
+}
+const mapConfig = {
+    widthInTiles: 24,
+    heightInTiles: 1200,
+    tileSize: 16,
+    mapStartY: 20 //start generating tiles at this Y position
+
 }
 var gameState = GAMESTATE_TITLE;
 var ticker = 0;
 var loader = new AssetLoader();
 var audio = new AudioGlobal();
-var img, gameFont, tinyFont;
+var img, gameFont, tinyFont, tileMap;
 
 const imageList = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -60,20 +74,13 @@ function loadSounds() {
 function loadingComplete() {
     console.log('loading complete, starting game')
 
-    //create map
-    tileMap = new TileMap(24, 1000, 16, 16);
-    for (let i = 0; i < 24; i++) {
-        for (let j = 0; j < 1000; j++) {
-            tileMap.setTileAtPosition(i, j, Math.floor(Math.random() * 4));
-        }
-    }
+    generateMap(mapConfig);    
 
-    //create spriteFont
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
 
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
 
-    setInterval(gameLoop, 1000 / FRAMERATE);
+    requestAnimationFrame(gameLoop);
 }
 
 function gameLoop() {
@@ -96,7 +103,21 @@ function gameLoop() {
             creditsScreen.update();
             break;
     }
+    requestAnimationFrame(gameLoop);
     Key.update();
+}
+
+function generateMap(config){
+
+    tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
+    let choices = [0, 0, 0, 3];
+    let mapYstartOffset = config.mapStartY * config.widthInTiles;
+    let mapTotalTiles = config.widthInTiles * config.heightInTiles;
+    
+    for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
+        tileMap.data[i] = choices[Math.floor(Math.random() * 4)];
+    }
+
 }
 
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);

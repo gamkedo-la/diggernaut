@@ -24,7 +24,7 @@ const titleScreen = {
         }
         
         //title text
-        gameFont.drawText("Minimum Viable Game", { x: 10, y: 10 }, 0, 0, 2);
+        gameFont.drawText("Diggernaut", { x: 10, y: 10 }, 0, 0, 2);
         gameFont.drawText("Press Z to Start", { x: 10, y: 30 }, 0, 0);
 
     },

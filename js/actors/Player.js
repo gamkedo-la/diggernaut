@@ -16,11 +16,11 @@ class Player {
             minXVel: -5,
             maxXVel: 5,
             minYVel: -5,
-            maxYVel: 2,
+            maxYVel: 5,
             minXAccel: -3,
             maxXAccel: 3,
             minYAccel: -3,
-            maxYAccel: 3,
+            maxYAccel: 5,
         }
         this.friction = 0.80;
         this.gravity = .2;
@@ -37,7 +37,12 @@ class Player {
     }
     draw() {
         canvasContext.fillStyle = this.color;
-        canvasContext.fillRect(Math.round(this.x - view.x), Math.round(this.y - view.y), this.width, this.height);
+        canvasContext.fillRect(Math.floor(this.x - view.x), Math.floor(this.y - view.y), this.width+1, this.height+1);
+        canvasContext.fillStyle = "Red";
+        pset(this.collider.leftFeeler.x - view.x, this.collider.leftFeeler.y - view.y);
+        pset(this.collider.rightFeeler.x - view.x, this.collider.rightFeeler.y - view.y);
+        pset(this.collider.topFeeler.x - view.x, this.collider.topFeeler.y - view.y);
+        pset(this.collider.bottomFeeler.x - view.x, this.collider.bottomFeeler.y - view.y);
     }
     update() {
         this.previousX = this.x;
@@ -54,7 +59,20 @@ class Player {
         
         this.xvel *= this.friction;
         this.x += this.xvel;
+        this.updateCollider(this.x, this.y)
+        if(this.tileCollisionCheck(tileMap, 2)){
+            this.x = this.previousX;
+            this.updateCollider(this.x, this.y)
+            this.stop();
+
+        }
         this.y += this.yvel;
+        this.updateCollider(this.x, this.y)
+        if(this.tileCollisionCheck(tileMap, 2)){
+            this.y = this.previousY;
+            this.updateCollider(this.x, this.y)
+            this.stop();
+        }
         this.xAccel = 0;
         this.yAccel = 0;
     }
@@ -66,15 +84,36 @@ class Player {
         this.collider.left = this.x
         this.collider.right = this.x + this.width
 
-        this.collider.leftFeeler.x = this.collider.left;
-        this.collider.leftFeeler.y = this.y;
-        this.collider.rightFeeler.x = this.collider.right;
-        this.collider.rightFeeler.y = this.y;
-        this.collider.topFeeler.x = this.x;
-        this.collider.topFeeler.y = this.collider.top;
-        this.collider.bottomFeeler.x = this.x;
-        this.collider.bottomFeeler.y = this.collider.bottom;
+        this.collider.leftFeeler.x = this.collider.left - 3;
+        this.collider.leftFeeler.y = this.y + this.height/2;
+        this.collider.rightFeeler.x = this.collider.right + 4;
+        this.collider.rightFeeler.y = this.y + this.height/2;
+        this.collider.topFeeler.x = this.x + this.width/2;
+        this.collider.topFeeler.y = this.collider.top - 4;
+        this.collider.bottomFeeler.x = this.x + this.width/2;
+        this.collider.bottomFeeler.y = this.collider.bottom+6;
         
+    }
+
+    tileCollisionCheck(world, tileCheck){
+        
+        let leftTile =      Math.floor(this.collider.left / world.tileWidth),
+            rightTile =     Math.floor(this.collider.right / world.tileWidth),
+            topTile =       Math.floor(this.collider.top / world.tileHeight),
+            bottomTile =    Math.floor(this.collider.bottom / world.tileHeight)
+
+        for(let i = leftTile; i <=rightTile; i++){
+            for(let j = topTile; j<= bottomTile; j++){
+                let tile = world.getTileAtPosition(i, j)
+
+                if(typeof tileCheck === "function"){ 
+                   return tileCheck(tile);
+                }
+                else if(tile > tileCheck){
+                    return true;
+                }
+            }
+        }
     }
 
     moveLeft() {
@@ -89,15 +128,33 @@ class Player {
     stop() {
         this.xAccel = 0;
         this.yAccel = 0;
+        this.yVel = 0;
+        this.xVel = 0;
     }
-    dig() {
-        //TODO: implement digging
+    dig(direction) {
+
+        console.log(`digging with direction ${direction}`)
+        switch(direction){
+            case LEFT:
+                tileMap.data[ tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y) ] = 0;
+                break;
+            case RIGHT:
+                tileMap.data[ tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y) ] = 0;
+                break;
+            case DOWN:
+                tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] = 0;
+                break;
+
+        }
+        //tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] = 0;
     }
     throw() {
         //TODO: implement throwing
     }
     jump() {
-        this.yAccel = -this.speed * 2;
+        if(this.jumping) return;
+        this.jumping = true;
+        this.yvel = -this.speed * 6;
     }
 
 

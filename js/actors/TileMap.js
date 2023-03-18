@@ -14,7 +14,6 @@ class TileMap {
     this.widthInTiles = widthInTiles;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
-    this.worldPosition = {x: 0, y: 0};
     this.data = new Uint16Array(widthInTiles * heightInTiles);
 
     }
@@ -36,17 +35,15 @@ class TileMap {
     }
 
     pixelToTileIndex(x, y){
-        let tx = Math.round(x / this.tileSize);
-        let ty = Math.round(y / this.tileSize);
-        tx -= this.worldPosition.x;
-        ty -= this.worldPosition.y;
+        let tx = Math.floor(x / this.tileWidth);
+        let ty = Math.floor(y / this.tileHeight);
         return this.getIndexAtPosition(tx, ty);
     }
 
     pixelToTileGrid(x, y){
     return {
-            x: Math.round(x / this.tileSize),
-            y: Math.round(y / this.tileSize)
+            x: Math.floor(x / this.tileWidth),
+            y: Math.floor(y / this.tileHeight)
             }
     }
     //the following functions meant for use when you want to dynamically add tiles to the world. 
@@ -125,6 +122,27 @@ class TileMap {
                     this.data[this.getIndexAtPosition(tx+x, ty+y)] = value;
                 }
                 
+            }
+        }
+    }
+
+    draw(){
+        //console.log('drawing map')
+        let fills = ['Black', 'DarkSlateGray', 'DimGray', 'Gray', 'White'];
+
+        let left = Math.floor(view.x/this.tileWidth);
+        let right = Math.ceil((view.x+view.width)/this.tileWidth);
+        let top = Math.floor(view.y/this.tileHeight);
+        let bottom = Math.ceil((view.y+view.height)/this.tileHeight);
+    
+        for(let i = left; i < right; i++){
+            for(let j = top; j < bottom; j++){    
+                    canvasContext.fillStyle = fills[this.data[j*this.widthInTiles + i]];
+                    canvasContext.fillRect(
+                        (i) * this.tileWidth - view.x,
+                        (j) * this.tileHeight - view.y,
+                        this.tileWidth,
+                        this.tileHeight);
             }
         }
     }
