@@ -19,7 +19,7 @@ const titleScreen = {
                 ${Math.floor(255*Math.cos(ticker/100*i/20))},
                 ${Math.floor(255*Math.sin(ticker/60))})`;
 
-            strokePolygon(canvas.width/2, canvas.height/2, 10*i, 7, ticker/100*i/2);
+            strokePolygon(canvas.width/2, 180 - i*7, 10*i, 7, ticker/100*i/2);
             
         }
         
