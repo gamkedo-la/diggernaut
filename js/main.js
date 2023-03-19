@@ -27,8 +27,9 @@ const view = {
     height: 180,
 }
 const mapConfig = {
-    widthInTiles: 24,
+    widthInTiles: 60,
     heightInTiles: 1200,
+    chasmWidth: 24,
     tileSize: 16,
     mapStartY: 20 //start generating tiles at this Y position
 
@@ -110,12 +111,21 @@ function gameLoop() {
 function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
-    let choices = [0, 0, 0, 3];
+    let choices = [3, 4, 5];
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
-        tileMap.data[i] = choices[Math.floor(Math.random() * 4)];
+        tileMap.data[i] = choices[ Math.floor(Math.random() * choices.length) ];
+    }
+    //generate chasm
+    let chasmStart = (config.widthInTiles / 2) - (config.chasmWidth / 2);
+    choices = [0, 1, 2]
+    chasmStart = Math.floor(chasmStart);
+    for (let i = mapYstartOffset; i < mapTotalTiles; i += config.widthInTiles) {
+        for (let j = chasmStart; j < chasmStart + config.chasmWidth; j++) {
+            tileMap.data[i + j] = choices[ Math.floor(Math.random() * choices.length) ];
+        }
     }
 
 }

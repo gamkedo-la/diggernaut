@@ -101,23 +101,22 @@ class Player {
 
     tileCollisionCheck(world, tileCheck){
         
-        let leftTile =      Math.floor(this.collider.left / world.tileWidth),
-            rightTile =     Math.floor(this.collider.right / world.tileWidth),
-            topTile =       Math.floor(this.collider.top / world.tileHeight),
-            bottomTile =    Math.floor(this.collider.bottom / world.tileHeight)
+        let left =      Math.floor(this.collider.left),
+            right =     Math.floor(this.collider.right),
+            top =       Math.floor(this.collider.top),
+            bottom =    Math.floor(this.collider.bottom)
+        
+        //check for collision with tile
+        //check tile index of each corner of the player
+        let topLeft = world.data[ world.pixelToTileIndex(left, top) ];
+        let topRight = world.data[ world.pixelToTileIndex(right, top) ];
+        let bottomLeft = world.data[ world.pixelToTileIndex(left, bottom) ];
+        let bottomRight = world.data[ world.pixelToTileIndex(right, bottom) ];
 
-        for(let i = leftTile; i <=rightTile; i++){
-            for(let j = topTile; j<= bottomTile; j++){
-                let tile = world.getTileAtPosition(i, j)
+        return (topLeft > tileCheck || topRight > tileCheck || bottomLeft > tileCheck || bottomRight > tileCheck);
 
-                if(typeof tileCheck === "function"){ 
-                   return tileCheck(tile);
-                }
-                else if(tile > tileCheck){
-                    return true;
-                }
-            }
-        }
+
+        
     }
 
     moveLeft() {

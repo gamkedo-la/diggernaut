@@ -51,7 +51,7 @@ const playScreen = {
     },
 
     followPlayer: function () {
-        //view.x = this.player.x - canvas.width / 2;
+        view.x = this.player.x - canvas.width / 2;
         view.y = this.player.y - canvas.height / 2;
         view.x = Math.floor(view.x);
         view.y = Math.floor(view.y);
