@@ -1,19 +1,34 @@
-const creditScreen = {
-    box: {
-        x: 0,
-        y: 0,
+const creditsScreen = {
+
+    reset: function(){
+        ticker = 0;
     },
-    draw: function () {
-        canvasContext.fillStyle = 'black';
-        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-        canvasContext.fillStyle = 'white';
-        canvasContext.fillRect(this.box.x, this.box.y, 10, 10);
-        tinyFont.drawText("Credits Scroller", { x: 10, y: 10 }, 0, 0);
+
+    draw: function (additionalText="") {
+        this.credits=``+
+this.congratsText +
+`
+HomeTeam GameDev Presents:
+Diggernaught
+
+a JS game led by Ryan Malm from
+March thru May 22nd 2023
+
+Ryan Malm: Lead Programmer, Game Design, Art
+`
+        this.congratsText = additionalText;
+        clearScreen('black');
+        let verticalSpacing = 4;
+        let creditsLength = this.credits.split(/\r?\n/).length * ( gameFont.characterHeight + verticalSpacing) + canvas.height;
+        //console.log(this.credits.split(/\r?\n/).length);
+        gameFont.drawText( this.credits, { x: 10, y: canvas.height - (ticker/2) % creditsLength }, 0, verticalSpacing);
+        gameFont.drawText( this.credits, { x: 10, y: creditsLength + (ticker/2) % creditsLength }, 0, verticalSpacing);
+        fillRect(0,165, canvas.width, 15, '#111');
+        tinyFont.drawText( "Press Enter to return to Title", { x: 190, y: 170}, 0, 0);
     },
+
     update: function () {
-        this.box.x = canvas.width/2 - 5;
-        this.box.y = canvas.height/2 - 5;
-        this.box.x += Math.sin(ticker/10) * 50;
-        this.box.y += Math.cos(ticker/10) * 50;
+       if(Key.justReleased(Key.ENTER)) { signal.dispatch('titleScreen'); }
+       if(gamepad.start()) { signal.dispatch('titleScreen'); }
     }
 }

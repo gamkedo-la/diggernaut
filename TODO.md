@@ -1,6 +1,7 @@
 Map logic:
 - [ ] groups of like bricks will break together
 - [ ] groups of like bricks are auto-tiled with seamless tileset art
+- [ ] falling brick object and logic
 - [ ] if falling-brick type has a void exposed below it, it will fall
 - [ ] if falling-brick type already has a void exposed below it, it will not fall
 - [ ] falling bricks disturbed by player from below will fall
@@ -24,6 +25,7 @@ Art Needs:
   
 Player logic:
 - [X] player can dig downward, and horizontally
+  - [ ] player dig action has a cooldown
 - [ ] player can helicopter to slow fall
   - [ ] helicopter has a time limit and a cooldown
 - [ ] player can power drill to bulldoze through blocks

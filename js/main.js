@@ -6,8 +6,8 @@ canvas = document.getElementById("canvas");
 canvasContext = canvas.getContext("2d");
 canvas.imageSmoothingEnabled = false;
 canvas.style.imageRendering = "pixelated";
-canvas.width = 320;
-canvas.height = 180;
+canvas.width = 544;
+canvas.height = 306;
 
 //globals and constants
 const LEFT = 0;
@@ -23,14 +23,14 @@ const FRAMERATE = 60;
 const view = {
     x: 0,
     y: 0,
-    width: 320,
-    height: 180,
+    width: 544,
+    height: 306,
 }
 const mapConfig = {
-    widthInTiles: 60,
-    heightInTiles: 1200,
+    widthInTiles: 70,
+    heightInTiles: 3000,
     chasmWidth: 24,
-    tileSize: 16,
+    tileSize: 32,
     mapStartY: 20 //start generating tiles at this Y position
 
 }

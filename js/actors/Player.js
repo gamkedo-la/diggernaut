@@ -6,8 +6,8 @@ class Player {
         this.previousX = x;
         this.previousY = y;
         this.canJump = false;
-        this.width = 8;
-        this.height = 12;
+        this.width = 16;
+        this.height = 24;
         this.speed = .9;
         this.color = "yellow";
         this.xvel = 0;
@@ -135,27 +135,49 @@ class Player {
         this.xVel = 0;
     }
     dig(direction) {
-
-        console.log(`digging with direction ${direction}`)
+        let startTileValue = 0;
+        let startTileIndex = 0;
         switch(direction){
             case LEFT:
-                tileMap.data[ tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y) ] = 0;
+                startTileIndex = tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y);
+                startTileValue = tileMap.data[ startTileIndex ];
                 break;
             case RIGHT:
-                tileMap.data[ tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y) ] = 0;
+                startTileIndex = tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y);
+                startTileValue = tileMap.data[ startTileIndex ];
                 break;
             case DOWN:
-                tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] = 0;
+                startTileIndex = tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y);
+                startTileValue = tileMap.data[ startTileIndex ];
                 break;
-
         }
-        //tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] = 0;
+        if(startTileValue > 0){
+            let tilesToRemove = [];
+            //check outwards from the start tile for tiles of the same type
+            //TODO: flood fill algorithm? right now this just blindly checks to the right
+            for(let i = 0; i < 4; i++){
+                let tileIndex = startTileIndex + i;
+                let tileValue = tileMap.data[ tileIndex ];
+                if(tileValue == startTileValue){
+                    tilesToRemove.push(tileIndex);
+                }
+                else { break }
+            }
+            //remove the tiles
+            for(let i = 0; i < tilesToRemove.length; i++){
+                tileMap.data[ tilesToRemove[i] ] = 0;
+            }
+        }
     }
     checkFloor() {
         return tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] > 0;
     }
     throw() {
         //TODO: implement throwing
+    }
+    helicopter() {
+        //TODO: implement helicopter action
+        //player will be able to spin his diggerang above him and hover momentarily, slowing his descent.
     }
     jump() {
         if(!this.canJump) return;
