@@ -38,7 +38,7 @@ var gameState = GAMESTATE_TITLE;
 var ticker = 0;
 var loader = new AssetLoader();
 var audio = new AudioGlobal();
-var img, gameFont, tinyFont, tileMap;
+var img, gameFont, tinyFont, tileMap, player;
 
 const imageList = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -76,6 +76,9 @@ function loadingComplete() {
     console.log('loading complete, starting game')
 
     generateMap(mapConfig);    
+
+    player = new Player(mapConfig.widthInTiles * mapConfig.tileSize/2, canvas.height/2),
+
 
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
 

@@ -5,14 +5,12 @@ const playScreen = {
         this.hitCounter = 0;
     },
 
-    player: new Player(canvas.width/2, canvas.height/2),
-
     draw: function () {
         clearScreen("black");
         tileMap.draw();
         //player debug text
-        tinyFont.drawText(`player:  x: ${this.player.x} y: ${this.player.y}`, { x: 10, y: 12 }, 0, 0);
-        this.player.draw();
+        tinyFont.drawText(`player:  x: ${player.x} y: ${player.y}`, { x: 10, y: 12 }, 0, 0);
+        player.draw();
     },
     update: function () {
         if(Key.justReleased(Key.z)){ 
@@ -21,40 +19,45 @@ const playScreen = {
         }
         this.followPlayer();
         this.handlePlayerInput();
-        this.player.update();
+        player.update();
     },
 
     handlePlayerInput: function () {
         if (Key.isDown(Key.LEFT)) {
-            this.player.moveLeft();
+            player.moveLeft();
             if(Key.isDown(Key.z)){
-                this.player.dig(LEFT);
+                player.dig(LEFT);
             }
         }
         if (Key.isDown(Key.RIGHT)) {
-            this.player.moveRight(); 
+            player.moveRight(); 
             if(Key.isDown(Key.z)){
-                this.player.dig(RIGHT);
+                player.dig(RIGHT);
             }
         }
-        if (Key.isDown(Key.UP)) { this.player.jump(); }
+        if (Key.isDown(Key.UP)) { player.jump(); }
 
         if (Key.isDown(Key.DOWN)) {
-            this.player.moveDown();
+            player.moveDown();
             if(Key.isDown(Key.z)){
-                this.player.dig(DOWN);
+                player.dig(DOWN);
             }
         }
 
-        if (Key.justReleased(Key.SPACE)) { this.player.jump(); }
-        //if (Key.justReleased(Key.z)) { this.player.dig(); }
+        if (Key.justReleased(Key.SPACE)) { player.jump(); }
+        //if (Key.justReleased(Key.z)) { player.dig(); }
     },
 
     followPlayer: function () {
-        view.x = this.player.x - canvas.width / 2;
-        view.y = this.player.y - canvas.height / 2;
+        view.x = player.x - canvas.width / 2;
+        view.y = player.y - canvas.height / 2;
         view.x = Math.floor(view.x);
         view.y = Math.floor(view.y);
+        view.x = Math.max(0, view.x);
+        view.y = Math.max(0, view.y);
+        view.x = Math.min(tileMap.widthInTiles * tileMap.tileWidth - canvas.width, view.x);
+        // view.y = Math.min(tileMap.height * tileMap.tileSize - canvas.height, view.y);
+
     }
 
 }

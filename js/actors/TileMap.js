@@ -117,6 +117,15 @@ class TileMap {
         }
     }
 
+    tileFillMapChunk(array, width, height, destinationX, destinationY){
+        //todo: check if array is too big for map
+        for(let i = 0; i < width; i++){
+            for(let j = 0; j < height; j++){
+                this.data[(j+destinationY) * this.widthInTiles + (i+destinationX)] = array[j * width + i];
+            }
+        }
+    }
+
     tileFillCircle( tx, ty, radius, value ){
         let rad = Math.floor(radius);
         for(let y = -rad; y <= rad; y++){
@@ -130,7 +139,6 @@ class TileMap {
     }
 
     draw(){
-        //console.log('drawing map')
         let fills = ['#000000', '#001', '#003', '#bbb', '#aaa', '#fff'];
 
         let left = Math.floor(view.x/this.tileWidth);

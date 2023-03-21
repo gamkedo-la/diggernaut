@@ -6,6 +6,7 @@ class Player {
         this.previousX = x;
         this.previousY = y;
         this.canJump = false;
+        this.canDig = true;
         this.width = 16;
         this.height = 24;
         this.speed = .9;
@@ -14,15 +15,17 @@ class Player {
         this.yvel = 0;
         this.xAccel = 0;
         this.yAccel = 0;
+        this.digCooldown = 0;
         this.limits = {
             minXVel: -5,
             maxXVel: 5,
             minYVel: -5,
-            maxYVel: 5,
+            maxYVel: 10,
             minXAccel: -3,
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
+            digCooldown: 10
         }
         this.friction = 0.80;
         this.gravity = .2;
@@ -47,42 +50,18 @@ class Player {
         pset(this.collider.bottomFeeler.x - view.x, this.collider.bottomFeeler.y - view.y);
     }
     update() {
-        this.previousX = this.x;
-        this.previousY = this.y;
-        this.yAccel += this.gravity;
-        this.xvel += this.xAccel;
-        this.yvel += this.yAccel;
-        if (this.xvel > this.limits.maxXVel) { this.xvel = this.limits.maxXVel; }
-        if (this.xvel < this.limits.minXVel) { this.xvel = this.limits.minXVel; }
-        if (this.yvel > this.limits.maxYVel) { this.yvel = this.limits.maxYVel; }
-        if (this.yvel < this.limits.minYVel) { this.yvel = this.limits.minYVel; }
-        if (this.xAccel > this.limits.maxXAccel) { this.xAccel = this.limits.maxXAccel; }
-        if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
-        
-        this.xvel *= this.friction;
-        this.x += this.xvel;
-        this.updateCollider(this.x, this.y)
-        if(this.tileCollisionCheck(tileMap, 2)){
-            this.x = this.previousX;
-            this.updateCollider(this.x, this.y)
-            this.stop();
-
-        }
-        this.y += this.yvel;
-        this.updateCollider(this.x, this.y)
-        if(this.tileCollisionCheck(tileMap, 2)){
-            this.y = this.previousY;
-            this.updateCollider(this.x, this.y)
-            this.stop();
-        }
-
+        this.applyForces();
+        this.handleCollisions();
+        this.checkBounds();
+        this.canDig = this.checkDig();
         this.canJump = this.checkFloor();
         this.xAccel = 0;
         this.yAccel = 0;
     }
 
     updateCollider(x, y) {
-
+        this.x = x;
+        this.y = y;
         this.collider.top = this.y
         this.collider.bottom = this.y + this.height
         this.collider.left = this.x
@@ -99,6 +78,41 @@ class Player {
         
     }
 
+    applyForces() {
+        this.previousX = this.x;
+        this.previousY = this.y;
+        this.yAccel += this.gravity;
+        this.xvel += this.xAccel;
+        this.yvel += this.yAccel;
+        if (this.xvel > this.limits.maxXVel) { this.xvel = this.limits.maxXVel; }
+        if (this.xvel < this.limits.minXVel) { this.xvel = this.limits.minXVel; }
+        if (this.yvel > this.limits.maxYVel) { this.yvel = this.limits.maxYVel; }
+        if (this.yvel < this.limits.minYVel) { this.yvel = this.limits.minYVel; }
+        if (this.xAccel > this.limits.maxXAccel) { this.xAccel = this.limits.maxXAccel; }
+        if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
+        
+        this.xvel *= this.friction;
+    }
+
+    handleCollisions() {
+        this.x += this.xvel;
+        this.updateCollider(this.x, this.y)
+        if(this.tileCollisionCheck(tileMap, 2)){
+            this.x = this.previousX;
+            this.updateCollider(this.x, this.y)
+            //this.stop();
+
+        }
+        this.y += this.yvel;
+        this.updateCollider(this.x, this.y)
+        if(this.tileCollisionCheck(tileMap, 2)){
+            this.y = this.previousY;
+            this.updateCollider(this.x, this.y)
+            //this.stop();
+        }
+    }
+
+
     tileCollisionCheck(world, tileCheck){
         
         let left =      Math.floor(this.collider.left),
@@ -114,8 +128,6 @@ class Player {
         let bottomRight = world.data[ world.pixelToTileIndex(right, bottom) ];
 
         return (topLeft > tileCheck || topRight > tileCheck || bottomLeft > tileCheck || bottomRight > tileCheck);
-
-
         
     }
 
@@ -134,7 +146,9 @@ class Player {
         this.yVel = 0;
         this.xVel = 0;
     }
+
     dig(direction) {
+        if(!this.canDig) return;
         let startTileValue = 0;
         let startTileIndex = 0;
         switch(direction){
@@ -151,34 +165,59 @@ class Player {
                 startTileValue = tileMap.data[ startTileIndex ];
                 break;
         }
-        if(startTileValue > 0){
-            let tilesToRemove = [];
+        if(startTileValue > 2){ //todo consts for tile types / collide offset
+            tileMap.data[ startTileIndex ] = 0;
+            // let tilesToRemove = [];
             //check outwards from the start tile for tiles of the same type
             //TODO: flood fill algorithm? right now this just blindly checks to the right
-            for(let i = 0; i < 4; i++){
-                let tileIndex = startTileIndex + i;
-                let tileValue = tileMap.data[ tileIndex ];
-                if(tileValue == startTileValue){
-                    tilesToRemove.push(tileIndex);
-                }
-                else { break }
-            }
-            //remove the tiles
-            for(let i = 0; i < tilesToRemove.length; i++){
-                tileMap.data[ tilesToRemove[i] ] = 0;
-            }
+            // for(let i = 0; i < 4; i++){
+            //     let tileIndex = startTileIndex + i;
+            //     let tileValue = tileMap.data[ tileIndex ];
+            //     if(tileValue == startTileValue){
+            //         tilesToRemove.push(tileIndex);
+            //     }
+            //     else { break }
+            // }
+            // //remove the tiles
+            // for(let i = 0; i < tilesToRemove.length; i++){
+            //     tileMap.data[ tilesToRemove[i] ] = 0;
+            // }
         }
     }
     checkFloor() {
         return tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] > 0;
     }
+
+    checkDig() {
+        this.digCooldown--
+        if(this.digCooldown <= 0){
+            this.digCooldown = this.limits.digCooldown;
+            return true;
+        }
+        return false;
+    }
+
+    checkBounds() {
+        if(this.x < 64) {
+            this.x = 64;
+            this.stop();
+        }
+        let worldRightBounds = tileMap.widthInTiles * tileMap.tileWidth - 64;
+        if(this.x >  worldRightBounds) {
+            this.x = worldRightBounds;
+            this.stop();
+        }
+    }
+
     throw() {
         //TODO: implement throwing
     }
+
     helicopter() {
         //TODO: implement helicopter action
         //player will be able to spin his diggerang above him and hover momentarily, slowing his descent.
     }
+
     jump() {
         if(!this.canJump) return;
         this.yvel = -this.speed * 6;
