@@ -1,6 +1,6 @@
 class Player {
     //todo: add a sprite sheet for the player
-    constructor(x,y) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.previousX = x;
@@ -31,7 +31,7 @@ class Player {
         this.gravity = .2;
         this.collider = {
             left: 0,
-            right: 0, 
+            right: 0,
             top: 0,
             bottom: 0,
             leftFeeler: { x: 0, y: 0 },
@@ -42,7 +42,7 @@ class Player {
     }
     draw() {
         canvasContext.fillStyle = this.color;
-        canvasContext.fillRect(Math.floor(this.x - view.x), Math.floor(this.y - view.y), this.width+1, this.height+1);
+        canvasContext.fillRect(Math.floor(this.x - view.x), Math.floor(this.y - view.y), this.width + 1, this.height + 1);
         canvasContext.fillStyle = "Red";
         pset(this.collider.leftFeeler.x - view.x, this.collider.leftFeeler.y - view.y);
         pset(this.collider.rightFeeler.x - view.x, this.collider.rightFeeler.y - view.y);
@@ -68,14 +68,14 @@ class Player {
         this.collider.right = this.x + this.width
 
         this.collider.leftFeeler.x = this.collider.left - 3;
-        this.collider.leftFeeler.y = this.y + this.height/2;
+        this.collider.leftFeeler.y = this.y + this.height / 2;
         this.collider.rightFeeler.x = this.collider.right + 4;
-        this.collider.rightFeeler.y = this.y + this.height/2;
-        this.collider.topFeeler.x = this.x + this.width/2;
+        this.collider.rightFeeler.y = this.y + this.height / 2;
+        this.collider.topFeeler.x = this.x + this.width / 2;
         this.collider.topFeeler.y = this.collider.top - 4;
-        this.collider.bottomFeeler.x = this.x + this.width/2;
-        this.collider.bottomFeeler.y = this.collider.bottom+6;
-        
+        this.collider.bottomFeeler.x = this.x + this.width / 2;
+        this.collider.bottomFeeler.y = this.collider.bottom + 6;
+
     }
 
     applyForces() {
@@ -90,45 +90,62 @@ class Player {
         if (this.yvel < this.limits.minYVel) { this.yvel = this.limits.minYVel; }
         if (this.xAccel > this.limits.maxXAccel) { this.xAccel = this.limits.maxXAccel; }
         if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
-        
+
         this.xvel *= this.friction;
     }
 
-    handleCollisions() {
-        this.x += this.xvel;
-        this.updateCollider(this.x, this.y)
-        if(this.tileCollisionCheck(tileMap, 2)){
-            this.x = this.previousX;
-            this.updateCollider(this.x, this.y)
-            //this.stop();
+    handleCollisions(resolution = 3) {
+        if (this.xvel == 0) {
+            this.updateCollider(this.x, this.y);
+        } else {
+            let increment = this.xvel / resolution;
+            for (let i = 0; i < resolution; i++) {
+                this.updateCollider(this.x + increment, this.y);
+                if (this.tileCollisionCheck(tileMap, 2)) {
+                    this.x = this.previousX;
+                    this.updateCollider(this.x, this.y);
+                    this.xvel = 0;
+                    break;
+                }
+            }
+        }
 
+        if (this.yvel == 0) {
+            this.updateCollider(this.x, this.y);
+        } else {
+            let increment = this.yvel / resolution;
+            for (let i = 0; i < resolution; i++) {
+                this.updateCollider(this.x, this.y + increment);
+                if (this.tileCollisionCheck(tileMap, 2)) {
+                    this.y = this.previousY;
+                    this.updateCollider(this.x, this.y);
+                    this.yvel = 0;
+                    break;
+                }
+            }
         }
-        this.y += this.yvel;
-        this.updateCollider(this.x, this.y)
-        if(this.tileCollisionCheck(tileMap, 2)){
-            this.y = this.previousY;
-            this.updateCollider(this.x, this.y)
-            //this.stop();
-        }
+
+        this.updateCollider(this.x, this.y);
     }
 
 
-    tileCollisionCheck(world, tileCheck){
-        
-        let left =      Math.floor(this.collider.left),
-            right =     Math.floor(this.collider.right),
-            top =       Math.floor(this.collider.top),
-            bottom =    Math.floor(this.collider.bottom)
-        
+
+    tileCollisionCheck(world, tileCheck) {
+
+        let left = Math.floor(this.collider.left),
+            right = Math.floor(this.collider.right),
+            top = Math.floor(this.collider.top),
+            bottom = Math.floor(this.collider.bottom)
+
         //check for collision with tile
         //check tile index of each corner of the player
-        let topLeft = world.data[ world.pixelToTileIndex(left, top) ];
-        let topRight = world.data[ world.pixelToTileIndex(right, top) ];
-        let bottomLeft = world.data[ world.pixelToTileIndex(left, bottom) ];
-        let bottomRight = world.data[ world.pixelToTileIndex(right, bottom) ];
+        let topLeft = world.data[world.pixelToTileIndex(left, top)];
+        let topRight = world.data[world.pixelToTileIndex(right, top)];
+        let bottomLeft = world.data[world.pixelToTileIndex(left, bottom)];
+        let bottomRight = world.data[world.pixelToTileIndex(right, bottom)];
 
         return (topLeft > tileCheck || topRight > tileCheck || bottomLeft > tileCheck || bottomRight > tileCheck);
-        
+
     }
 
     moveLeft() {
@@ -136,7 +153,7 @@ class Player {
     }
     moveRight() {
         this.xAccel = this.speed;
-    }   
+    }
     moveDown() {
         this.yAccel = this.speed;
     }
@@ -148,25 +165,25 @@ class Player {
     }
 
     dig(direction) {
-        if(!this.canDig) return;
+        if (!this.canDig) return;
         let startTileValue = 0;
         let startTileIndex = 0;
-        switch(direction){
+        switch (direction) {
             case LEFT:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y);
-                startTileValue = tileMap.data[ startTileIndex ];
+                startTileValue = tileMap.data[startTileIndex];
                 break;
             case RIGHT:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y);
-                startTileValue = tileMap.data[ startTileIndex ];
+                startTileValue = tileMap.data[startTileIndex];
                 break;
             case DOWN:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y);
-                startTileValue = tileMap.data[ startTileIndex ];
+                startTileValue = tileMap.data[startTileIndex];
                 break;
         }
-        if(startTileValue > 2){ //todo consts for tile types / collide offset
-            tileMap.data[ startTileIndex ] = 0;
+        if (startTileValue > 2) { //todo consts for tile types / collide offset
+            tileMap.data[startTileIndex] = 0;
             // let tilesToRemove = [];
             //check outwards from the start tile for tiles of the same type
             //TODO: flood fill algorithm? right now this just blindly checks to the right
@@ -185,12 +202,12 @@ class Player {
         }
     }
     checkFloor() {
-        return tileMap.data[ tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y) ] > 0;
+        return tileMap.data[tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y)] > 0;
     }
 
     checkDig() {
         this.digCooldown--
-        if(this.digCooldown <= 0){
+        if (this.digCooldown <= 0) {
             this.digCooldown = this.limits.digCooldown;
             return true;
         }
@@ -198,12 +215,12 @@ class Player {
     }
 
     checkBounds() {
-        if(this.x < 64) {
+        if (this.x < 64) {
             this.x = 64;
             this.stop();
         }
         let worldRightBounds = tileMap.widthInTiles * tileMap.tileWidth - 64;
-        if(this.x >  worldRightBounds) {
+        if (this.x > worldRightBounds) {
             this.x = worldRightBounds;
             this.stop();
         }
@@ -219,7 +236,7 @@ class Player {
     }
 
     jump() {
-        if(!this.canJump) return;
+        if (!this.canJump) return;
         this.yvel = -this.speed * 6;
     }
 
