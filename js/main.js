@@ -38,7 +38,8 @@ var gameState = GAMESTATE_TITLE;
 var ticker = 0;
 var loader = new AssetLoader();
 var audio = new AudioGlobal();
-var img, gameFont, tinyFont, tileMap, player;
+var img, gameFont, tinyFont, tileMap, player, fps, then, startTime, fpsInterval
+fps = 60;
 
 const imageList = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -84,7 +85,39 @@ function loadingComplete() {
 
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
 
-    requestAnimationFrame(gameLoop);
+    begin(fps);
+}
+
+function worldInit(){
+    world = new World(img['map'].width, img['map'].height, 8);
+    world.populateWithImage(img['map'])
+}
+function begin(fps) {
+    fpsInterval = 1000/fps;
+    then = Date.now();
+    startTime = then;
+    mainLoop();
+}
+
+function mainLoop(){
+
+    requestAnimationFrame(mainLoop);
+
+    // calc elapsed time since last loop
+    now = Date.now();
+    elapsed = (now - then) 
+
+    // if enough time has elapsed, draw the next frame
+    if (elapsed > fpsInterval) {
+
+        // Get ready for next frame by setting then=now, but also adjust for your
+        // specified fpsInterval not being a multiple of RAF's interval (16.7ms) <--used to be pretty normal
+        //to expect 60fps.  nowadays, it could be 120fps or even 240fps.  So, we need to adjust for that.
+        then = now - (elapsed % fpsInterval);
+
+        // Put your drawing code here
+        gameLoop();
+    }
 }
 
 function gameLoop() {
@@ -107,7 +140,6 @@ function gameLoop() {
             creditsScreen.update();
             break;
     }
-    requestAnimationFrame(gameLoop);
     Key.update();
 }
 
