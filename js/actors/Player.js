@@ -25,7 +25,7 @@ class Player {
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
-            digCooldown: 10
+            digCooldown: 2
         }
         this.friction = 0.80;
         this.gravity = .2;

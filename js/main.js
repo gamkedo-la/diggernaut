@@ -39,6 +39,7 @@ var ticker = 0;
 var loader = new AssetLoader();
 var audio = new AudioGlobal();
 var img, gameFont, tinyFont, tileMap, player, fps, then, startTime, fpsInterval
+const actors = [];
 fps = 60;
 
 const imageList = [
@@ -77,6 +78,7 @@ function loadingComplete() {
     console.log('loading complete, starting game')
 
     generateMap(mapConfig);    
+    populateMap();
 
     player = new Player(mapConfig.widthInTiles * mapConfig.tileSize/2, canvas.height/2),
 
@@ -88,10 +90,6 @@ function loadingComplete() {
     begin(fps);
 }
 
-function worldInit(){
-    world = new World(img['map'].width, img['map'].height, 8);
-    world.populateWithImage(img['map'])
-}
 function begin(fps) {
     fpsInterval = 1000/fps;
     then = Date.now();
@@ -165,6 +163,11 @@ function generateMap(config){
 
 }
 
+function populateMap(){
+    for (let i = 0; i < 1000; i++) {
+        actors.push(new Ore(Math.random() * tileMap.widthInTiles * tileMap.tileWidth, Math.random() * tileMap.heightInTiles * tileMap.tileHeight));
+    }
+}
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);
 window.addEventListener('keydown', function (event) { Key.onKeydown(event); }, false);
 window.addEventListener('blur', function (event) { paused = true; }, false);

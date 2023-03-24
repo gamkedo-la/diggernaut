@@ -66,12 +66,16 @@ function calculateMousePos(evt) {
         y:mouseY
     };
 }
+
+function distanceBetween(object1, object2){
+    return Math.sqrt(Math.pow(object1.x - object2.x, 2) + Math.pow(object1.y - object2.y, 2));
+}
 function lerp(v0, v1, t) {
     return v0*(1-t)+v1*t
 }
-function inView(x,y){
-    let screenX = x - view.x,
-        screenY = y - view.y,
+function inView(actor){
+    let screenX = actor.x - view.x,
+        screenY = actor.y - view.y,
         padding = 200;
         return (screenX > -padding &&
                screenX < (canvas.width + padding) &&

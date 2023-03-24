@@ -11,6 +11,8 @@ const playScreen = {
         //player debug text
         tinyFont.drawText(`player:  x: ${player.x} y: ${player.y}`, { x: 10, y: 12 }, 0, 0);
         player.draw();
+        actors.forEach(actor => actor.draw());
+            
     },
     update: function () {
         if(Key.justReleased(Key.z)){ 
@@ -20,6 +22,8 @@ const playScreen = {
         this.followPlayer();
         this.handlePlayerInput();
         player.update();
+        actors.forEach(actor => actor.update());
+
     },
 
     handlePlayerInput: function () {
@@ -38,14 +42,18 @@ const playScreen = {
         if (Key.isDown(Key.UP)) { player.jump(); }
 
         if (Key.isDown(Key.DOWN)) {
-            player.moveDown();
+            //player.moveDown();
             if(Key.isDown(Key.z)){
                 player.dig(DOWN);
             }
         }
 
+        // if(Key.isDown(Key.z)){
+        //     player.dig(DOWN);
+        // }
+
         if (Key.justReleased(Key.SPACE)) { player.jump(); }
-        //if (Key.justReleased(Key.z)) { player.dig(); }
+        if (Key.justReleased(Key.z)) { player.digCooldown = 0; }
     },
 
     followPlayer: function () {
