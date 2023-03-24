@@ -46,6 +46,7 @@ const imageList = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
     'smallFont',
     '3x5font',
+    'earthTiles'
 ]
 
 const soundList = [
