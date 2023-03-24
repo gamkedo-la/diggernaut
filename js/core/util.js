@@ -1,3 +1,9 @@
+
+/**
+ * Keyboard input utility object
+ *
+ * @type {{ _pressed: {}; _released: {}; ESCAPE: number; LEFT: number; UP: number; RIGHT: number; DOWN: number; SPACE: number; ONE: number; TWO: number; THREE: number; FOUR: number; COMMA: number; PERIOD: number; ENTER: number; ... 21 more ...; update(): void; }}
+ */
 const Key = {
 
     _pressed: {},
@@ -56,6 +62,13 @@ const Key = {
         this._released = {};
     }
 };
+
+/**
+ * returns mouse position relative to canvas
+ *
+ * @param {*} evt mouse event object
+ * @returns {{ x: number; y: number; }}
+ */
 function calculateMousePos(evt) {
     var rect = canvas.getBoundingClientRect();
     var root = document.documentElement;
@@ -67,21 +80,67 @@ function calculateMousePos(evt) {
     };
 }
 
+/**
+ * returns distance between two objects with x and y properties
+ * @date 3/24/2023 - 1:49:39 PM
+ *
+ * @param {*} object1 any object with {x, y} properties
+ * @param {*} object2 any object with {x, y} properties
+ * @returns {*}
+ */
 function distanceBetween(object1, object2){
     return Math.sqrt(Math.pow(object1.x - object2.x, 2) + Math.pow(object1.y - object2.y, 2));
 }
+
+/**
+ * returns angle in radians between two objects with x and y properties
+ *
+ * @param {*} source any object with {x, y} properties
+ * @param {*} target any object with {x, y} properties
+ * @returns {*}
+ */
+function lookAtAngle(source, target){
+    return Math.atan2(target.y - source.y, target.x - source.x);
+}
+
+/**
+ * linear interpolation
+ *
+ * @param {*} v0 start
+ * @param {*} v1 end
+ * @param {*} t normalized time
+ * @returns {number}
+ */
 function lerp(v0, v1, t) {
     return v0*(1-t)+v1*t
 }
-function inView(actor){
+
+/**
+ * checks if an actor is on-screen or near edge of screen taking
+ * padding into account, returns true or false
+ *
+ * @param {*} actor
+ * @param {number} [pad=200]
+ * @returns {boolean}
+ */
+//TODO: rewrite as rect vs rect to account for actor size, not just position
+function inView(actor, pad = 200){
     let screenX = actor.x - view.x,
         screenY = actor.y - view.y,
-        padding = 200;
+        padding = pad;
         return (screenX > -padding &&
                screenX < (canvas.width + padding) &&
                screenY > -padding &&
                screenY < canvas.height+padding);
 }
+
+/**
+ * checks if two rectangles are colliding, returns true or false
+ *
+ * @param {*} rect1 any object with {x, y, width, height} properties
+ * @param {*} rect2
+ * @returns {boolean}
+ */
 function rectCollision(rect1, rect2) {
     return (
         rect1.left < rect2.right &&
@@ -90,6 +149,15 @@ function rectCollision(rect1, rect2) {
         rect2.top < rect1.bottom
       );
 }
+
+/**
+ * checks if a point is inside a rectangle, returns true or false
+ *
+ * @param {*} x
+ * @param {*} y
+ * @param {*} rect
+ * @returns {boolean}
+ */
 function pointInRect(x, y, rect){
     return  x >= rect.left &&
             x <= rect.right &&
@@ -97,11 +165,6 @@ function pointInRect(x, y, rect){
             y <= rect.bottom
 }
 
-function oscillate(input, min, max)
-{
-    let range = max - min ;
-    return min + Math.abs(((input + range) % (range * 2)) - range);
-}
 
 
 
