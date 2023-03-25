@@ -1,6 +1,7 @@
 const playScreen = {
 
     hitCounter: 0,
+
     reset: function () {
         this.hitCounter = 0;
     },
@@ -16,7 +17,6 @@ const playScreen = {
     },
     update: function () {
         if(Key.justReleased(Key.z)){ 
-            this.hitCounter += 1; 
             audio.playSound(loader.sounds.test1);
         }
         this.followPlayer();
@@ -57,6 +57,7 @@ const playScreen = {
     },
 
     followPlayer: function () {
+        //TODO: lerp camera, implement deadzone and camera shake
         view.x = player.x - canvas.width / 2;
         view.y = player.y - canvas.height / 2;
         view.x = Math.floor(view.x);
@@ -66,7 +67,31 @@ const playScreen = {
         view.x = Math.min(tileMap.widthInTiles * tileMap.tileWidth - canvas.width, view.x);
         // view.y = Math.min(tileMap.height * tileMap.tileSize - canvas.height, view.y);
 
-    }
+    },
 
+    drawUI: function () {
+        canvasContext.fillColor = ui.energyBar.color;
+        canvasContext.fillRect(ui.energyBar.x, ui.energyBar.y, ui.energyBar.width, ui.energyBar.height);
+        canvasContext.fillColor = ui.healthBar.color;
+        canvasContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.width, ui.healthBar.height);
+    }
+        
 }
 
+const ui = {
+    healthBar: {
+        x: 10,
+        y: 10,
+        width: 100,
+        height: 10,
+        value: 0,
+        color: "red"
+    },
+    energyBar: {
+        x: canvas.width - 20,
+        y: 10,
+        width: 10,
+        height: 100,
+        color: "blue"
+    }
+}

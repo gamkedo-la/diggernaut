@@ -116,6 +116,30 @@ function lerp(v0, v1, t) {
 }
 
 /**
+ * maps a value from one range to another
+ * @param {*} value 
+ * @param {*} low1 
+ * @param {*} high1 
+ * @param {*} low2 
+ * @param {*} high2 
+ * @returns 
+ */
+function mapRange(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+
+/**
+ * maps a value to a range between 0 and 1
+ * @param {*} value 
+ * @param {*} min 
+ * @param {*} max 
+ * @returns 
+ */
+function normalize(value, min, max) {
+    return (value - min) / (max - min);
+}
+
+/**
  * checks if an actor is on-screen or near edge of screen taking
  * padding into account, returns true or false
  *

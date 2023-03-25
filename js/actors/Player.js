@@ -16,6 +16,43 @@ class Player {
         this.xAccel = 0;
         this.yAccel = 0;
         this.digCooldown = 0;
+        this.health = 100;
+        
+
+        this.spritesheet = new SpriteSheet({
+            image: img['placeholder-player'],
+            frameWidth: 16,
+            frameHeight: 24,
+            animations: {
+                idle: {
+                    frames: [2],
+                    frameRate: 1
+                },
+                walkLeft: {
+                    frames: [2,1],
+                    frameRate: 8
+                },
+                walkRight: {
+                    frames: [2,0],
+                    frameRate: 8
+                },
+                jump: {
+                    frames: [3],
+                    frameRate: 1
+                },
+                falling: {
+                    frames: [3],
+                    frameRate: 1
+                },
+                dig: {
+                    frames: [3],
+                    frameRate: 1
+                }
+            }
+        })
+
+        this.currentAnimation = this.spritesheet.animations["idle"];
+
         this.limits = {
             minXVel: -5,
             maxXVel: 5,
@@ -25,8 +62,10 @@ class Player {
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
-            digCooldown: 2
+            digCooldown: 2,
+            healthMax: 100
         }
+
         this.friction = 0.80;
         this.gravity = .2;
         this.collider = {
@@ -41,8 +80,14 @@ class Player {
         }
     }
     draw() {
-        canvasContext.fillStyle = this.color;
-        canvasContext.fillRect(Math.floor(this.x - view.x), Math.floor(this.y - view.y), this.width + 1, this.height + 1);
+       // canvasContext.fillStyle = this.color;
+       // canvasContext.fillRect(Math.floor(this.x - view.x), Math.floor(this.y - view.y), this.width + 1, this.height + 1);
+       this.currentAnimation.render({
+        x: Math.floor(this.x-view.x), 
+        y: Math.floor(this.y-view.y),
+        width: 16,
+        height: 24
+    })
         canvasContext.fillStyle = "Red";
         pset(this.collider.leftFeeler.x - view.x, this.collider.leftFeeler.y - view.y);
         pset(this.collider.rightFeeler.x - view.x, this.collider.rightFeeler.y - view.y);
@@ -50,6 +95,7 @@ class Player {
         pset(this.collider.bottomFeeler.x - view.x, this.collider.bottomFeeler.y - view.y);
     }
     update() {
+        this.currentAnimation.update();
         this.applyForces();
         this.handleCollisions();
         this.checkBounds();
@@ -57,6 +103,20 @@ class Player {
         this.canJump = this.checkFloor();
         this.xAccel = 0;
         this.yAccel = 0;
+        if(this.xvel > 0) {
+            this.currentAnimation = this.spritesheet.animations["walkRight"];
+        } else if(this.xvel < 0) {
+            this.currentAnimation = this.spritesheet.animations["walkLeft"];
+        } else {
+            this.currentAnimation = this.spritesheet.animations["idle"];
+        }
+        if(this.yvel < 0) {
+            this.currentAnimation = this.spritesheet.animations["jump"];
+        }
+        if(this.yvel > 0) {
+            this.currentAnimation = this.spritesheet.animations["falling"];
+        }
+        
     }
 
     updateCollider(x, y) {
@@ -155,7 +215,7 @@ class Player {
         this.xAccel = this.speed;
     }
     moveDown() {
-        this.yAccel = this.speed;
+        //this.yAccel = this.speed;
     }
     stop() {
         this.xAccel = 0;
@@ -165,6 +225,7 @@ class Player {
     }
 
     dig(direction) {
+        this.play("dig")
         if (!this.canDig) return;
         let startTileValue = 0;
         let startTileIndex = 0;
@@ -238,8 +299,17 @@ class Player {
     jump() {
         if (!this.canJump) return;
         this.yvel = -this.speed * 6;
+        this.play("jump");
     }
 
-
+    play(animationName){
+   
+        this.currentAnimation = this.spritesheet.animations[animationName];
+  
+   
+    if (!this.currentAnimation.loop){
+        this.currentAnimation.reset();
+    }
+}
 
 }

@@ -2,7 +2,6 @@ class Animation {
 
   /**
    * Creates an instance of Animation.
-   * @date 3/17/2023 - 1:40:03 PM
    *
    * @constructor
    * @param {{ spriteSheet: image; frames: int; frameRate: int; loop?: boolean; }} [{ spriteSheet, frames, frameRate, loop = true }={}]

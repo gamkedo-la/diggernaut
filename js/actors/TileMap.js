@@ -1,8 +1,4 @@
 class TileMap {
-    //todo: tilesheet drawing
-    //todo: groups of bricks breaking
-    //todo: implement infinite map
-
     /**
      * Creates an instance of TileMap.
      *
