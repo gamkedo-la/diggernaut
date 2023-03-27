@@ -1,6 +1,6 @@
 # Diggernaut
 
-A fast-paced action rogue-like with infinite digging downward, mechanically similar to and inspired by Mr. Driller, Downwell, and Spelunky. Dig endlessly downward, collecting gems, bones, and artifacts, while avoiding falling rocks, bats, and the underground dragon.
+A fast-paced action rogue-like with infinite digging downward, inspired by Super Motherload, Downwell, and Spelunky. Dig endlessly downward, collecting gems, bones, and artifacts, while avoiding falling rocks, and the occasional subterranean cryptid.
 
 Game will feature an inventory that's displayed on pause with tabs for each collection.
 
@@ -14,15 +14,14 @@ Player is armed with a double-ended shovel (Diggerang) that can dig, be thrown l
     - player can spin diggerang below them to bulldoze through blocks at a very rapid pace
     - items that you would normally collect are destroyed by power drill action, so care must be     taken
 - throw
-    - kill bats and dragons by throwing your diggerang at them.
+    - kill cryptids by throwing your diggerang at them.
     - attempting to hit a dragon with a throw carries the risk of your Diggerang being eaten.
     - bash the action button to return the Diggerang from a stuck state
 
 ### Hazards
 - falling rocks from above
 - voids / free fall spaces
-- bats
-- underground dragon
+- various subterranean cryptids
 
 ### Collectibles
 
