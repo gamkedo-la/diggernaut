@@ -633,6 +633,7 @@ h1 {
     text-align: center;
     margin: 0;
     padding: 0;
+    translate: "translateZ(1000px)";
 }  
 h2 {
     font-size: 9vh;
@@ -650,6 +651,13 @@ h3 {
 }
 h4 {
     font-size: 7vh;
+    font-weight: 100;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+h5 {
+    font-size: 5vh;
     font-weight: 100;
     text-align: center;
     margin: 0;

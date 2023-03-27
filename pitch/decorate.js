@@ -16,9 +16,15 @@
 
     //randomize z values for presentation steps, but in front of background divs
     stepDivs = document.getElementsByClassName("step");
+    stepIndex = 0;
     [].forEach.call(stepDivs, function(step){
         let z = Math.random()*970;
+        let y = Math.random()*2000 - 1000;
+        let x = stepIndex * 1000;
+        stepIndex++;
         step.setAttribute("data-z", z);
+        step.setAttribute("data-x", x);
+        step.setAttribute("data-y", y);
     });
     
 })(document, window);
