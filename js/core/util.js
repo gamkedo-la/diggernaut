@@ -189,6 +189,11 @@ function pointInRect(x, y, rect){
             y <= rect.bottom
 }
 
+function screenShake (intensity) {
+    view.x += Math.random() * intensity - intensity / 2;
+    view.y += Math.random() * intensity - intensity / 2;
+}
+
 
 
 

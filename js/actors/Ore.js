@@ -18,6 +18,11 @@ class Ore {
         if(this.distanceTo(player) < 40){
             this.moveTowards(player);
         }
+        
+        if(this.distanceTo(player) < 10){
+            player.inventory.ore++;
+            this.destroy();
+        }
     }
 
     distanceTo(object){
@@ -28,5 +33,10 @@ class Ore {
         let angle = Math.atan2(object.y - this.y, object.x - this.x);
         this.x += Math.cos(angle);
         this.y += Math.sin(angle);
+    }
+
+    destroy(){
+        let index = actors.indexOf(this);
+        actors.splice(index, 1);
     }
 }

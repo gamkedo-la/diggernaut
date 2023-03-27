@@ -17,6 +17,10 @@ class Player {
         this.yAccel = 0;
         this.digCooldown = 0;
         this.health = 100;
+        this.friction = 0.80;
+        this.inventory = {
+            ore: 0,
+        }
         
 
         this.spritesheet = new SpriteSheet({
@@ -56,8 +60,9 @@ class Player {
         this.limits = {
             minXVel: -5,
             maxXVel: 5,
-            minYVel: -5,
-            maxYVel: 10,
+            minYVel: -10,
+            maxYVel: 20,
+            hurtVelocity: 10, 
             minXAccel: -3,
             maxXAccel: 3,
             minYAccel: -3,
@@ -66,8 +71,7 @@ class Player {
             healthMax: 100
         }
 
-        this.friction = 0.80;
-        this.gravity = .2;
+        this.gravity = .25;
         this.collider = {
             left: 0,
             right: 0,
@@ -177,8 +181,12 @@ class Player {
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x, this.y + increment);
                 if (this.tileCollisionCheck(tileMap, 2)) {
+                    if(this.yvel > this.limits.hurtVelocity){
+                        this.hurt(10);
+                    }
                     this.y = this.previousY;
                     this.updateCollider(this.x, this.y);
+                    
                     this.yvel = 0;
                     break;
                 }
@@ -262,6 +270,19 @@ class Player {
             // }
         }
     }
+
+    hurt(damage) {
+        screenShake(5);
+        this.health -= damage;
+        if (this.health <= 0) {
+            this.health = 0;
+            this.die();
+        }
+    }
+
+    die() {
+        gameState = GAMESTATE_GAME_OVER;
+    }
     checkFloor() {
         return tileMap.data[tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y)] > 0;
     }
@@ -298,7 +319,7 @@ class Player {
 
     jump() {
         if (!this.canJump) return;
-        this.yvel = -this.speed * 6;
+        this.yvel = -this.speed * 10;
         this.play("jump");
     }
 

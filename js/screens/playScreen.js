@@ -10,9 +10,10 @@ const playScreen = {
         clearScreen("black");
         tileMap.draw();
         //player debug text
-        tinyFont.drawText(`player:  x: ${player.x} y: ${player.y}`, { x: 10, y: 12 }, 0, 0);
+        tinyFont.drawText(`player:  x: ${player.x} y: ${player.y} \nyvel: ${player.yvel} xvel: ${player.xvel} health: ${player.health}`, { x: 10, y: 12 }, 0, 0);
         player.draw();
         actors.forEach(actor => actor.draw());
+        this.drawUI();
             
     },
     update: function () {
@@ -22,6 +23,7 @@ const playScreen = {
         this.followPlayer();
         this.handlePlayerInput();
         player.update();
+        this.updateUI();
         actors.forEach(actor => actor.update());
 
     },
@@ -70,27 +72,31 @@ const playScreen = {
     },
 
     drawUI: function () {
-        canvasContext.fillColor = ui.energyBar.color;
-        canvasContext.fillRect(ui.energyBar.x, ui.energyBar.y, ui.energyBar.width, ui.energyBar.height);
-        canvasContext.fillColor = ui.healthBar.color;
-        canvasContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.width, ui.healthBar.height);
-    }
-        
+        canvasContext.fillStyle = ui.energyBar.color;
+        canvasContext.fillRect(ui.energyBar.x, ui.energyBar.y, ui.energyBar.widthval, ui.energyBar.height);
+        canvasContext.fillStyle = ui.healthBar.color;
+        canvasContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.value, ui.healthBar.height);
+    },
+
+    updateUI: function () {
+        ui.healthBar.value = player.health;
+        ui.energyBar.value = player.energy;
+    }    
 }
 
 const ui = {
     healthBar: {
-        x: 10,
+        x: 400,
         y: 10,
         width: 100,
-        height: 10,
+        height: 5,
         value: 0,
         color: "red"
     },
     energyBar: {
-        x: canvas.width - 20,
+        x: 544-10,
         y: 10,
-        width: 10,
+        width: 5,
         height: 100,
         color: "blue"
     }

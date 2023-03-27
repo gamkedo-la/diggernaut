@@ -153,20 +153,40 @@ function generateMap(config){
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
         tileMap.data[i] = choices[ Math.floor(Math.random() * choices.length) ];
     }
-    //generate chasm
-    let chasmStart = (config.widthInTiles / 2) - (config.chasmWidth / 2);
-    choices = [0, 1, 2]
-    chasmStart = Math.floor(chasmStart);
-    for (let i = mapYstartOffset; i < mapTotalTiles; i += config.widthInTiles) {
-        for (let j = chasmStart; j < chasmStart + config.chasmWidth; j++) {
-            tileMap.data[i + j] = choices[ Math.floor(Math.random() * choices.length) ];
-        }
+    // //generate chasm
+    // let chasmStart = (config.widthInTiles / 2) - (config.chasmWidth / 2);
+    // choices = [0, 1, 2]
+    // chasmStart = Math.floor(chasmStart);
+    // for (let i = mapYstartOffset; i < mapTotalTiles; i += config.widthInTiles) {
+    //     for (let j = chasmStart; j < chasmStart + config.chasmWidth; j++) {
+    //         tileMap.data[i + j] = choices[ Math.floor(Math.random() * choices.length) ];
+    //     }
+    // }
+
+    for(let i = 0; i < 12000; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        tileMap.tileFillRect(x, y, 1, 1, 0);
+        //tileMap.data[i] = 0;
+    }
+
+    for(let i = 0; i < 200; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        tileMap.tileFillRect(x, y, 10, 10, 0);
+    }
+
+    for(let i = 0; i < 200; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        let radius = Math.floor(Math.random() * 8 + 2);
+        tileMap.tileFillCircle(x, y, radius, 0);
     }
 
 }
 
 function populateMap(){
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 4000; i++) {
         actors.push(new Ore(Math.random() * tileMap.widthInTiles * tileMap.tileWidth, Math.random() * tileMap.heightInTiles * tileMap.tileHeight));
     }
 }
