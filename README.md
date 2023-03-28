@@ -105,7 +105,6 @@ Artists can feel free to add as many they want, the game will procedurally / ran
 Tilemap game data will be represented by 0-7, but game will generate a decorative tilemap based on game data using all available tile graphics.
 
 ### Winning The Game
-- Multiple ways to end the game without dying:
 - Collect all 4 sets of 4 gems
 - Collect the "Dragon's Hoard" collections and Kill the dragon
 
