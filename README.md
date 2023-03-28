@@ -96,13 +96,13 @@ Pre-created sets of items will be procedurally placed throughout the world (lots
 - 3 unbreakable metal ore
 - 4 unobtainium
 - 5 falling rocks
-- 6 stalactites
 - 7 explosive ore
 - ? subject to additions, this is good starting point
   
 Terrain notes: For visual interest, there can and will be more than one tile graphic for each terrain type.
 Artists can feel free to add as many they want, the game will procedurally / randomly select from the available tiles.
 Tilemap game data will be represented by 0-7, but game will generate a decorative tilemap based on game data using all available tile graphics.
+Stalagmites and stalactites will be sprite objects, not tiles, and will be procedurally placed in the world in empty spaces.
 
 ### Winning The Game
 - Collect all 4 sets of 4 gems
