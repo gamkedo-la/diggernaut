@@ -29,21 +29,28 @@ const playScreen = {
     },
 
     handlePlayerInput: function () {
-        if (Key.isDown(Key.LEFT)) {
+        if (Key.isDown(Key.LEFT) || Key.isDown(Key.a)) {
             player.moveLeft();
             if(Key.isDown(Key.z)){
                 player.dig(LEFT);
             }
         }
-        if (Key.isDown(Key.RIGHT)) {
+        else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d)) {
             player.moveRight(); 
             if(Key.isDown(Key.z)){
                 player.dig(RIGHT);
             }
         }
-        if (Key.isDown(Key.UP)) { player.jump(); }
 
-        if (Key.isDown(Key.DOWN)) {
+        if (Key.isDown(Key.UP) || Key.isDown(Key.SPACE) || Key.isDown(Key.w)) {
+            if(Key.isDown(Key.z)){
+                player.dig(UP);
+            }else { 
+                player.jump();
+            }
+            
+        } 
+        else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s)) {
             //player.moveDown();
             if(Key.isDown(Key.z)){
                 player.dig(DOWN);
@@ -76,12 +83,17 @@ const playScreen = {
         canvasContext.fillRect(ui.energyBar.x, ui.energyBar.y, ui.energyBar.widthval, ui.energyBar.height);
         canvasContext.fillStyle = ui.healthBar.color;
         canvasContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.value, ui.healthBar.height);
+
+        if(Key.isDown(Key.RIGHT)){
+            canvasContext.fillStyle = "white";
+            canvasContext.fillRect(20, 0, 10, 10);
+        }
     },
 
     updateUI: function () {
         ui.healthBar.value = player.health;
         ui.energyBar.value = player.energy;
-    }    
+    }
 }
 
 const ui = {

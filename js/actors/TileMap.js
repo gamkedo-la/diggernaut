@@ -135,8 +135,6 @@ class TileMap {
     }
 
     draw(){
-        let fills = ['#000000', '#001', '#003', '#bbb', '#aaa', '#fff'];
-
         let left = Math.floor(view.x/this.tileWidth);
         let right = Math.ceil((view.x+view.width)/this.tileWidth);
         let top = Math.floor(view.y/this.tileHeight);

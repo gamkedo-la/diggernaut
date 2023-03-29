@@ -2,6 +2,10 @@ class Ore {
     constructor(x,y){
         this.x = x;
         this.y = y;
+        this.speed = 4;
+        this.xvel = (Math.random() * 2 - 1) * this.speed;
+        this.yvel = (Math.random() * 2 - 1) * this.speed; 
+        this.friction = 0.7;
         this.color = "green";
     }
 
@@ -14,6 +18,11 @@ class Ore {
 
     update(){
         if(!inView(this)) return;
+        
+        this.x += this.xvel;
+        this.y += this.yvel;
+        this.xvel *= this.friction;
+        this.yVel *= this.friction; 
         
         if(this.distanceTo(player) < 40){
             this.moveTowards(player);
@@ -31,8 +40,8 @@ class Ore {
 
     moveTowards(object){
         let angle = Math.atan2(object.y - this.y, object.x - this.x);
-        this.x += Math.cos(angle);
-        this.y += Math.sin(angle);
+        this.xvel += Math.cos(angle);
+        this.yvel += Math.sin(angle);
     }
 
     destroy(){

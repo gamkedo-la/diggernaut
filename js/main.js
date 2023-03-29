@@ -1,5 +1,8 @@
 //custom even Listener setup
 var signal = new Signal();
+const stats = new Stats();
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 
 //canvas setup
 canvas = document.getElementById("canvas");
@@ -14,6 +17,16 @@ const LEFT = 0;
 const RIGHT = 1;
 const UP = 2;
 const DOWN = 3;
+
+const TILE_EMPTY = 0;
+const TILE_DIRT = 1;
+const TILE_UNBREAKABLE_STONE = 2;
+const TILE_UNBREAKABLE_METAL = 3;
+const TILE_UNOBTANIUM = 4;
+const TILE_FALLING_ROCK = 5;
+const TILE_EXPLOSIVE = 6;
+const TILE_DENSE_UNOBTANIUM = 7;
+
 
 const GAMESTATE_TITLE = 0
 const GAMESTATE_PLAY = 1;
@@ -101,7 +114,7 @@ function begin(fps) {
 }
 
 function mainLoop(){
-
+    stats.begin();
     requestAnimationFrame(mainLoop);
 
     // calc elapsed time since last loop
@@ -119,6 +132,7 @@ function mainLoop(){
         // Put your drawing code here
         gameLoop();
     }
+    stats.end();
 }
 
 function gameLoop() {
@@ -155,25 +169,25 @@ function generateMap(config){
         tileMap.data[i] = choices[ Math.floor(Math.random() * choices.length) ];
     }
     
-    for(let i = 0; i < 12000; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
-        tileMap.tileFillRect(x, y, 1, 1, 0);
-        //tileMap.data[i] = 0;
-    }
+    // for(let i = 0; i < 12000; i++){
+    //     let x = Math.floor(Math.random() * tileMap.widthInTiles);
+    //     let y = Math.floor(Math.random() * tileMap.heightInTiles);
+    //     tileMap.tileFillRect(x, y, 1, 1, 0);
+    //     //tileMap.data[i] = 0;
+    // }
 
-    for(let i = 0; i < 200; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
-        tileMap.tileFillRect(x, y, 10, 10, 0);
-    }
+    // for(let i = 0; i < 200; i++){
+    //     let x = Math.floor(Math.random() * tileMap.widthInTiles);
+    //     let y = Math.floor(Math.random() * tileMap.heightInTiles);
+    //     tileMap.tileFillRect(x, y, 10, 10, 0);
+    // }
 
-    for(let i = 0; i < 200; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
-        let radius = Math.floor(Math.random() * 8 + 2);
-        tileMap.tileFillCircle(x, y, radius, 0);
-    }
+    // for(let i = 0; i < 200; i++){
+    //     let x = Math.floor(Math.random() * tileMap.widthInTiles);
+    //     let y = Math.floor(Math.random() * tileMap.heightInTiles);
+    //     let radius = Math.floor(Math.random() * 8 + 2);
+    //     tileMap.tileFillCircle(x, y, radius, 0);
+    // }
 
 }
 

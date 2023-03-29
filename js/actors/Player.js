@@ -72,6 +72,7 @@ class Player {
         }
 
         this.gravity = .25;
+
         this.collider = {
             left: 0,
             right: 0,
@@ -84,8 +85,6 @@ class Player {
         }
     }
     draw() {
-       // canvasContext.fillStyle = this.color;
-       // canvasContext.fillRect(Math.floor(this.x - view.x), Math.floor(this.y - view.y), this.width + 1, this.height + 1);
        this.currentAnimation.render({
         x: Math.floor(this.x-view.x), 
         y: Math.floor(this.y-view.y),
@@ -99,7 +98,6 @@ class Player {
         pset(this.collider.bottomFeeler.x - view.x, this.collider.bottomFeeler.y - view.y);
     }
     update() {
-        this.currentAnimation.update();
         this.applyForces();
         this.handleCollisions();
         this.checkBounds();
@@ -107,24 +105,8 @@ class Player {
         this.canJump = this.checkFloor();
         this.xAccel = 0;
         this.yAccel = 0;
-        if(this.xvel > 0) {
-            this.currentAnimation = this.spritesheet.animations["walkRight"];
-        } else if(this.xvel < 0) {
-            this.currentAnimation = this.spritesheet.animations["walkLeft"];
-        } else {
-            this.currentAnimation = this.spritesheet.animations["idle"];
-        }
-        if(this.yvel < 0) {
-            this.currentAnimation = this.spritesheet.animations["jump"];
-        }
-        if(this.yvel > 0) {
-            this.currentAnimation = this.spritesheet.animations["falling"];
-        }
-
-        if(Math.abs(this.xvel) < 0.05) {
-            this.xvel = 0;
-        }
-        
+        if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
+        this.handleAnimationState();
     }
 
     updateCollider(x, y) {
@@ -160,6 +142,23 @@ class Player {
         if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
 
         this.xvel *= this.friction;
+    }
+
+    handleAnimationState(){
+        this.currentAnimation.update();
+        if(this.xvel > 0) {
+            this.currentAnimation = this.spritesheet.animations["walkRight"];
+        } else if(this.xvel < 0) {
+            this.currentAnimation = this.spritesheet.animations["walkLeft"];
+        } else {
+            this.currentAnimation = this.spritesheet.animations["idle"];
+        }
+        if(this.yvel < 0) {
+            this.currentAnimation = this.spritesheet.animations["jump"];
+        }
+        if(this.yvel > 0) {
+            this.currentAnimation = this.spritesheet.animations["falling"];
+        }
     }
 
     handleCollisions(resolution = 3) {
@@ -200,8 +199,6 @@ class Player {
         this.updateCollider(this.x, this.y);
     }
 
-
-
     tileCollisionCheck(world, tileCheck) {
 
         let left = Math.floor(this.collider.left),
@@ -241,37 +238,58 @@ class Player {
         if (!this.canDig) return;
         let startTileValue = 0;
         let startTileIndex = 0;
+        let spawnX = 0;
+        let spawnY = 0;
         switch (direction) {
             case LEFT:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y);
+                spawnX = this.collider.leftFeeler.x;
+                spawnY = this.collider.leftFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
                 break;
             case RIGHT:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y);
+                spawnX = this.collider.leftFeeler.x;
+                spawnY = this.collider.leftFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
                 break;
             case DOWN:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y);
+                spawnX = this.collider.leftFeeler.x;
+                spawnY = this.collider.leftFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
                 break;
+            case UP:
+                startTileIndex = tileMap.pixelToTileIndex(this.collider.topFeeler.x, this.collider.topFeeler.y);
+                spawnX = this.collider.leftFeeler.x;
+                spawnY = this.collider.leftFeeler.y;
+                startTileValue = tileMap.data[startTileIndex];
         }
-        if (startTileValue > 0) { //todo consts for tile types / collide offset
-            tileMap.data[startTileIndex] = 0;
-            // let tilesToRemove = [];
-            //check outwards from the start tile for tiles of the same type
-            //TODO: flood fill algorithm? right now this just blindly checks to the right
-            // for(let i = 0; i < 4; i++){
-            //     let tileIndex = startTileIndex + i;
-            //     let tileValue = tileMap.data[ tileIndex ];
-            //     if(tileValue == startTileValue){
-            //         tilesToRemove.push(tileIndex);
-            //     }
-            //     else { break }
-            // }
-            // //remove the tiles
-            // for(let i = 0; i < tilesToRemove.length; i++){
-            //     tileMap.data[ tilesToRemove[i] ] = 0;
-            // }
+        if (startTileValue > 0) {
+            switch(startTileValue){
+                case TILE_DIRT : {
+                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                }
+                case TILE_UNBREAKABLE_METAL : {
+                    break;
+                }
+                case TILE_UNBREAKABLE_STONE : {
+                    break;
+                }
+                case TILE_UNOBTANIUM : {
+                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                    let i = 10;
+                    while(--i){ actors.push(new Ore(spawnX, spawnY))}   
+                }
+                case TILE_DENSE_UNOBTANIUM : {
+                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                    let i = 40;
+                    while(--i){ actors.push(new Ore(spawnX, spawnY))}   
+                }
+                default: {
+                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                }
+            }
         }
     }
 
