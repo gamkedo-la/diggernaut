@@ -144,14 +144,8 @@ class TileMap {
     
         for(let i = left; i < right; i++){
             for(let j = top; j < bottom; j++){    
-                    // canvasContext.fillStyle = fills[this.data[j*this.widthInTiles + i]];
-                    // canvasContext.fillRect(
-                    //     (i) * this.tileWidth - view.x,
-                    //     (j) * this.tileHeight - view.y,
-                    //     this.tileWidth,
-                    //     this.tileHeight);
                     canvasContext.drawImage(
-                        img['earthTiles'],
+                        img['basic-tiles'],
                         //TODO: pull out into drawTile function
                         //TODO: make tileset class that stores tileset image and tile size
                         //16 is the number of tiles in a row

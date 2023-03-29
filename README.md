@@ -96,7 +96,8 @@ Pre-created sets of items will be procedurally placed throughout the world (lots
 - 3 unbreakable metal ore
 - 4 unobtainium
 - 5 falling rocks
-- 7 explosive ore
+- 6 explosive ore
+- 7 super dense unobtainium
 - ? subject to additions, this is good starting point
   
 Terrain notes: For visual interest, there can and will be more than one tile graphic for each terrain type.

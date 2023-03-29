@@ -9,7 +9,7 @@ class Player {
         this.canDig = true;
         this.width = 16;
         this.height = 24;
-        this.speed = .9;
+        this.speed = 0.9;
         this.color = "yellow";
         this.xvel = 0;
         this.yvel = 0;
@@ -120,6 +120,10 @@ class Player {
         if(this.yvel > 0) {
             this.currentAnimation = this.spritesheet.animations["falling"];
         }
+
+        if(Math.abs(this.xvel) < 0.05) {
+            this.xvel = 0;
+        }
         
     }
 
@@ -165,7 +169,7 @@ class Player {
             let increment = this.xvel / resolution;
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x + increment, this.y);
-                if (this.tileCollisionCheck(tileMap, 2)) {
+                if (this.tileCollisionCheck(tileMap, 0)) {
                     this.x = this.previousX;
                     this.updateCollider(this.x, this.y);
                     this.xvel = 0;
@@ -180,7 +184,7 @@ class Player {
             let increment = this.yvel / resolution;
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x, this.y + increment);
-                if (this.tileCollisionCheck(tileMap, 2)) {
+                if (this.tileCollisionCheck(tileMap, 0)) {
                     if(this.yvel > this.limits.hurtVelocity){
                         this.hurt(10);
                     }
@@ -251,7 +255,7 @@ class Player {
                 startTileValue = tileMap.data[startTileIndex];
                 break;
         }
-        if (startTileValue > 2) { //todo consts for tile types / collide offset
+        if (startTileValue > 0) { //todo consts for tile types / collide offset
             tileMap.data[startTileIndex] = 0;
             // let tilesToRemove = [];
             //check outwards from the start tile for tiles of the same type

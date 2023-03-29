@@ -47,7 +47,8 @@ const imageList = [
     'smallFont',
     '3x5font',
     'earthTiles',
-    'placeholder-player'
+    'placeholder-player',
+    'basic-tiles'
 ]
 
 const soundList = [
@@ -146,23 +147,14 @@ function gameLoop() {
 function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
-    let choices = [3, 4, 5];
+    let choices = [1,1,1,1,1,1,1,1,1,1,2,3,4,5,6];
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
         tileMap.data[i] = choices[ Math.floor(Math.random() * choices.length) ];
     }
-    // //generate chasm
-    // let chasmStart = (config.widthInTiles / 2) - (config.chasmWidth / 2);
-    // choices = [0, 1, 2]
-    // chasmStart = Math.floor(chasmStart);
-    // for (let i = mapYstartOffset; i < mapTotalTiles; i += config.widthInTiles) {
-    //     for (let j = chasmStart; j < chasmStart + config.chasmWidth; j++) {
-    //         tileMap.data[i + j] = choices[ Math.floor(Math.random() * choices.length) ];
-    //     }
-    // }
-
+    
     for(let i = 0; i < 12000; i++){
         let x = Math.floor(Math.random() * tileMap.widthInTiles);
         let y = Math.floor(Math.random() * tileMap.heightInTiles);
@@ -187,7 +179,7 @@ function generateMap(config){
 
 function populateMap(){
     for (let i = 0; i < 4000; i++) {
-        actors.push(new Ore(Math.random() * tileMap.widthInTiles * tileMap.tileWidth, Math.random() * tileMap.heightInTiles * tileMap.tileHeight));
+        //actors.push(new Ore(Math.random() * tileMap.widthInTiles * tileMap.tileWidth, Math.random() * tileMap.heightInTiles * tileMap.tileHeight));
     }
 }
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);
