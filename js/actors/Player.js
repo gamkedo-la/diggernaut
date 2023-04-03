@@ -279,13 +279,30 @@ class Player {
                 case TILE_UNOBTANIUM : {
                     tileMap.data[startTileIndex] = TILE_EMPTY;
                     let i = 10;
-                    while(--i){ actors.push(new Ore(spawnX, spawnY))}   
+                    while(--i){ actors.push(new Ore(spawnX, spawnY))}
+                    break;   
                 }
                 case TILE_DENSE_UNOBTANIUM : {
                     tileMap.data[startTileIndex] = TILE_EMPTY;
                     let i = 40;
-                    while(--i){ actors.push(new Ore(spawnX, spawnY))}   
+                    while(--i){ actors.push(new Ore(spawnX, spawnY))}
+                    break;  
                 }
+                case TILE_EXPLOSIVE : {
+                    //destroy a 3x3 area around the explosive tile
+                    /** todo: refactor toe explode(radius) function, so we can leave ore behind and
+                    //handle effects on other tiles
+                    **/
+                    let i = 25;
+                    while(--i){
+                        let x = i % 5;
+                        let y = Math.floor(i / 5);
+                        let tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;    
+                        tileMap.data[tileIndex] = TILE_EMPTY;
+                    }
+                    break;
+                }
+
                 default: {
                     tileMap.data[startTileIndex] = TILE_EMPTY;
                 }
