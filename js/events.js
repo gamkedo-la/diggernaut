@@ -1,3 +1,7 @@
+const inventory = {
+    
+}
+
 signal.addEventListener('startGame', startGame);
 signal.addEventListener('gameOver', gameOver);
 signal.addEventListener('titleScreen', gotoTitleScreen);
