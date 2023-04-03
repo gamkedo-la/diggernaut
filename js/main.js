@@ -169,25 +169,36 @@ function generateMap(config){
         tileMap.data[i] = choices[ Math.floor(Math.random() * choices.length) ];
     }
     
-    // for(let i = 0; i < 12000; i++){
-    //     let x = Math.floor(Math.random() * tileMap.widthInTiles);
-    //     let y = Math.floor(Math.random() * tileMap.heightInTiles);
-    //     tileMap.tileFillRect(x, y, 1, 1, 0);
-    //     //tileMap.data[i] = 0;
-    // }
+    //random tiny holes
+    for(let i = 0; i < 12000; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        tileMap.tileFillRect(x, y, 1, 1, 0);
+        //tileMap.data[i] = 0;
+    }
 
-    // for(let i = 0; i < 200; i++){
-    //     let x = Math.floor(Math.random() * tileMap.widthInTiles);
-    //     let y = Math.floor(Math.random() * tileMap.heightInTiles);
-    //     tileMap.tileFillRect(x, y, 10, 10, 0);
-    // }
+    //random room sized voids
+    for(let i = 0; i < 200; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        tileMap.tileFillRect(x, y, 10, 10, 0);
+    }
 
-    // for(let i = 0; i < 200; i++){
-    //     let x = Math.floor(Math.random() * tileMap.widthInTiles);
-    //     let y = Math.floor(Math.random() * tileMap.heightInTiles);
-    //     let radius = Math.floor(Math.random() * 8 + 2);
-    //     tileMap.tileFillCircle(x, y, radius, 0);
-    // }
+    //random round voids, random size
+    for(let i = 0; i < 200; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        let radius = Math.floor(Math.random() * 8 + 2);
+        tileMap.tileFillCircle(x, y, radius, 0);
+    }
+
+    //random ledges of random length
+    for(let i = 0; i < 300; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        let length = Math.floor(Math.random() * 8 + 4);
+        tileMap.tileFillRect(x, y, length, 1, 0);
+    }
 
 }
 
