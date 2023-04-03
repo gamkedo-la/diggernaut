@@ -32,6 +32,7 @@ const GAMESTATE_TITLE = 0
 const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;
 const GAMESTATE_CREDITS = 3;
+const GAMESTATE_INVENTORY = 4;
 const FRAMERATE = 60;
 const view = {
     x: 0,
@@ -137,6 +138,8 @@ function mainLoop(){
 
 function gameLoop() {
     ticker++;
+    //todo: refactor gamescreen objects into one object literal and remove switch statement
+    //https://ultimatecourses.com/blog/deprecating-the-switch-statement-for-object-literals
     switch (gameState) {
         case GAMESTATE_TITLE:
             titleScreen.draw();
@@ -153,6 +156,10 @@ function gameLoop() {
         case GAMESTATE_CREDITS:
             creditsScreen.draw();
             creditsScreen.update();
+            break;
+        case GAMESTATE_INVENTORY:
+            inventoryScreen.draw();
+            inventoryScreen.update();
             break;
     }
     Key.update();
@@ -211,5 +218,7 @@ window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false
 window.addEventListener('keydown', function (event) { Key.onKeydown(event); }, false);
 window.addEventListener('blur', function (event) { paused = true; }, false);
 window.addEventListener('focus', function (event) { paused = false; }, false);
+
+
 
 init();

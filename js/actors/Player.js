@@ -247,24 +247,28 @@ class Player {
                 spawnY = this.collider.leftFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
                 break;
+
             case RIGHT:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y);
                 spawnX = this.collider.leftFeeler.x;
                 spawnY = this.collider.leftFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
                 break;
+
             case DOWN:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y);
                 spawnX = this.collider.leftFeeler.x;
                 spawnY = this.collider.leftFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
                 break;
+
             case UP:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.topFeeler.x, this.collider.topFeeler.y);
                 spawnX = this.collider.leftFeeler.x;
                 spawnY = this.collider.leftFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
         }
+        
         if (startTileValue > 0) {
             switch(startTileValue){
                 case TILE_DIRT : {
@@ -290,9 +294,8 @@ class Player {
                 }
                 case TILE_EXPLOSIVE : {
                     //destroy a 3x3 area around the explosive tile
-                    /** todo: refactor toe explode(radius) function, so we can leave ore behind and
-                    //handle effects on other tiles
-                    **/
+                    //todo: refactor to explode(radius) function, so we can leave ore behind and handle effects on other tiles
+                    
                     let i = 25;
                     while(--i){
                         let x = i % 5;

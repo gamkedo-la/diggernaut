@@ -63,6 +63,8 @@ const playScreen = {
 
         if (Key.justReleased(Key.SPACE)) { player.jump(); }
         if (Key.justReleased(Key.z)) { player.digCooldown = 0; }
+        if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
+        if (Key.justReleased(Key.i)) { signal.dispatch('inventory'); }
     },
 
     followPlayer: function () {

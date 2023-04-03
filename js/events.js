@@ -3,6 +3,11 @@ signal.addEventListener('gameOver', gameOver);
 signal.addEventListener('titleScreen', gotoTitleScreen);
 signal.addEventListener('creditScreen', gotoCreditScreen);
 
+signal.addEventListener('returnToGame', function (event) { gameState = GAMESTATE_PLAY; }, false);
+signal.addEventListener('gameOver', function (event) { gameState = GAMESTATE_GAME_OVER; }, false);
+signal.addEventListener('gameWon', function (event) { gameState = GAMESTATE_CREDITS; }, false);
+signal.addEventListener('inventory', function (event) { gameState = GAMESTATE_INVENTORY; }, false);
+signal.addEventListener('pause', function (event) { gameState = GAMESTATE_INVENTORY }, false);
 
 
 
