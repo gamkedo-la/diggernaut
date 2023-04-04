@@ -35,19 +35,19 @@ class Player {
                     frameRate: 1
                 },
                 walkLeft: {
-                    frames: [2,1],
+                    frames: [1,3],
                     frameRate: 8
                 },
                 walkRight: {
-                    frames: [2,0],
+                    frames: [0,2],
                     frameRate: 8
                 },
                 jump: {
-                    frames: [3],
+                    frames: [4],
                     frameRate: 1
                 },
                 falling: {
-                    frames: [3],
+                    frames: [5],
                     frameRate: 1
                 },
                 dig: {

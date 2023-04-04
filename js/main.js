@@ -160,6 +160,9 @@ function generateMap(config){
         tileMap.insertPrefab(rooms.room1, x, y)
     }
 
+    //columns prefab to test wall jump
+    tileMap.insertPrefab(rooms.columns, 20, 20);
+
 }
 
 function populateMap(){
