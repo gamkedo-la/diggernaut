@@ -20,6 +20,7 @@ class Player {
         this.friction = 0.80;
         this.moveLeftCooldown = 0;
         this.moveRightCooldown = 0;
+        this.wallSliding = false;
         this.inventory = {
             ore: 0,
         }
@@ -107,7 +108,8 @@ class Player {
         this.handleCollisions();
         this.checkBounds();
         this.canDig = this.checkDig();
-        this.canJump = this.isOnFloor() && !this.isOnWall();
+        this.canJump = this.isOnFloor();
+        this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d));
         this.canWallJump = this.isOnWall() && !this.isOnFloor();
         if(this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
         if(this.moveRightCooldown > 0) { this.moveRightCooldown--; }
@@ -169,7 +171,7 @@ class Player {
         this.collider.rightFeeler.x = this.collider.right + 4;
         this.collider.rightFeeler.y = this.y + this.height / 2;
         this.collider.topFeeler.x = this.x + this.width / 2;
-        this.collider.topFeeler.y = this.collider.top - 4;
+        this.collider.topFeeler.y = this.collider.top - 10;
         this.collider.bottomFeeler.x = this.x + this.width / 2;
         this.collider.bottomFeeler.y = this.collider.bottom + 6;
 
@@ -178,7 +180,8 @@ class Player {
     applyForces() {
         this.previousX = this.x;
         this.previousY = this.y;
-        this.yAccel += this.gravity;
+        let yAccelDelta = this.wallSliding ? 0.25 : 1;
+        this.yAccel += (this.gravity * yAccelDelta);
         this.xvel += this.xAccel;
         this.yvel += this.yAccel;
         if (this.xvel > this.limits.maxXVel) { this.xvel = this.limits.maxXVel; }
@@ -189,6 +192,7 @@ class Player {
         if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
 
         this.xvel *= this.friction;
+        this.yvel *= (this.wallSliding ? 0.8 : 1);
     }
 
     handleAnimationState(){
@@ -339,9 +343,10 @@ class Player {
 
             case UP:
                 startTileIndex = tileMap.pixelToTileIndex(this.collider.topFeeler.x, this.collider.topFeeler.y);
-                spawnX = this.collider.leftFeeler.x;
-                spawnY = this.collider.leftFeeler.y;
+                spawnX = this.collider.topFeeler.x;
+                spawnY = this.collider.topFeeler.y;
                 startTileValue = tileMap.data[startTileIndex];
+                break;
         }
         
         if (startTileValue > 0) {
