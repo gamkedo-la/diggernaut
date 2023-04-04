@@ -33,3 +33,10 @@ function gotoCreditScreen(event){
     console.log('gotoCreditScreen triggered');
     gameState = GAMESTATE_CREDITS;
 }
+
+function emitParticles(x, y, definition){
+    for (let i = 0; i < definition().quantity; i++) {
+        let particle = new Particle(x, y, definition());
+        actors.push(particle);
+    }
+}

@@ -103,6 +103,7 @@ class Player {
         pset(this.collider.topFeeler.x - view.x, this.collider.topFeeler.y - view.y);
         pset(this.collider.bottomFeeler.x - view.x, this.collider.bottomFeeler.y - view.y);
     }
+
     update() {
         this.applyForces();
         this.handleCollisions();
@@ -116,7 +117,12 @@ class Player {
         this.xAccel = 0;
         this.yAccel = 0;
         if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
+        if(this.wallSliding) { 
+            emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.sparks);
+         }
         this.handleAnimationState();
+
+        //emitParticles(this.x, this.y, particleDefinitions.sparks)
     }
 
     handleInput() {
@@ -303,6 +309,9 @@ class Player {
         onleftWall ? this.moveLeftCooldown = this.limits.moveLeftCooldown : this.moveRightCooldown = this.limits.moveRightCooldown; 
         this.xAccel = onleftWall ? this.speed * 5 : -this.speed * 5;
         this.play("jump");
+        let particleDef = onleftWall? particleDefinitions.wallJumpLeft : particleDefinitions.wallJumpRight;
+        let emitLocation = onleftWall? this.collider.leftFeeler : this.collider.rightFeeler;
+        emitParticles(emitLocation.x, emitLocation.y, particleDef);
     }
 
     stop() {
@@ -440,6 +449,11 @@ class Player {
     jump() {
         this.yvel = -this.speed * 10;
         this.play("jump");
+        emitParticles(
+            this.collider.bottomFeeler.x,
+            this.collider.bottom,
+            particleDefinitions.jumpPuff
+            );
     }
 
     play(animationName){

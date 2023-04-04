@@ -1,6 +1,6 @@
 Game over screen
     shows collected items flying around defeated player and a ranking message
-    message describes how player died and how well they died
+    message describes how player died and how well they did
 
 
 

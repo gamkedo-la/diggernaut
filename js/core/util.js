@@ -194,6 +194,12 @@ function screenShake (intensity) {
     view.y += Math.random() * intensity - intensity / 2;
 }
 
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
+function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 

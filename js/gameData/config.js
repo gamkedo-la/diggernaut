@@ -28,6 +28,9 @@ const GAMESTATE_CREDITS = 3;
 const GAMESTATE_INVENTORY = 4;
 const FRAMERATE = 60;
 
+const TYPE_PARTICLE = 0;
+
+
 const view = {
     x: 0,
     y: 0,
@@ -165,6 +168,53 @@ const inventory = {
                     sprite: "bone10"
                 }
             }
+        }
+    }
+}
+
+const particleDefinitions = {
+
+    sparks: function(){
+        return{
+        quantity: 3,
+        color: () => "yellow",
+        life: () => 10,
+        xVelocity: function(){ return rand(-1, 1)},
+        yVelocity: function(){ return rand(0, 1)},
+        gravity: () => rand(0, 0.1),
+        }
+    },
+
+    jumpPuff: function(){
+        return{
+        quantity: 100,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(-.5, -2),
+        color:  () => "white",
+        life: () => rand(5, 20),
+        gravity: () => rand(0, 0.1),
+        }
+    },
+
+    wallJumpLeft: function(){
+        return{
+        quantity: 100,
+        xVelocity: () => rand(0, 2),
+        yVelocity: () => rand(-1, 1),
+        color: () => ["white", "yellow"][randInt(0, 1)],
+        life: () => rand(5, 20),
+        gravity: () => rand(0, 0.1),
+        }
+    },
+
+    wallJumpRight: function(){
+        return{
+        quantity: 100,
+        xVelocity: () => rand(0, -2),
+        yVelocity: () => rand(-1, 1),
+        color: () => ["white", "yellow"][randInt(0, 1)],
+        life: () => rand(5, 20),
+        gravity: () => rand(0, 0.1),
         }
     }
 }
