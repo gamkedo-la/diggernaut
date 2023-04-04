@@ -160,4 +160,12 @@ class TileMap {
         }
     }
 
+    insertPrefab(prefab, x, y){
+        for(let i = 0; i < prefab.width; i++){
+            for(let j = 0; j < prefab.height; j++){
+                this.setTileAtPosition(x+i, y+j, prefab.data[j*prefab.width + i]);
+            }
+        }
+    }
+
 }

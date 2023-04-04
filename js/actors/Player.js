@@ -108,6 +108,44 @@ class Player {
         if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
         this.handleAnimationState();
     }
+    handleInput() {
+        if (Key.isDown(Key.LEFT) || Key.isDown(Key.a)) {
+            this.moveLeft();
+            if(Key.isDown(Key.z)){
+                this.dig(LEFT);
+            }
+        }
+        else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d)) {
+            this.moveRight(); 
+            if(Key.isDown(Key.z)){
+                this.dig(RIGHT);
+            }
+        }
+
+        if (Key.isDown(Key.UP) || Key.isDown(Key.SPACE) || Key.isDown(Key.w)) {
+            if(Key.isDown(Key.z)){
+                this.dig(UP);
+            }else { 
+                this.jump();
+            }
+            
+        } 
+        else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s)) {
+            //this.moveDown();
+            if(Key.isDown(Key.z)){
+                this.dig(DOWN);
+            }
+        }
+
+        // if(Key.isDown(Key.z)){
+        //     player.dig(DOWN);
+        // }
+
+        if (Key.justReleased(Key.SPACE)) { this.jump(); }
+        if (Key.justReleased(Key.z)) { this.digCooldown = 0; }
+        if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
+        if (Key.justReleased(Key.i)) { signal.dispatch('inventory'); }
+    }
 
     updateCollider(x, y) {
         this.x = x;

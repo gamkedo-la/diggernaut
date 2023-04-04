@@ -12,7 +12,7 @@ HomeTeam GameDev Presents:
 Diggernaught
 
 a JS game led by Ryan Malm from
-March thru May 22nd 2023
+April 2 thru July 2 2023
 
 Ryan Malm: Lead Programmer, Game Design, Art
 `
@@ -20,7 +20,6 @@ Ryan Malm: Lead Programmer, Game Design, Art
         clearScreen('black');
         let verticalSpacing = 4;
         let creditsLength = this.credits.split(/\r?\n/).length * ( gameFont.characterHeight + verticalSpacing) + canvas.height;
-        //console.log(this.credits.split(/\r?\n/).length);
         gameFont.drawText( this.credits, { x: 10, y: canvas.height - (ticker/2) % creditsLength }, 0, verticalSpacing);
         gameFont.drawText( this.credits, { x: 10, y: creditsLength + (ticker/2) % creditsLength }, 0, verticalSpacing);
         fillRect(0,165, canvas.width, 15, '#111');

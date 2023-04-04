@@ -12,68 +12,18 @@ canvas.style.imageRendering = "pixelated";
 canvas.width = 544;
 canvas.height = 306;
 
-//globals and constants
-const LEFT = 0;
-const RIGHT = 1;
-const UP = 2;
-const DOWN = 3;
-
-const TILE_EMPTY = 0;
-const TILE_DIRT = 1;
-const TILE_UNBREAKABLE_STONE = 2;
-const TILE_UNBREAKABLE_METAL = 3;
-const TILE_UNOBTANIUM = 4;
-const TILE_FALLING_ROCK = 5;
-const TILE_EXPLOSIVE = 6;
-const TILE_DENSE_UNOBTANIUM = 7;
 
 
-const GAMESTATE_TITLE = 0
-const GAMESTATE_PLAY = 1;
-const GAMESTATE_GAME_OVER = 2;
-const GAMESTATE_CREDITS = 3;
-const GAMESTATE_INVENTORY = 4;
-const FRAMERATE = 60;
-const view = {
-    x: 0,
-    y: 0,
-    width: 544,
-    height: 306,
-}
-const mapConfig = {
-    widthInTiles: 70,
-    heightInTiles: 3000,
-    chasmWidth: 24,
-    tileSize: 32,
-    mapStartY: 20 //start generating tiles at this Y position
-
-}
-var gameState = GAMESTATE_TITLE;
-var ticker = 0;
-var loader = new AssetLoader();
-var audio = new AudioGlobal();
-var img, gameFont, tinyFont, tileMap, player, fps, then, startTime, fpsInterval
+let gameState = GAMESTATE_TITLE,
+ ticker = 0,
+ loader = new AssetLoader(),
+ audio = new AudioGlobal(),
+ fps = FRAMERATE,
+ img, gameFont, tinyFont, tileMap, player, then, startTime, fpsInterval
 const actors = [];
-fps = 60;
-
-const imageList = [
-    //image loader assumes .png and appends it. all images should be in /src/img/.
-    'smallFont',
-    '3x5font',
-    'earthTiles',
-    'placeholder-player',
-    'basic-tiles'
-]
-
-const soundList = [
-    { name: "test1", url: "snd/test1.mp3" },
-    { name: "test2", url: "snd/test2.mp3" }
-]
 
 function init() {
-
     loadImages();
-
 }
 
 function loadImages() {
@@ -83,7 +33,6 @@ function loadImages() {
 function initAudio() {
     audio.init(loadSounds);
 }
-
 
 function loadSounds() {
     console.log('loading sounds');
@@ -98,12 +47,8 @@ function loadingComplete() {
     populateMap();
 
     player = new Player(mapConfig.widthInTiles * mapConfig.tileSize/2, canvas.height/2),
-
-
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
-
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
-
     begin(fps);
 }
 
@@ -205,6 +150,14 @@ function generateMap(config){
         let y = Math.floor(Math.random() * tileMap.heightInTiles);
         let length = Math.floor(Math.random() * 8 + 4);
         tileMap.tileFillRect(x, y, length, 1, 0);
+    }
+
+    //test of prefab function
+    tileMap.insertPrefab(rooms.room1, 10, 10);
+    for(let i = 0; i < 10; i++){
+        let x = Math.floor(Math.random() * tileMap.widthInTiles);
+        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        tileMap.insertPrefab(rooms.room1, x, y)
     }
 
 }
