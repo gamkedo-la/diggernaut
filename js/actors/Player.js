@@ -18,6 +18,8 @@ class Player {
         this.digCooldown = 0;
         this.health = 100;
         this.friction = 0.80;
+        this.moveLeftCooldown = 0;
+        this.moveRightCooldown = 0;
         this.inventory = {
             ore: 0,
         }
@@ -68,7 +70,10 @@ class Player {
             minYAccel: -3,
             maxYAccel: 5,
             digCooldown: 2,
-            healthMax: 100
+            healthMax: 100,
+            moveLeftCooldown: 20,
+            moveRightCooldown: 20
+
         }
 
         this.gravity = .25;
@@ -102,13 +107,16 @@ class Player {
         this.handleCollisions();
         this.checkBounds();
         this.canDig = this.checkDig();
-        this.canJump = this.isOnFloor();
-        this.canWallJump = this.isOnWall() && !this.canJump;
+        this.canJump = this.isOnFloor() && !this.isOnWall();
+        this.canWallJump = this.isOnWall() && !this.isOnFloor();
+        if(this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
+        if(this.moveRightCooldown > 0) { this.moveRightCooldown--; }
         this.xAccel = 0;
         this.yAccel = 0;
         if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
         this.handleAnimationState();
     }
+
     handleInput() {
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.a)) {
             this.moveLeft();
@@ -267,11 +275,18 @@ class Player {
     }
 
     moveLeft() {
-        this.xAccel = -this.speed;
+        this.moveRightCooldown = 0;
+        if(!this.moveLeftCooldown){
+            this.xAccel = -this.speed;
+        }
+        
     
     }
     moveRight() {
-        this.xAccel = this.speed;
+        this.moveLeftCooldown = 0;
+        if(!this.moveRightCooldown){
+            this.xAccel = this.speed;
+        }
     }
 
     moveDown() {
@@ -280,7 +295,8 @@ class Player {
     
     wallJump(world) {
         this.yAccel = -this.speed * 10;
-        let onleftWall = world.data[world.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y)] 
+        let onleftWall = world.data[world.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y)]
+        onleftWall ? this.moveLeftCooldown = this.limits.moveLeftCooldown : this.moveRightCooldown = this.limits.moveRightCooldown; 
         this.xAccel = onleftWall ? this.speed * 5 : -this.speed * 5;
         this.play("jump");
     }
