@@ -102,7 +102,8 @@ class Player {
         this.handleCollisions();
         this.checkBounds();
         this.canDig = this.checkDig();
-        this.canJump = this.checkFloor();
+        this.canJump = this.isOnFloor();
+        this.canWallJump = this.isOnWall() && !this.canJump;
         this.xAccel = 0;
         this.yAccel = 0;
         if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
@@ -122,11 +123,9 @@ class Player {
             }
         }
 
-        if (Key.isDown(Key.UP) || Key.isDown(Key.SPACE) || Key.isDown(Key.w)) {
+        if (Key.isDown(Key.UP) || Key.isDown(Key.w)) {
             if(Key.isDown(Key.z)){
                 this.dig(UP);
-            }else { 
-                this.jump();
             }
             
         } 
@@ -137,11 +136,13 @@ class Player {
             }
         }
 
-        // if(Key.isDown(Key.z)){
-        //     player.dig(DOWN);
-        // }
-
-        if (Key.justReleased(Key.SPACE)) { this.jump(); }
+        if (Key.isDown(Key.SPACE)) {
+            if(this.canWallJump ) {
+                this.wallJump(tileMap);
+            }else if(this.canJump) {
+                this.jump();
+            }
+        }
         if (Key.justReleased(Key.z)) { this.digCooldown = 0; }
         if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
         if (Key.justReleased(Key.i)) { signal.dispatch('inventory'); }
@@ -206,7 +207,7 @@ class Player {
             let increment = this.xvel / resolution;
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x + increment, this.y);
-                if (this.tileCollisionCheck(tileMap, 0)) {
+                if (this.tileCollisionCheck(0)) {
                     this.x = this.previousX;
                     this.updateCollider(this.x, this.y);
                     this.xvel = 0;
@@ -221,7 +222,7 @@ class Player {
             let increment = this.yvel / resolution;
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x, this.y + increment);
-                if (this.tileCollisionCheck(tileMap, 0)) {
+                if (this.tileCollisionCheck(0)) {
                     if(this.yvel > this.limits.hurtVelocity){
                         this.hurt(10);
                     }
@@ -237,7 +238,7 @@ class Player {
         this.updateCollider(this.x, this.y);
     }
 
-    tileCollisionCheck(world, tileCheck) {
+    tileCollisionCheck(tileCheck) {
 
         let left = Math.floor(this.collider.left),
             right = Math.floor(this.collider.right),
@@ -246,24 +247,44 @@ class Player {
 
         //check for collision with tile
         //check tile index of each corner of the player
-        let topLeft = world.data[world.pixelToTileIndex(left, top)];
-        let topRight = world.data[world.pixelToTileIndex(right, top)];
-        let bottomLeft = world.data[world.pixelToTileIndex(left, bottom)];
-        let bottomRight = world.data[world.pixelToTileIndex(right, bottom)];
+        let topLeft = tileMap.data[tileMap.pixelToTileIndex(left, top)];
+        let topRight = tileMap.data[tileMap.pixelToTileIndex(right, top)];
+        let bottomLeft = tileMap.data[tileMap.pixelToTileIndex(left, bottom)];
+        let bottomRight = tileMap.data[tileMap.pixelToTileIndex(right, bottom)];
 
         return (topLeft > tileCheck || topRight > tileCheck || bottomLeft > tileCheck || bottomRight > tileCheck);
 
     }
+    isOnWall() {
+        //isOnWall is used to determine if the player is on a wall and can jump off of it
+        let left = tileMap.data[tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y)];
+        let right = tileMap.data[tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y)];
+        return (left > 0 || right > 0);
+    }
+
+    isOnFloor() {
+        return tileMap.data[tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y)] > 0;
+    }
 
     moveLeft() {
         this.xAccel = -this.speed;
+    
     }
     moveRight() {
         this.xAccel = this.speed;
     }
+
     moveDown() {
         //this.yAccel = this.speed;
     }
+    
+    wallJump(world) {
+        this.yAccel = -this.speed * 10;
+        let onleftWall = world.data[world.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y)] 
+        this.xAccel = onleftWall ? this.speed * 5 : -this.speed * 5;
+        this.play("jump");
+    }
+
     stop() {
         this.xAccel = 0;
         this.yAccel = 0;
@@ -363,9 +384,7 @@ class Player {
     die() {
         gameState = GAMESTATE_GAME_OVER;
     }
-    checkFloor() {
-        return tileMap.data[tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y)] > 0;
-    }
+
 
     checkDig() {
         this.digCooldown--
@@ -398,7 +417,6 @@ class Player {
     }
 
     jump() {
-        if (!this.canJump) return;
         this.yvel = -this.speed * 10;
         this.play("jump");
     }
