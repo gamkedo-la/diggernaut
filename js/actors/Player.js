@@ -382,12 +382,14 @@ class Player {
                 }
                 case TILE_UNOBTANIUM : {
                     tileMap.data[startTileIndex] = TILE_EMPTY;
+                    audio.playSound(sounds.pickup);
                     let i = 10;
                     while(--i){ actors.push(new Ore(spawnX, spawnY))}
                     break;   
                 }
                 case TILE_DENSE_UNOBTANIUM : {
                     tileMap.data[startTileIndex] = TILE_EMPTY;
+                    audio.playSound(sounds.super_pickup);
                     let i = 40;
                     while(--i){ actors.push(new Ore(spawnX, spawnY))}
                     break;  
