@@ -82,31 +82,9 @@ function mainLoop(){
 }
 
 function gameLoop() {
-    ticker++;
-    //todo: refactor gamescreen objects into one object literal and remove switch statement
-    //https://ultimatecourses.com/blog/deprecating-the-switch-statement-for-object-literals
-    switch (gameState) {
-        case GAMESTATE_TITLE:
-            titleScreen.draw();
-            titleScreen.update();
-            break;
-        case GAMESTATE_PLAY:
-            playScreen.draw();
-            playScreen.update();
-            break;
-        case GAMESTATE_GAME_OVER:
-            gameOverScreen.draw();
-            gameOverScreen.update();
-            break;
-        case GAMESTATE_CREDITS:
-            creditsScreen.draw();
-            creditsScreen.update();
-            break;
-        case GAMESTATE_INVENTORY:
-            inventoryScreen.draw();
-            inventoryScreen.update();
-            break;
-    }
+    ticker++;    
+    screens[gameState].draw();
+    screens[gameState].update();
     Key.update();
 }
 

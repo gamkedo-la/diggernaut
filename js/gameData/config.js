@@ -28,6 +28,14 @@ const GAMESTATE_CREDITS = 3;
 const GAMESTATE_INVENTORY = 4;
 const FRAMERATE = 60;
 
+const screens = [
+    titleScreen,
+    playScreen,
+    gameOverScreen,
+    creditsScreen,
+    inventoryScreen
+]
+
 const TYPE_PARTICLE = 0;
 
 
