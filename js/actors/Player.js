@@ -20,6 +20,7 @@ class Player {
         this.friction = 0.80;
         this.moveLeftCooldown = 0;
         this.moveRightCooldown = 0;
+        this.coyoteCooldown = 0;
         this.wallSliding = false;
         this.inventory = {
             ore: 0,
@@ -73,7 +74,8 @@ class Player {
             digCooldown: 2,
             healthMax: 100,
             moveLeftCooldown: 20,
-            moveRightCooldown: 20
+            moveRightCooldown: 20,
+            coyoteCooldown: 10,
 
         }
 
@@ -109,7 +111,7 @@ class Player {
         this.handleCollisions();
         this.checkBounds();
         this.canDig = this.checkDig();
-        this.canJump = this.isOnFloor();
+        this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
         this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d));
         this.canWallJump = this.isOnWall() && !this.isOnFloor();
         if(this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
@@ -281,7 +283,14 @@ class Player {
     }
 
     isOnFloor() {
-        return tileMap.data[tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y)] > 0;
+        let rc = tileMap.data[tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y)];
+        if (rc > 0) {
+            this.coyoteCooldown = this.limits.coyoteCooldown;
+            return true;
+        } else {
+            this.coyoteCooldown--;
+            return false;
+        }
     }
 
     moveLeft() {
