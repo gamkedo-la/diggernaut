@@ -369,6 +369,7 @@ class Player {
         if (startTileValue > 0) {
             switch(startTileValue){
                 case TILE_DIRT : {
+                    emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
                     tileMap.data[startTileIndex] = TILE_EMPTY;
                     break;
                 }
@@ -402,7 +403,9 @@ class Player {
                     while(--i){
                         let x = i % 5;
                         let y = Math.floor(i / 5);
-                        let tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;    
+                        let tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
+                        //emit some particles at the tile location
+                        emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
                         tileMap.data[tileIndex] = TILE_EMPTY;
                     }
                     break;
@@ -417,6 +420,7 @@ class Player {
 
     hurt(damage) {
         screenShake(5);
+        emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.hurt);
         this.health -= damage;
         if (this.health <= 0) {
             this.health = 0;

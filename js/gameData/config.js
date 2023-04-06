@@ -1,4 +1,5 @@
 /*
+https://patorjk.com/software/taag/#p=display&f=Varsity&t=Text%20Banners!
    ____ _       _           _    ____                _       
   / ___| | ___ | |__   __ _| |  / ___|___  _ __  ___| |_ ___ 
  | |  _| |/ _ \| '_ \ / _` | | | |   / _ \| '_ \/ __| __/ __|
@@ -28,13 +29,12 @@ const GAMESTATE_CREDITS = 3;
 const GAMESTATE_INVENTORY = 4;
 const FRAMERATE = 60;
 
-const screens = [
-    titleScreen,
-    playScreen,
-    gameOverScreen,
-    creditsScreen,
-    inventoryScreen
-]
+const screens = [];
+screens[GAMESTATE_TITLE] = titleScreen;
+screens[GAMESTATE_PLAY] = playScreen;
+screens[GAMESTATE_GAME_OVER] = gameOverScreen;
+screens[GAMESTATE_CREDITS] = creditsScreen;
+screens[GAMESTATE_INVENTORY] = inventoryScreen;
 
 const TYPE_PARTICLE = 0;
 
@@ -182,6 +182,21 @@ const inventory = {
     }
 }
 
+/**
+                                                                                                                                                  
+@@@@@@@    @@@@@@   @@@@@@@   @@@@@@@  @@@   @@@@@@@  @@@       @@@@@@@@     @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@   @@@@@@@  @@@@@@@   @@@@@@   
+@@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@  @@@  @@@@@@@@  @@@       @@@@@@@@     @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@  @@@@@@@   
+@@!  @@@  @@!  @@@  @@!  @@@    @@!    @@!  !@@       @@!       @@!          @@!       @@!       @@!       @@!       !@@         @@!    !@@       
+!@!  @!@  !@!  @!@  !@!  @!@    !@!    !@!  !@!       !@!       !@!          !@!       !@!       !@!       !@!       !@!         !@!    !@!       
+@!@@!@!   @!@!@!@!  @!@!!@!     @!!    !!@  !@!       @!!       @!!!:!       @!!!:!    @!!!:!    @!!!:!    @!!!:!    !@!         @!!    !!@@!!    
+!!@!!!    !!!@!!!!  !!@!@!      !!!    !!!  !!!       !!!       !!!!!:       !!!!!:    !!!!!:    !!!!!:    !!!!!:    !!!         !!!     !!@!!!   
+!!:       !!:  !!!  !!: :!!     !!:    !!:  :!!       !!:       !!:          !!:       !!:       !!:       !!:       :!!         !!:         !:!  
+:!:       :!:  !:!  :!:  !:!    :!:    :!:  :!:        :!:      :!:          :!:       :!:       :!:       :!:       :!:         :!:        !:!   
+ ::       ::   :::  ::   :::     ::     ::   ::: :::   :: ::::   :: ::::      :: ::::   ::        ::        :: ::::   ::: :::     ::    :::: ::   
+ :         :   : :   :   : :     :     :     :: :: :  : :: : :  : :: ::      : :: ::    :         :        : :: ::    :: :: :     :     :: : :    
+                                                                                                                                                  
+**/
+
 const particleDefinitions = {
 
     sparks: function(){
@@ -197,10 +212,43 @@ const particleDefinitions = {
 
     jumpPuff: function(){
         return{
-        quantity: 100,
+        quantity: 20,
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(-.5, -2),
         color:  () => "white",
+        life: () => rand(5, 20),
+        gravity: () => rand(0, 0.1),
+        }
+    },
+
+    hurt: function(){
+        return{
+        quantity: 100,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(-.5, -2),
+        color:  () => "red",
+        life: () => rand(5, 20),
+        gravity: () => rand(0, 0.1),
+        }
+    },
+
+    explodingTile: function(){
+        return{
+        quantity: 20,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(-.5, -2),
+        color:  () => "red",
+        life: () => rand(5, 20),
+        gravity: () => rand(0, 0.1),
+        }
+    },
+
+    destroyDirt: function(){
+        return{
+        quantity: 40,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(-.5, -2),
+        color:  () => "brown",
         life: () => rand(5, 20),
         gravity: () => rand(0, 0.1),
         }

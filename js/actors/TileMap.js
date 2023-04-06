@@ -33,6 +33,21 @@ class TileMap {
         return this.data[this.pixelToTileIndex(x - this.worldPosition.x * this.tileWidth, y - this.worldPosition.y * this.tileHeight)];
     }
 
+    tileIndexToPixelX(index){
+        return (index % this.widthInTiles) * this.tileWidth;
+    }
+
+    tileIndexToPixelY(index){
+        return Math.floor(index / this.widthInTiles) * this.tileHeight;
+    }
+    tileIndexToCoords(index){
+        return {
+            x: (index % this.widthInTiles) * this.tileWidth,
+            y: Math.floor(index / this.widthInTiles) * this.tileHeight
+        }
+    }
+    
+
     pixelToTileIndex(x, y){
         let tx = Math.floor(x / this.tileWidth);
         let ty = Math.floor(y / this.tileHeight);
