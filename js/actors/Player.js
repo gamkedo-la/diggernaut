@@ -21,7 +21,7 @@ class Player {
         this.moveRightCooldown = 0;
         this.coyoteCooldown = 0;
         this.wallSliding = false;
-        this.helicopterCapacity = 0;
+        this.helicopterCapacity = 120;
         this.inventory = {
             ore: 0,
         }
@@ -124,6 +124,9 @@ class Player {
         if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
         if(this.wallSliding) { 
             emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.sparks);
+         }
+         if(this.yvel > this.limits.hurtVelocity-2){
+            emitParticles(this.x + rand(0,12), this.y, particleDefinitions.fallSparks);
          }
         this.handleAnimationState();
 
@@ -464,7 +467,8 @@ class Player {
 
     helicopter() {
         if (this.helicopterCapacity <= 0) return;
-        this.yAccel -= this.speed * 0.5;
+        this.yVel -= 0.1;
+        this.yAccel -= this.speed * 0.9;
         this.helicopterCapacity--;
         emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.sparks);
     }

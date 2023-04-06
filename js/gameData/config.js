@@ -204,9 +204,20 @@ const particleDefinitions = {
         quantity: 3,
         color: () => "yellow",
         life: () => 10,
-        xVelocity: function(){ return rand(-1, 1)},
-        yVelocity: function(){ return rand(0, 1)},
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(0, 1),
         gravity: () => rand(0, 0.1),
+        }
+    },
+
+    fallSparks: function(){
+        return{
+        quantity: 50,
+        color: () => "orange",
+        life: () => 30,
+        xVelocity: () => 0,
+        yVelocity: () => rand(-.5, 0.1),
+        gravity: () => rand(-0.5, 0.5),
         }
     },
 
