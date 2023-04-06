@@ -4,6 +4,7 @@ signal.addEventListener('startGame', startGame);
 signal.addEventListener('gameOver', gameOver);
 signal.addEventListener('titleScreen', gotoTitleScreen);
 signal.addEventListener('creditScreen', gotoCreditScreen);
+signal.addEventListener('gotoMap', function (event) { gameState = GAMESTATE_MAP; }, false);
 
 signal.addEventListener('returnToGame', function (event) { gameState = GAMESTATE_PLAY; }, false);
 signal.addEventListener('gameWon', function (event) { gameState = GAMESTATE_CREDITS; }, false);

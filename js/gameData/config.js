@@ -27,6 +27,7 @@ const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;
 const GAMESTATE_CREDITS = 3;
 const GAMESTATE_INVENTORY = 4;
+const GAMESTATE_MAP = 5;
 const FRAMERATE = 60;
 
 const screens = [];
@@ -35,6 +36,7 @@ screens[GAMESTATE_PLAY] = playScreen;
 screens[GAMESTATE_GAME_OVER] = gameOverScreen;
 screens[GAMESTATE_CREDITS] = creditsScreen;
 screens[GAMESTATE_INVENTORY] = inventoryScreen;
+screens[GAMESTATE_MAP] = mapScreen;
 
 const TYPE_PARTICLE = 0;
 

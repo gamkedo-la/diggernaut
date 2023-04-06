@@ -165,14 +165,19 @@ class Player {
         }
 
         if (Key.isDown(Key.SPACE)) {
-            if(this.canWallJump ) {
-                this.wallJump(tileMap);
-            }else if(this.canJump) {
+            if(this.canJump) {
                 this.jump();
             }else if(this.yvel > this.limits.hoveryYVelocity){
                 this.helicopter();
             }
         }
+
+        if ( Key.justReleased(Key.SPACE) ) {
+            if(this.canWallJump ) {
+                this.wallJump(tileMap);
+            }
+        }
+
         if (Key.justReleased(Key.z)) { this.digCooldown = 0; }
         if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
         if (Key.justReleased(Key.i)) { signal.dispatch('inventory'); }
