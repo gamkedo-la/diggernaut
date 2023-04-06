@@ -239,6 +239,7 @@ const imageList = [
 
 const soundList = [
     { name: "test1", url: "snd/test1.mp3" },
-    { name: "test2", url: "snd/test2.mp3" }
+    { name: "test2", url: "snd/test2.mp3" },
+    { name: "shovel_on_metal", url: "snd/shovel_on_metal_2.ogg" }
 ]
 
