@@ -45,6 +45,8 @@ const mapConfig = {
     mapStartY: 20 //start generating tiles at this Y position
 }
 
+var sounds = {};
+
 const inventory = {
     collections: {
         gems: {

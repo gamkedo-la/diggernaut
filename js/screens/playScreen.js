@@ -17,9 +17,6 @@ const playScreen = {
             
     },
     update: function () {
-        if(Key.justReleased(Key.z)){ 
-            audio.playSound(loader.sounds.test1);
-        }
         this.followPlayer();
         player.handleInput();
         player.update();

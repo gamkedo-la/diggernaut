@@ -1,5 +1,4 @@
 class Player {
-    //todo: add a sprite sheet for the player
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -174,9 +173,9 @@ class Player {
         this.collider.left = this.x
         this.collider.right = this.x + this.width
 
-        this.collider.leftFeeler.x = this.collider.left - 3;
+        this.collider.leftFeeler.x = this.collider.left - 2;
         this.collider.leftFeeler.y = this.y + this.height / 2;
-        this.collider.rightFeeler.x = this.collider.right + 4;
+        this.collider.rightFeeler.x = this.collider.right + 2;
         this.collider.rightFeeler.y = this.y + this.height / 2;
         this.collider.topFeeler.x = this.x + this.width / 2;
         this.collider.topFeeler.y = this.collider.top - 10;
@@ -371,11 +370,14 @@ class Player {
             switch(startTileValue){
                 case TILE_DIRT : {
                     tileMap.data[startTileIndex] = TILE_EMPTY;
+                    break;
                 }
                 case TILE_UNBREAKABLE_METAL : {
+                    audio.playSound(sounds.shovel_on_metal);
                     break;
                 }
                 case TILE_UNBREAKABLE_STONE : {
+                    audio.playSound(sounds.shovel_on_metal);
                     break;
                 }
                 case TILE_UNOBTANIUM : {

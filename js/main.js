@@ -42,7 +42,7 @@ function loadSounds() {
 
 function loadingComplete() {
     console.log('loading complete, starting game')
-
+    sounds = loader.sounds;
     generateMap(mapConfig);    
     populateMap();
 
