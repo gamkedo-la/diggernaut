@@ -21,6 +21,7 @@ class Player {
         this.moveRightCooldown = 0;
         this.coyoteCooldown = 0;
         this.wallSliding = false;
+        this.helicopterCapacity = 0;
         this.inventory = {
             ore: 0,
         }
@@ -75,6 +76,7 @@ class Player {
             moveLeftCooldown: 20,
             moveRightCooldown: 20,
             coyoteCooldown: 10,
+            helicopterCapacity: 120,
 
         }
 
@@ -98,6 +100,7 @@ class Player {
         width: 16,
         height: 24
     })
+        
         canvasContext.fillStyle = "Red";
         pset(this.collider.leftFeeler.x - view.x, this.collider.leftFeeler.y - view.y);
         pset(this.collider.rightFeeler.x - view.x, this.collider.rightFeeler.y - view.y);
@@ -111,6 +114,7 @@ class Player {
         this.checkBounds();
         this.canDig = this.checkDig();
         this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
+        if(this.canJump){ this.helicopterCapacity = this.limits.helicopterCapacity; }
         this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d));
         this.canWallJump = this.isOnWall() && !this.isOnFloor();
         if(this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
@@ -158,7 +162,7 @@ class Player {
                 this.wallJump(tileMap);
             }else if(this.canJump) {
                 this.jump();
-            }
+            }else this.helicopter();
         }
         if (Key.justReleased(Key.z)) { this.digCooldown = 0; }
         if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
@@ -459,8 +463,10 @@ class Player {
     }
 
     helicopter() {
-        //TODO: implement helicopter action
-        //player will be able to spin his diggerang above him and hover momentarily, slowing his descent.
+        if (this.helicopterCapacity <= 0) return;
+        this.yAccel -= this.speed * 0.5;
+        this.helicopterCapacity--;
+        emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.sparks);
     }
 
     jump() {
