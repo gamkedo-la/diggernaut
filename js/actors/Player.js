@@ -76,11 +76,15 @@ class Player {
             moveLeftCooldown: 20,
             moveRightCooldown: 20,
             coyoteCooldown: 10,
-            helicopterCapacity: 120,
+            helicopterCapacity: 100,
+            hoverMultiplier: 0.9,
+            hoveryYVelocity: -1,
+            jumpMultiplier: 8,
+            gravity: 0.25,
 
         }
 
-        this.gravity = .25;
+        this.gravity = this.limits.gravity
 
         this.collider = {
             left: 0,
@@ -165,7 +169,9 @@ class Player {
                 this.wallJump(tileMap);
             }else if(this.canJump) {
                 this.jump();
-            }else this.helicopter();
+            }else if(this.yvel > this.limits.hoveryYVelocity){
+                this.helicopter();
+            }
         }
         if (Key.justReleased(Key.z)) { this.digCooldown = 0; }
         if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
@@ -468,13 +474,13 @@ class Player {
     helicopter() {
         if (this.helicopterCapacity <= 0) return;
         this.yVel -= 0.1;
-        this.yAccel -= this.speed * 0.9;
+        this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;
         emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.sparks);
     }
 
     jump() {
-        this.yvel = -this.speed * 10;
+        this.yvel = -this.speed * this.limits.jumpMultiplier;
         this.play("jump");
         emitParticles(
             this.collider.bottomFeeler.x,
