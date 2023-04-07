@@ -49,7 +49,7 @@ const view = {
 }
 const mapConfig = {
     widthInTiles: 40,
-    heightInTiles: 3650,
+    heightInTiles: 7000,
     chasmWidth: 24,
     tileSize: 32,
     mapStartY: 20, //start generating tiles at this Y position

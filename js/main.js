@@ -141,6 +141,9 @@ function generateMap(config){
     //columns prefab to test wall jump
     tileMap.insertPrefab(rooms.columns, 20, 20);
 
+    //fill bottom half of map with exploding blocks
+    tileMap.tileFillRect(0, tileMap.heightInTiles/2, tileMap.widthInTiles, tileMap.heightInTiles/2, 6);
+
 }
 
 function populateMap(){
