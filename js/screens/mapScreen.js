@@ -18,13 +18,17 @@ const mapScreen = {
     },
 
     draw: function () {
+        //calculate how many columns to draw
+        let totalYView = 12 * canvas.height;
+        //calculate how many rows of tiles we can draw in columnsToDraw
+        
         clearScreen('black');
         let fills = ["black", "#553", "#333", "#999", "#88ff00", "magenta", "red", "yellow", "black" ]
 
-        for(let y = 0; y < tileMap.heightInTiles; y++){
+        for(let y = this.scrollOffset; y < totalYView + this.scrollOffset; y++){
             for(let x = 0; x < tileMap.widthInTiles; x++){
 
-                xOffset = 15 + Math.floor(y / canvas.height) * (tileMap.widthInTiles + this.spaceBetweenColumns);
+                xOffset = 15 + Math.floor( (y - this.scrollOffset) / canvas.height) * (tileMap.widthInTiles + this.spaceBetweenColumns);
                 yOffset = ( (y - this.scrollOffset) % (canvas.height) );
 
                 let tile = tileMap.getTileAtPosition(x,y);
@@ -33,7 +37,7 @@ const mapScreen = {
                     canvasContext.fillStyle = fills[tile];
                     fillRect(
                         xOffset + x,
-                        10 + yOffset,
+                        yOffset,
                         1,1, 
                         );
                 }
