@@ -48,11 +48,14 @@ const view = {
     height: 306,
 }
 const mapConfig = {
-    widthInTiles: 70,
-    heightInTiles: 3000,
+    widthInTiles: 40,
+    heightInTiles: 3650,
     chasmWidth: 24,
     tileSize: 32,
-    mapStartY: 20 //start generating tiles at this Y position
+    mapStartY: 20, //start generating tiles at this Y position
+    choicePool:  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                  1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7]
 }
 
 var sounds = {};

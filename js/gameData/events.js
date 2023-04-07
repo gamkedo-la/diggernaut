@@ -1,6 +1,7 @@
 
 
 signal.addEventListener('startGame', startGame);
+signal.addEventListener('gotoPlay', function (event) { gameState = GAMESTATE_PLAY;stats.domElement.style.display = 'block'; }, false)
 signal.addEventListener('gameOver', gameOver);
 signal.addEventListener('titleScreen', gotoTitleScreen);
 signal.addEventListener('creditScreen', gotoCreditScreen);

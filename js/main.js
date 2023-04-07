@@ -91,7 +91,7 @@ function gameLoop() {
 function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
-    let choices = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,5,6,7];
+    let choices = mapConfig.choicePool;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     

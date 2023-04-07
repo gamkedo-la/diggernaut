@@ -22,6 +22,7 @@ const playScreen = {
         player.update();
         ui.update();
         actors.forEach(actor => actor.update());
+        if(Key.justReleased(Key.m)){signal.dispatch('gotoMap')}
 
     },
 
