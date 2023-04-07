@@ -15,6 +15,18 @@ const rooms = {
             2,2,2,2,2,2,2,2,2,2
         ]
     },
+    
+    "c-shelter": {
+        width: 4,
+        height: 4,
+        data: [
+            1,1,1,1,
+            1,0,0,0,
+            1,0,0,1,
+            1,1,1,1
+        ]
+    },
+
     "columns": {
         width: 6,
         height: 20,

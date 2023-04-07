@@ -47,6 +47,43 @@ class TileMap {
         }
     }
     
+    //tileRaycast is a function that takes a start point and an end point in pixels and returns the first tile it hits.
+    tileRaycast(x1, y1, x2, y2){
+        let tx1 = Math.floor(x1 / this.tileWidth);
+        let ty1 = Math.floor(y1 / this.tileHeight);
+        let tx2 = Math.floor(x2 / this.tileWidth);
+        let ty2 = Math.floor(y2 / this.tileHeight);
+        let dx = Math.abs(tx2 - tx1);
+        let dy = Math.abs(ty2 - ty1);
+        let sx = (tx1 < tx2) ? 1 : -1;
+        let sy = (ty1 < ty2) ? 1 : -1;
+        let err = dx - dy;
+        let e2;
+        let x = tx1;
+        let y = ty1;
+        let index = this.getIndexAtPosition(x, y);
+        while (true) {
+            if (this.data[index] !== 0) {
+                return {x: x, y: y, index: index};
+            }
+            if (x === tx2 && y === ty2) {
+                break;
+            }
+            e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y += sy;
+            }
+            index = this.getIndexAtPosition(x, y);
+        }
+        return false;
+        //return {x: x, y: y, index: index};
+    }
+
 
     pixelToTileIndex(x, y){
         let tx = Math.floor(x / this.tileWidth);

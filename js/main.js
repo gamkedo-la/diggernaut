@@ -46,7 +46,7 @@ function loadingComplete() {
     generateMap(mapConfig);    
     populateMap();
 
-    player = new Player(mapConfig.widthInTiles * mapConfig.tileSize/2, canvas.height/2),
+    player = new Player(mapConfig.widthInTiles * mapConfig.tileSize/2, mapConfig.mapStartY * mapConfig.tileSize - 64),
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
     begin(fps);
@@ -131,13 +131,13 @@ function generateMap(config){
     }
 
     //test of prefab function
-    tileMap.insertPrefab(rooms.room1, 10, 10);
     for(let i = 0; i < 10; i++){
         let x = Math.floor(Math.random() * tileMap.widthInTiles);
         let y = Math.floor(Math.random() * tileMap.heightInTiles);
         tileMap.insertPrefab(rooms.room1, x, y)
     }
 
+    tileMap.insertPrefab(rooms["c-shelter"], 10, 16)
     //columns prefab to test wall jump
     tileMap.insertPrefab(rooms.columns, 20, 20);
 
@@ -147,8 +147,8 @@ function generateMap(config){
 }
 
 function populateMap(){
-    for (let i = 0; i < 4000; i++) {
-        //actors.push(new Ore(Math.random() * tileMap.widthInTiles * tileMap.tileWidth, Math.random() * tileMap.heightInTiles * tileMap.tileHeight));
+    for (let i = 0; i < 100; i++) {
+        actors.push(new Flyer(Math.random() * tileMap.widthInTiles * tileMap.tileWidth, Math.random() * mapConfig.tileSize * mapConfig.mapStartY));
     }
 }
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);
