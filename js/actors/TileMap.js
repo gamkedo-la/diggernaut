@@ -14,7 +14,8 @@ class TileMap {
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
     this.data = new Uint16Array(widthInTiles * heightInTiles);
-    this.damagedTiles = {} // {[tileIndex]: {damage: 10}, [tileIndex]: {damage: 35}}
+    this.damagedTiles = {} // {[tileIndex]: 10, [tileIndex]: 35}
+    this.shakingTiles = {} // {[tileIndex]: 0}
     }
 
     getTileAtPosition(tx, ty){
@@ -194,6 +195,16 @@ class TileMap {
     
         for(let i = left; i < right; i++){
             for(let j = top; j < bottom; j++){    
+                    const index = this.getIndexAtPosition(i, j)
+                    let dx = 0;
+                    let dy = 0;
+                    if (this.shakingTiles[index] > 0) {
+                        dx = Math.floor(2 * Math.random()) % 2 === 0 ? -1 : 1;
+                        dy = Math.floor(2 * Math.random()) % 2 === 0 ? -1 : 1;
+                        this.shakingTiles[index]--;
+                    } else {
+                        delete this.shakingTiles[index];
+                    }
                     canvasContext.drawImage(
                         img['basic-tiles'],
                         //TODO: pull out into drawTile function
@@ -203,8 +214,8 @@ class TileMap {
                         Math.floor(this.data[j*this.widthInTiles + i] / 10) * this.tileHeight,
                         this.tileWidth,
                         this.tileHeight,
-                        (i) * this.tileWidth - view.x,
-                        (j) * this.tileHeight - view.y,
+                        (i) * this.tileWidth - view.x + dx,
+                        (j) * this.tileHeight - view.y + dy,
                         this.tileWidth,
                         this.tileHeight
                     );   
@@ -224,13 +235,15 @@ class TileMap {
         if (!this.damagedTiles[tileIndex]) {
             this.damagedTiles[tileIndex] = 0;
         }
+        
+        if (this.damagedTiles[tileIndex] < 100) this.shakingTiles[tileIndex] = 4;
 
         this.damagedTiles[tileIndex] += damage;
-
         return this.damagedTiles[tileIndex];
     }
 
     replaceTileAt (tileIndex, tileType) {
         this.data[tileIndex] = tileType;
+        if (tileType === TILE_EMPTY && this.shakingTiles[tileIndex]) delete this.shakingTiles[tileIndex];
     }
 }
