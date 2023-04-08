@@ -14,7 +14,7 @@ class TileMap {
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
     this.data = new Uint16Array(widthInTiles * heightInTiles);
-
+    this.damagedTiles = {} // {[tileIndex]: {damage: 10}, [tileIndex]: {damage: 35}}
     }
 
     getTileAtPosition(tx, ty){
@@ -220,4 +220,17 @@ class TileMap {
         }
     }
 
+    damageTileAt (tileIndex, damage) {
+        if (!this.damagedTiles[tileIndex]) {
+            this.damagedTiles[tileIndex] = 0;
+        }
+
+        this.damagedTiles[tileIndex] += damage;
+
+        return this.damagedTiles[tileIndex];
+    }
+
+    replaceTileAt (tileIndex, tileType) {
+        this.data[tileIndex] = tileType;
+    }
 }

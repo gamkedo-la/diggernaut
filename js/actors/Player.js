@@ -388,7 +388,12 @@ class Player {
             switch(startTileValue){
                 case TILE_DIRT : {
                     emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
-                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                    const damage = tileMap.damageTileAt(startTileIndex, 100);
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // Do something with partially damaged Tiles...
+                    }
                     break;
                 }
                 case TILE_UNBREAKABLE_METAL : {
