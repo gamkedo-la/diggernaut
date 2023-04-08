@@ -405,14 +405,24 @@ class Player {
                     break;
                 }
                 case TILE_UNOBTANIUM : {
-                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                    const damage = tileMap.damageTileAt(startTileIndex, 100);
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // Do something with partially damaged Tiles...
+                    }
                     audio.playSound(sounds.pickup);
                     let i = 10;
                     while(--i){ actors.push(new Ore(spawnX, spawnY))}
                     break;   
                 }
                 case TILE_DENSE_UNOBTANIUM : {
-                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                    const damage = tileMap.damageTileAt(startTileIndex, 100);
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // Do something with partially damaged Tiles...
+                    }
                     audio.playSound(sounds.super_pickup);
                     let i = 40;
                     while(--i){ actors.push(new Ore(spawnX, spawnY))}
@@ -429,13 +439,23 @@ class Player {
                         let tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
                         //emit some particles at the tile location
                         emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
-                        tileMap.data[tileIndex] = TILE_EMPTY;
+                        const damage = tileMap.damageTileAt(startTileIndex, 100);
+                        if (damage >= 100) {
+                            tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                        } else {
+                            // Do something with partially damaged Tiles...
+                        }
                     }
                     break;
                 }
 
                 default: {
-                    tileMap.data[startTileIndex] = TILE_EMPTY;
+                    const damage = tileMap.damageTileAt(startTileIndex, 100);
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // Do something with partially damaged Tiles...
+                    }
                 }
             }
         }
