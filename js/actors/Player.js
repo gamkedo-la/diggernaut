@@ -71,7 +71,7 @@ class Player {
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
-            digCooldown: 2,
+            digCooldown: 7,
             healthMax: 100,
             moveLeftCooldown: 20,
             moveRightCooldown: 20,
@@ -417,15 +417,13 @@ class Player {
                     break;   
                 }
                 case TILE_DENSE_UNOBTANIUM : {
-                    const damage = tileMap.damageTileAt(startTileIndex, 100);
+                    const damage = tileMap.damageTileAt(startTileIndex, 25);
                     if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                        tileMap.replaceTileAt(startTileIndex, TILE_UNOBTANIUM);
                     } else {
-                        // Do something with partially damaged Tiles...
-                    }
-                    audio.playSound(sounds.super_pickup);
-                    let i = 40;
-                    while(--i){ actors.push(new Ore(spawnX, spawnY))}
+                        audio.playSound(sounds.super_pickup);
+                        let i = 10;
+                        while(--i){ actors.push(new Ore(spawnX, spawnY))}                    }
                     break;  
                 }
                 case TILE_EXPLOSIVE : {
