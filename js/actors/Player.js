@@ -347,6 +347,97 @@ class Player {
         this.xVel = 0;
     }
 
+    getDigPropsForIndex (tileIndex) {
+        return {
+            spawnX: tileMap.tileIndexToPixelX(tileIndex) + tileMap.tileWidth || 0,
+            spawnY: tileMap.tileIndexToPixelY(tileIndex) + tileMap.tileHeight || 0,
+            startTileValue: tileMap.data[tileIndex] || 0
+        }
+    }
+
+    digWithProps (startTileValue, startTileIndex, spawnX, spawnY, dmg) {
+        switch(startTileValue){
+            case TILE_DIRT : {
+                emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
+                
+                tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // Do something with partially damaged Tiles...
+                    }
+                });
+                break;
+            }
+            case TILE_UNBREAKABLE_METAL : {
+                audio.playSound(sounds.shovel_on_metal);
+                break;
+            }
+            case TILE_UNBREAKABLE_STONE : {
+                audio.playSound(sounds.shovel_on_metal);
+                break;
+            }
+            case TILE_UNOBTANIUM : {
+                tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // Do something with partially damaged Tiles...
+                    }
+
+                    audio.playSound(sounds.pickup);
+                    let i = 10;
+                    while(--i){ actors.push(new Ore(spawnX, spawnY))}    
+                });
+                break;   
+            }
+            case TILE_DENSE_UNOBTANIUM : {
+                tileMap.damageTileAt(startTileIndex, dmg || 25, (damage) => {
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_UNOBTANIUM);
+                    } else {
+                        audio.playSound(sounds.super_pickup);
+                        let i = 10;
+                        while(--i){ actors.push(new Ore(spawnX, spawnY))}
+                    }                            
+                });
+                break;  
+            }
+            case TILE_EXPLOSIVE : {
+                //destroy a 3x3 area around the explosive tile
+                //todo: refactor to explode(radius) function, so we can leave ore behind and handle effects on other tiles
+                tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
+                    let i = 25;
+                    while(--i){
+                        const x = i % 5;
+                        const y = Math.floor(i / 5);
+                        const tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
+                        //emit some particles at the tile location
+                        emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
+                        if (damage >= 100) {
+                            tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                            const newProps = this.getDigPropsForIndex(tileIndex);
+                            this.digWithProps(newProps.startTileValue, tileIndex, newProps.spawnX, newProps.spawnY, 100);
+                        } else {
+                            // Do something with partially damaged explosive tile...
+                        }
+                    }    
+                });
+                break;
+            }
+
+            default: {
+                const damage = tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
+                    if (damage >= 100) {
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // Do something with partially damaged Tiles...
+                    }
+                });
+            }
+        }
+    }
+
     dig(direction) {
         this.play("dig")
         if (!this.canDig) return;
@@ -385,77 +476,7 @@ class Player {
         }
         
         if (startTileValue > 0) {
-            switch(startTileValue){
-                case TILE_DIRT : {
-                    emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
-                    const damage = tileMap.damageTileAt(startTileIndex, 100);
-                    if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // Do something with partially damaged Tiles...
-                    }
-                    break;
-                }
-                case TILE_UNBREAKABLE_METAL : {
-                    audio.playSound(sounds.shovel_on_metal);
-                    break;
-                }
-                case TILE_UNBREAKABLE_STONE : {
-                    audio.playSound(sounds.shovel_on_metal);
-                    break;
-                }
-                case TILE_UNOBTANIUM : {
-                    const damage = tileMap.damageTileAt(startTileIndex, 100);
-                    if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // Do something with partially damaged Tiles...
-                    }
-                    audio.playSound(sounds.pickup);
-                    let i = 10;
-                    while(--i){ actors.push(new Ore(spawnX, spawnY))}
-                    break;   
-                }
-                case TILE_DENSE_UNOBTANIUM : {
-                    const damage = tileMap.damageTileAt(startTileIndex, 25);
-                    if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_UNOBTANIUM);
-                    } else {
-                        audio.playSound(sounds.super_pickup);
-                        let i = 10;
-                        while(--i){ actors.push(new Ore(spawnX, spawnY))}                    }
-                    break;  
-                }
-                case TILE_EXPLOSIVE : {
-                    //destroy a 3x3 area around the explosive tile
-                    //todo: refactor to explode(radius) function, so we can leave ore behind and handle effects on other tiles
-                    
-                    let i = 25;
-                    while(--i){
-                        let x = i % 5;
-                        let y = Math.floor(i / 5);
-                        let tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
-                        //emit some particles at the tile location
-                        emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
-                        const damage = tileMap.damageTileAt(tileIndex, 100);
-                        if (damage >= 100) {
-                            tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
-                        } else {
-                            // Do something with partially damaged Tiles...
-                        }
-                    }
-                    break;
-                }
-
-                default: {
-                    const damage = tileMap.damageTileAt(startTileIndex, 100);
-                    if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // Do something with partially damaged Tiles...
-                    }
-                }
-            }
+            this.digWithProps(startTileValue, startTileIndex, spawnX, spawnY)
         }
     }
 

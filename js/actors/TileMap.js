@@ -15,7 +15,10 @@ class TileMap {
     this.tileHeight = tileHeight;
     this.data = new Uint16Array(widthInTiles * heightInTiles);
     this.damagedTiles = {} // {[tileIndex]: 10, [tileIndex]: 35}
-    this.shakingTiles = {} // {[tileIndex]: 0}
+    this.shakingTiles = {} // {[tileIndex]: {timeRemaining: 0, callback: callbackFunction}}
+    this.standardShakeTime = 4;
+    this.explosiveShakeTime = 42;
+    this.whiteExplosionFrames = [0, 2, 5, 6, 10, 11, 12, 17, 18, 19, 20, 26, 27, 28, 29, 30, 37, 38, 39, 40, 41, 42]
     }
 
     getTileAtPosition(tx, ty){
@@ -195,16 +198,31 @@ class TileMap {
     
         for(let i = left; i < right; i++){
             for(let j = top; j < bottom; j++){    
-                    const index = this.getIndexAtPosition(i, j)
-                    let dx = 0;
-                    let dy = 0;
-                    if (this.shakingTiles[index] > 0) {
+                const index = this.getIndexAtPosition(i, j)
+                let dx = 0;
+                let dy = 0;
+                if (this.shakingTiles[index]) {
+                    if (this.shakingTiles[index].timeRemaining > 0) {
                         dx = Math.floor(2 * Math.random()) % 2 === 0 ? -1 : 1;
                         dy = Math.floor(2 * Math.random()) % 2 === 0 ? -1 : 1;
-                        this.shakingTiles[index]--;
+                        this.shakingTiles[index].timeRemaining--;
                     } else {
+                        this.shakingTiles[index].callback(this.damagedTiles[index] || 100);
                         delete this.shakingTiles[index];
-                    }
+                    }    
+                }
+
+                if (this.data[index] === TILE_EXPLOSIVE && this.shakingTiles[index] && this.whiteExplosionFrames.includes(this.shakingTiles[index].timeRemaining)) {
+                    canvasContext.save();
+                    canvasContext.fillStyle = 'white';
+                    canvasContext.fillRect(
+                        (i) * this.tileWidth - view.x + dx,
+                        (j) * this.tileHeight - view.y + dy,
+                        this.tileWidth,
+                        this.tileHeight
+                    );
+                    canvasContext.restore();
+                } else {
                     canvasContext.drawImage(
                         img['basic-tiles'],
                         //TODO: pull out into drawTile function
@@ -218,7 +236,8 @@ class TileMap {
                         (j) * this.tileHeight - view.y + dy,
                         this.tileWidth,
                         this.tileHeight
-                    );   
+                    );       
+                }
             }
         }
     }
@@ -231,12 +250,17 @@ class TileMap {
         }
     }
 
-    damageTileAt (tileIndex, damage) {
+    damageTileAt (tileIndex, damage, callback) {
         if (!this.damagedTiles[tileIndex]) {
             this.damagedTiles[tileIndex] = 0;
         }
         
-        if (this.damagedTiles[tileIndex] < 100) this.shakingTiles[tileIndex] = 4;
+        if (this.damagedTiles[tileIndex] < 100) {
+            this.shakingTiles[tileIndex] = {
+                timeRemaining: this.data[tileIndex] === TILE_EXPLOSIVE ? this.explosiveShakeTime : this.standardShakeTime,
+                callback
+            };
+        }
 
         this.damagedTiles[tileIndex] += damage;
         return this.damagedTiles[tileIndex];
@@ -244,6 +268,7 @@ class TileMap {
 
     replaceTileAt (tileIndex, tileType) {
         this.data[tileIndex] = tileType;
-        if (tileType === TILE_EMPTY && this.shakingTiles[tileIndex]) delete this.shakingTiles[tileIndex];
+        delete this.damagedTiles[tileIndex];
+        delete this.shakingTiles[tileIndex];
     }
 }
