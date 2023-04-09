@@ -437,9 +437,9 @@ class Player {
                         let tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
                         //emit some particles at the tile location
                         emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
-                        const damage = tileMap.damageTileAt(startTileIndex, 100);
+                        const damage = tileMap.damageTileAt(tileIndex, 100);
                         if (damage >= 100) {
-                            tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                            tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
                         } else {
                             // Do something with partially damaged Tiles...
                         }
