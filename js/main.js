@@ -144,6 +144,10 @@ function generateMap(config){
     //fill bottom half of map with exploding blocks
     tileMap.tileFillRect(0, tileMap.heightInTiles/2, tileMap.widthInTiles, tileMap.heightInTiles/2, 6);
 
+    //fill two columns at left and right edge with unbreakable blocks
+    tileMap.tileFillRect(0, 0, 1, tileMap.heightInTiles, 3);
+    tileMap.tileFillRect(tileMap.widthInTiles-1, 0, 1, tileMap.heightInTiles, 3);
+
 }
 
 function populateMap(){
