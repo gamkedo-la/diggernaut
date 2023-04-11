@@ -408,6 +408,7 @@ class Player {
                 //destroy a 3x3 area around the explosive tile
                 //todo: refactor to explode(radius) function, so we can leave ore behind and handle effects on other tiles
                 tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
+                    audio.playSound(sounds.explosion);
                     let i = 25;
                     while(--i){
                         const x = i % 5;

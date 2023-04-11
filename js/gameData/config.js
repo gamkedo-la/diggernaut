@@ -320,6 +320,9 @@ const soundList = [
     { name: "super_pickup", url: "snd/super_pickup.ogg" },
     { name: "rock_crumble", url: "snd/rock_crumble_1.ogg" },
     { name: "rock_crumble", url: "snd/rock_crumble_2.ogg" },
-    { name: "rock_crumble", url: "snd/rock_crumble_3.ogg" }
+    { name: "rock_crumble", url: "snd/rock_crumble_3.ogg" },
+    { name: "explosion", url: "snd/explosion_1.ogg" },
+    { name: "explosion", url: "snd/explosion_2.ogg" },
+    { name: "explosion", url: "snd/explosion_3.ogg" }
 ]
 
