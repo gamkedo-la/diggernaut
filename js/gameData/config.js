@@ -314,8 +314,12 @@ const imageList = [
 const soundList = [
     { name: "test1", url: "snd/test1.mp3" },
     { name: "test2", url: "snd/test2.mp3" },
+    { name: "shovel_on_metal", url: "snd/shovel_on_metal.ogg" },
     { name: "shovel_on_metal", url: "snd/shovel_on_metal_2.ogg" },
     { name: "pickup", url: "snd/pickup.ogg" },
-    { name: "super_pickup", url: "snd/super_pickup.ogg" }
+    { name: "super_pickup", url: "snd/super_pickup.ogg" },
+    { name: "rock_crumble", url: "snd/rock_crumble_1.ogg" },
+    { name: "rock_crumble", url: "snd/rock_crumble_2.ogg" },
+    { name: "rock_crumble", url: "snd/rock_crumble_3.ogg" }
 ]
 

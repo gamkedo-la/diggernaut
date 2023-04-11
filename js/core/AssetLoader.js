@@ -60,7 +60,13 @@ AssetLoader.prototype.loadBuffer = function(url, key) {
           return;
         }
 
-        loader.sounds[key] = buffer;
+        if (!(key in loader.sounds)) {
+          loader.sounds[key] = [ buffer ];
+        }
+        else {
+          loader.sounds[key].push(buffer);
+        }
+        
         console.log('loaded sound: ' + key);
         if (++loader.loadCount == loader.urlList.length){
           console.log('all sounds loaded');

@@ -362,6 +362,7 @@ class Player {
                 
                 tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
                     if (damage >= 100) {
+                        audio.playSound(sounds.rock_crumble)
                         tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
                     } else {
                         // Do something with partially damaged Tiles...

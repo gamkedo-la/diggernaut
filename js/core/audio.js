@@ -105,6 +105,9 @@ const AudioGlobal = function AudioGlobal() {
 //--//Audio playback classes--------------------------------------------------
 	this.playSound = function(buffer, pan = 0, vol = 1, rate = 1, loop = false) {
 		if (!this.initialized) return;
+		if (Array.isArray(buffer)) {
+			buffer = buffer[Math.floor(Math.random()*buffer.length)]
+		}
 
 		var source = audioCtx.createBufferSource();
 		var gainNode = audioCtx.createGain();
