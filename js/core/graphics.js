@@ -76,7 +76,10 @@ function line(x1, y1, x2, y2, color = '#FF00FF') {
     let sx = (x1 < x2) ? 1 : -1;
     let sy = (y1 < y2) ? 1 : -1;
     let err = dx - dy;
+    let tries = canvas.width*3;
     while (true) {
+        tries--;
+        if(tries<0) break;
         pset(x1, y1);
         if ((x1 == x2) && (y1 == y2)) break;
         let e2 = 2 * err;

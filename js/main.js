@@ -49,6 +49,7 @@ function loadingComplete() {
     player = new Player(mapConfig.widthInTiles * mapConfig.tileSize/2, mapConfig.mapStartY * mapConfig.tileSize - 64),
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
+    processURLQuery();
     begin(fps);
 }
 
@@ -160,6 +161,25 @@ window.addEventListener('keydown', function (event) { Key.onKeydown(event); }, f
 window.addEventListener('blur', function (event) { paused = true; }, false);
 window.addEventListener('focus', function (event) { paused = false; }, false);
 
+/*processURLQuery will check to see if there's a query on window location, which could include pre-setting many
+in-game variables to recreate a state, a saved game, or debugging.
+*/
+function processURLQuery(){
+    //check window location for query
+    let query = window.location.search;
+    if(query.length > 0){
+        parsedQuery = new URLSearchParams(query);
+        //if there's a query, check for specific variables
+        setState(parsedQuery);
+    }
+}
 
+function setState(parsedQuery){
+    player_y = parsedQuery.get('playerY');
+    if(player_y){
+        //player.y = player_y;
+        console.log(`player y set to ${player_y}`);
+    }
+}
 
 init();
