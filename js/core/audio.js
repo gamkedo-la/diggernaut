@@ -12,7 +12,7 @@ const DROPOFF_MAX = 500;
 const AudioGlobal = function AudioGlobal() {
 
 	this.initialized = false;
-	var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
+	var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus, compressor;
 	var isMuted;
 	var musicVolume;
 	var soundEffectsVolume;
@@ -31,6 +31,14 @@ const AudioGlobal = function AudioGlobal() {
 		soundEffectsBus = audioCtx.createGain();
 		filterBus = audioCtx.createBiquadFilter();
 		masterBus = audioCtx.createGain();
+		// Create a compressor node
+        compressor = new DynamicsCompressorNode(audioCtx, {
+			threshold: -50,
+			knee: 40,
+			ratio: 12,
+			attack: 0,
+			release: 0.25,
+		  });
 
 		musicVolume = 0.7;
 		soundEffectsVolume = 0.7;
@@ -43,7 +51,8 @@ const AudioGlobal = function AudioGlobal() {
 		musicBus.connect(filterBus);
 		soundEffectsBus.connect(filterBus);
 		filterBus.connect(masterBus);
-		masterBus.connect(audioCtx.destination);
+		masterBus.connect(compressor);
+		compressor.connect(audioCtx.destination);
 		console.log("Audio initialized.");
 		this.initialized = true;
 		callback()
