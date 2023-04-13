@@ -113,6 +113,7 @@ class Player {
     }
 
     update() {
+        //this.updateCollider(this.x, this.y);
         this.applyForces();
         this.handleCollisions();
         this.checkBounds();

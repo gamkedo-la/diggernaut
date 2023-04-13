@@ -179,18 +179,18 @@ function setState(parsedQuery){
     const playerHealth = parsedQuery.get('playerHealth');
     const player_x = parsedQuery.get('playerX');
     if(player_y){
-        player.y = player_y;
+        player.y = parseInt(player_y)
         console.log(`player y set to ${player_y}`);
     }
     if(playerHealth){
-        player.health = playerHealth;
+        player.health = parseInt(playerHealth)
         console.log(`player health set to ${playerHealth}`);
     }
     if(player_x){
-        player.x = player_x;
+        player.x = parseInt(player_x)
         console.log(`player x set to ${player_x}`);
     }
-
+    player.updateCollider(player.x, player.y);
 
 }
 
