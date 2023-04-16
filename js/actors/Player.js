@@ -88,16 +88,9 @@ class Player {
 
         this.gravity = this.limits.gravity
 
-        this.collider = {
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            leftFeeler: { x: 0, y: 0 },
-            rightFeeler: { x: 0, y: 0 },
-            topFeeler: { x: 0, y: 0 },
-            bottomFeeler: { x: 0, y: 0 }
-        }
+        this.collider = new Collider(this.x, this.y, this.width, this.height, {
+            left: 2, right: 2, top: 10, bottom: 6
+        }, 'player')
     }
     draw() {
        this.currentAnimation.render({
@@ -107,11 +100,7 @@ class Player {
         height: 24
     })
         
-        canvasContext.fillStyle = "Red";
-        pset(this.collider.leftFeeler.x - view.x, this.collider.leftFeeler.y - view.y);
-        pset(this.collider.rightFeeler.x - view.x, this.collider.rightFeeler.y - view.y);
-        pset(this.collider.topFeeler.x - view.x, this.collider.topFeeler.y - view.y);
-        pset(this.collider.bottomFeeler.x - view.x, this.collider.bottomFeeler.y - view.y);
+        this.collider.draw()
 
         this.diggerang.draw();
     }
@@ -130,12 +119,8 @@ class Player {
         this.xAccel = 0;
         this.yAccel = 0;
         if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
-        if(this.wallSliding) { 
-            emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.sparks);
-         }
-         if(this.yvel > this.limits.hurtVelocity-2){
-            emitParticles(this.x + rand(0,12), this.y, particleDefinitions.fallSparks);
-         }
+        if(this.wallSliding) this.collider.emit(particleDefinitions.sparks);
+         if(this.yvel > this.limits.hurtVelocity-2) emitParticles(this.x + rand(0,12), this.y, particleDefinitions.fallSparks);
         this.handleAnimationState();
 
         this.diggerang.update(this);
@@ -191,20 +176,7 @@ class Player {
     updateCollider(x, y) {
         this.x = x;
         this.y = y;
-        this.collider.top = this.y
-        this.collider.bottom = this.y + this.height
-        this.collider.left = this.x
-        this.collider.right = this.x + this.width
-
-        this.collider.leftFeeler.x = this.collider.left - 2;
-        this.collider.leftFeeler.y = this.y + this.height / 2;
-        this.collider.rightFeeler.x = this.collider.right + 2;
-        this.collider.rightFeeler.y = this.y + this.height / 2;
-        this.collider.topFeeler.x = this.x + this.width / 2;
-        this.collider.topFeeler.y = this.collider.top - 10;
-        this.collider.bottomFeeler.x = this.x + this.width / 2;
-        this.collider.bottomFeeler.y = this.collider.bottom + 6;
-
+        this.collider.update(x, y);
     }
 
     applyForces() {
@@ -251,7 +223,7 @@ class Player {
             let increment = this.xvel / resolution;
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x + increment, this.y);
-                if (this.tileCollisionCheck(0)) {
+                if (this.collider.tileCollisionCheck(0)) {
                     this.x = this.previousX;
                     this.updateCollider(this.x, this.y);
                     this.xvel = 0;
@@ -266,7 +238,7 @@ class Player {
             let increment = this.yvel / resolution;
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x, this.y + increment);
-                if (this.tileCollisionCheck(0)) {
+                if (this.collider.tileCollisionCheck(0)) {
                     if(this.yvel > this.limits.hurtVelocity){
                         this.hurt(10);
                     }
@@ -282,23 +254,6 @@ class Player {
         this.updateCollider(this.x, this.y);
     }
 
-    tileCollisionCheck(tileCheck) {
-
-        let left = Math.floor(this.collider.left),
-            right = Math.floor(this.collider.right),
-            top = Math.floor(this.collider.top),
-            bottom = Math.floor(this.collider.bottom)
-
-        //check for collision with tile
-        //check tile index of each corner of the player
-        let topLeft = tileMap.data[tileMap.pixelToTileIndex(left, top)];
-        let topRight = tileMap.data[tileMap.pixelToTileIndex(right, top)];
-        let bottomLeft = tileMap.data[tileMap.pixelToTileIndex(left, bottom)];
-        let bottomRight = tileMap.data[tileMap.pixelToTileIndex(right, bottom)];
-
-        return (topLeft > tileCheck || topRight > tileCheck || bottomLeft > tileCheck || bottomRight > tileCheck);
-
-    }
     tileOverlapCheck(tileIndex) {
         let playerTileIndex = tileMap.pixelToTileIndex(this.x, this.y);
         return (playerTileIndex == tileIndex);
@@ -490,48 +445,15 @@ class Player {
     dig(direction) {
         this.play("dig")
         if (!this.canDig) return;
-        let startTileValue = 0;
-        let startTileIndex = 0;
-        let spawnX = 0;
-        let spawnY = 0;
-        switch (direction) {
-            case LEFT:
-                startTileIndex = tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y);
-                spawnX = this.collider.leftFeeler.x;
-                spawnY = this.collider.leftFeeler.y;
-                startTileValue = tileMap.data[startTileIndex];
-                break;
-
-            case RIGHT:
-                startTileIndex = tileMap.pixelToTileIndex(this.collider.rightFeeler.x, this.collider.rightFeeler.y);
-                spawnX = this.collider.leftFeeler.x;
-                spawnY = this.collider.leftFeeler.y;
-                startTileValue = tileMap.data[startTileIndex];
-                break;
-
-            case DOWN:
-                startTileIndex = tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y);
-                spawnX = this.collider.leftFeeler.x;
-                spawnY = this.collider.leftFeeler.y;
-                startTileValue = tileMap.data[startTileIndex];
-                break;
-
-            case UP:
-                startTileIndex = tileMap.pixelToTileIndex(this.collider.topFeeler.x, this.collider.topFeeler.y);
-                spawnX = this.collider.topFeeler.x;
-                spawnY = this.collider.topFeeler.y;
-                startTileValue = tileMap.data[startTileIndex];
-                break;
-        }
+        const { startTileIndex, spawnX, spawnY } = this.collider.getTileIndexAndSpawnPos(direction);
+        const startTileValue = tileMap.data[startTileIndex] || 0;
         
-        if (startTileValue > 0) {
-            this.digWithProps(startTileValue, startTileIndex, spawnX, spawnY)
-        }
+        if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, spawnX, spawnY);
     }
 
     hurt(damage) {
         screenShake(5);
-        emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.hurt);
+        this.collider.emit(particleDefinitions.hurt);
         this.health -= damage;
         if (this.health <= 0) {
             this.health = 0;
@@ -603,17 +525,13 @@ class Player {
         this.yVel -= 0.1;
         this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;
-        emitParticles(this.collider.bottomFeeler.x, this.collider.bottom, particleDefinitions.sparks);
+        this.collider.emit(particleDefinitions.sparks);
     }
 
     jump() {
         this.yvel = -this.speed * this.limits.jumpMultiplier;
         this.play("jump");
-        emitParticles(
-            this.collider.bottomFeeler.x,
-            this.collider.bottom,
-            particleDefinitions.jumpPuff
-            );
+        this.collider.emit(particleDefinitions.jumpPuff);
     }
 
     play(animationName){
