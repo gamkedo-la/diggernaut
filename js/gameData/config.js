@@ -318,11 +318,16 @@ const soundList = [
     { name: "shovel_on_metal", url: "snd/shovel_on_metal_2.ogg" },
     { name: "pickup", url: "snd/pickup.ogg" },
     { name: "super_pickup", url: "snd/super_pickup.ogg" },
-    { name: "rock_crumble", url: "snd/rock_crumble_1.ogg" },
-    { name: "rock_crumble", url: "snd/rock_crumble_2.ogg" },
-    { name: "rock_crumble", url: "snd/rock_crumble_3.ogg" },
-    { name: "explosion", url: "snd/explosion_1.ogg" },
-    { name: "explosion", url: "snd/explosion_2.ogg" },
-    { name: "explosion", url: "snd/explosion_3.ogg" }
+    { name: "rock_crumble_1", url: "snd/rock_crumble_1.ogg" },
+    { name: "rock_crumble_2", url: "snd/rock_crumble_2.ogg" },
+    { name: "rock_crumble_3", url: "snd/rock_crumble_3.ogg" },
+    { name: "explosion_1", url: "snd/explosion_1.ogg" },
+    { name: "explosion_2", url: "snd/explosion_2.ogg" },
+    { name: "explosion_3", url: "snd/explosion_3.ogg" },
+    { name: "boomerang_whoosh", url: "snd/boomerang_repeat.ogg" },
+
 ]
+
+const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3" ]
+const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
 

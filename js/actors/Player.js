@@ -22,6 +22,8 @@ class Player {
         this.coyoteCooldown = 0;
         this.wallSliding = false;
         this.helicopterCapacity = 120;
+        this.facing = LEFT;
+        this.diggerang = new Diggerang(this.x, this.y);
         this.inventory = {
             ore: 0,
         }
@@ -110,10 +112,11 @@ class Player {
         pset(this.collider.rightFeeler.x - view.x, this.collider.rightFeeler.y - view.y);
         pset(this.collider.topFeeler.x - view.x, this.collider.topFeeler.y - view.y);
         pset(this.collider.bottomFeeler.x - view.x, this.collider.bottomFeeler.y - view.y);
+
+        this.diggerang.draw();
     }
 
     update() {
-        //this.updateCollider(this.x, this.y);
         this.applyForces();
         this.handleCollisions();
         this.checkBounds();
@@ -135,7 +138,7 @@ class Player {
          }
         this.handleAnimationState();
 
-        //emitParticles(this.x, this.y, particleDefinitions.sparks)
+        this.diggerang.update(this);
     }
 
     handleInput() {
@@ -182,6 +185,7 @@ class Player {
         if (Key.justReleased(Key.z)) { this.digCooldown = 0; }
         if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
         if (Key.justReleased(Key.i)) { signal.dispatch('inventory'); }
+        if (Key.justReleased(Key.x)) { this.throw() }
     }
 
     updateCollider(x, y) {
@@ -225,8 +229,10 @@ class Player {
         this.currentAnimation.update();
         if(this.xvel > 0) {
             this.currentAnimation = this.spritesheet.animations["walkRight"];
+            this.facing = RIGHT;
         } else if(this.xvel < 0) {
             this.currentAnimation = this.spritesheet.animations["walkLeft"];
+            this.facing = LEFT;
         } else {
             this.currentAnimation = this.spritesheet.animations["idle"];
         }
@@ -363,7 +369,7 @@ class Player {
                 
                 tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
                     if (damage >= 100) {
-                        audio.playSound(sounds.rock_crumble)
+                        audio.playSound(sounds[randChoice(rock_crumbles)])
                         tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
                     } else {
                         // Do something with partially damaged Tiles...
@@ -398,7 +404,7 @@ class Player {
                     if (damage >= 100) {
                         tileMap.replaceTileAt(startTileIndex, TILE_UNOBTANIUM);
                     } else {
-                        audio.playSound(sounds.super_pickup);
+                        audio.playSound(sounds.super_pickup, 1, 0.1);
                         let i = 10;
                         while(--i){ actors.push(new Ore(spawnX, spawnY))}
                     }                            
@@ -409,7 +415,7 @@ class Player {
                 //destroy a 3x3 area around the explosive tile
                 //TODO: refactor to explode(radius) function, so we can leave ore behind and handle effects on other tiles
                 tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
-                    audio.playSound(sounds.explosion);
+                    audio.playSound( sounds[ randChoice(explosions) ] );
                     let i = 25;
                     while(--i){
                         const x = i % 5;
@@ -520,8 +526,30 @@ class Player {
     }
 
     throw() {
-        //TODO: implement throwing
-    }
+        if (this.diggerang.active) return;
+
+        switch(this.facing){
+            case RIGHT: {
+                this.diggerang.x = this.x;
+                this.diggerang.y = this.y;
+                this.diggerang.velocityX = 10; // Set the initial horizontal velocity
+                this.diggerang.velocityY = -5; // Set the initial vertical velocity
+                this.diggerang.active = true;
+                this.diggerang.returning = false;
+            }
+            break;
+            case LEFT: {
+                this.diggerang.x = this.x;
+                this.diggerang.y = this.y;
+                this.diggerang.velocityX = -10; // Set the initial horizontal velocity
+                this.diggerang.velocityY = -5; // Set the initial vertical velocity
+                this.diggerang.active = true;
+                this.diggerang.returning = false;
+            }
+            break;
+        }
+        
+      }
 
     helicopter() {
         if (this.helicopterCapacity <= 0) return;

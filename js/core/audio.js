@@ -41,7 +41,7 @@ const AudioGlobal = function AudioGlobal() {
 		  });
 
 		musicVolume = 0.7;
-		soundEffectsVolume = 0.7;
+		soundEffectsVolume = 0.1;
 
 		filterBus.frequency.value = FILTER_MAX;
 
