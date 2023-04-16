@@ -383,6 +383,36 @@ class Player {
                 });
                 break;
             }
+            case TILE_ROCK : {
+                // TODO: Update this to be different for Rocks
+                emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
+                
+                tileMap.damageTileAt(startTileIndex, dmg || 50, (damage) => {
+                    if (damage >= 100) {
+                        // Do we have/want a different sound for diggin in rock than for dirt?
+                        audio.playSound(sounds[randChoice(rock_crumbles)])
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // TODO: Play a sound for parially damaged rock
+                    }
+                });
+                break;
+            }
+            case TILE_DENSE_ROCK : {
+                // TODO: Update this to be different for Dense Rocks
+                emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
+                
+                tileMap.damageTileAt(startTileIndex, dmg || 35, (damage) => {
+                    if (damage >= 100) {
+                        // Do we have/want a different sound for diggin in rock than for dirt?
+                        audio.playSound(sounds[randChoice(rock_crumbles)])
+                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+                    } else {
+                        // TODO: Play a sound for parially damaged rock
+                    }
+                });
+                break;
+            }
             case TILE_UNBREAKABLE_METAL : {
                 audio.playSound(sounds[ randChoice(metal_dings) ]);
                 break;
