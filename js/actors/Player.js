@@ -567,6 +567,9 @@ class Player {
 
     throw() {
         if (this.diggerang.active) return;
+        if (this.inventory.ore < DIGGERANG_COST) return;
+
+        this.inventory.ore -= DIGGERANG_COST;
 
         switch(this.facing){
             case RIGHT: {
@@ -593,6 +596,10 @@ class Player {
 
     helicopter() {
         if (this.helicopterCapacity <= 0) return;
+        if (this.inventory.ore <= 0) return;
+
+        this.inventory.ore--;
+
         this.yVel -= 0.1;
         this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;
