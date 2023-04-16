@@ -5,35 +5,65 @@ signal.addEventListener('gotoPlay', function (event) { gameState = GAMESTATE_PLA
 signal.addEventListener('gameOver', gameOver);
 signal.addEventListener('titleScreen', gotoTitleScreen);
 signal.addEventListener('creditScreen', gotoCreditScreen);
-signal.addEventListener('gotoMap', function (event) { gameState = GAMESTATE_MAP; mapScreen.reset() }, false);
+signal.addEventListener('gotoMap', gotoMap);
 
-signal.addEventListener('returnToGame', function (event) { gameState = GAMESTATE_PLAY; }, false);
+signal.addEventListener('returnToGame', returnToGame);
 signal.addEventListener('gameWon', function (event) { gameState = GAMESTATE_CREDITS; }, false);
-signal.addEventListener('inventory', function (event) { gameState = GAMESTATE_INVENTORY; }, false);
-signal.addEventListener('pause', function (event) { gameState = GAMESTATE_INVENTORY }, false);
+signal.addEventListener('inventory', gotoInventory);
+signal.addEventListener('pause', gotoInventory);
 
 
 
 function startGame(event){
-    console.log('startGame triggered');
-    playScreen.reset();
-    gameState = GAMESTATE_PLAY;
+    startTransition(() => {
+        console.log('startGame triggered');
+        playScreen.reset();
+        gameState = GAMESTATE_PLAY;
+    });
+}
+
+function returnToGame(event){
+    startTransition(() => {
+        console.log('returnToGame triggered');
+        gameState = GAMESTATE_PLAY;
+    });
+}
+
+function gotoInventory(event){
+    startTransition(() => {
+        console.log('inventory triggered');
+        gameState = GAMESTATE_INVENTORY;
+    });
+}
+
+function gotoMap(event){
+    startTransition(() => {
+        console.log('map triggered');
+        gameState = GAMESTATE_MAP;
+        mapScreen.reset();
+    });
 }
 
 function gameOver(event){
-    console.log('gameOver triggered');
-    gameOverScreen.gameEndState = event.detail;
-    gameState = GAMESTATE_GAME_OVER;
+    startTransition(() => {
+        console.log('gameOver triggered');
+        gameOverScreen.gameEndState = event.detail;
+        gameState = GAMESTATE_GAME_OVER;
+    });
 }
 
 function gotoTitleScreen(event){
-    console.log('gotoTitleScreen triggered');
-    gameState = GAMESTATE_TITLE;
+    startTransition(() => {
+        console.log('gotoTitleScreen triggered');
+        gameState = GAMESTATE_TITLE;
+    });
 }
 
 function gotoCreditScreen(event){
-    console.log('gotoCreditScreen triggered');
-    gameState = GAMESTATE_CREDITS;
+    startTransition(() => {
+        console.log('gotoCreditScreen triggered');
+        gameState = GAMESTATE_CREDITS;
+    });
 }
 
 function emitParticles(x, y, definition){
@@ -42,3 +72,4 @@ function emitParticles(x, y, definition){
         actors.push(particle);
     }
 }
+

@@ -193,5 +193,6 @@ function setState(parsedQuery){
     player.updateCollider(player.x, player.y);
 
 }
+  
 
 init();

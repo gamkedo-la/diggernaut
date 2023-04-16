@@ -6,6 +6,9 @@ const inventoryScreen = {
         
         gameFont.drawText("PAUSED - INVENTORY", { x: 30, y: 70 }, 0, 1, 3);
         gameFont.drawText("Press P or I to return to game ", { x: 90, y: 150 }, 0, 1);
+
+        drawTransition();
+        
     },
     update: function () {
         if (Key.justReleased(Key.i)) { signal.dispatch('returnToGame'); }

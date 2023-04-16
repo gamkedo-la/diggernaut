@@ -14,6 +14,8 @@ const playScreen = {
         player.draw();
         actors.forEach(actor => actor.draw());
         ui.draw();
+        
+        drawTransition();
             
     },
     update: function () {
