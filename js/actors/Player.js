@@ -384,11 +384,11 @@ class Player {
                 break;
             }
             case TILE_UNBREAKABLE_METAL : {
-                audio.playSound(sounds.shovel_on_metal);
+                audio.playSound(sounds[ randChoice(metal_dings) ]);
                 break;
             }
             case TILE_UNBREAKABLE_STONE : {
-                audio.playSound(sounds.shovel_on_metal);
+                audio.playSound(sounds[ randChoice(metal_dings) ]);
                 break;
             }
             case TILE_UNOBTANIUM : {

@@ -315,7 +315,7 @@ const soundList = [
     { name: "test1", url: "snd/test1.mp3" },
     { name: "test2", url: "snd/test2.mp3" },
     { name: "shovel_on_metal", url: "snd/shovel_on_metal.ogg" },
-    { name: "shovel_on_metal", url: "snd/shovel_on_metal_2.ogg" },
+    { name: "shovel_on_metal_2", url: "snd/shovel_on_metal_2.ogg" },
     { name: "pickup", url: "snd/pickup.ogg" },
     { name: "super_pickup", url: "snd/super_pickup.ogg" },
     { name: "rock_crumble_1", url: "snd/rock_crumble_1.ogg" },
@@ -324,10 +324,13 @@ const soundList = [
     { name: "explosion_1", url: "snd/explosion_1.ogg" },
     { name: "explosion_2", url: "snd/explosion_2.ogg" },
     { name: "explosion_3", url: "snd/explosion_3.ogg" },
-    { name: "boomerang_whoosh", url: "snd/boomerang_repeat.ogg" },
+    { name: "diggerang_whoosh", url: "snd/boomerang_repeat.ogg" },
+    { name: "digging_dirt", url: "snd/digging_dirt.ogg" },
 
 ]
 
-const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3" ]
+//TODO:  shorten digging_dirt sound, make dirt it's own tile type
+const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3", "digging_dirt" ]
 const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
+const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
 
