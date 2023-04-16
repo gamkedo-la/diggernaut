@@ -299,6 +299,12 @@ class Player {
         return (topLeft > tileCheck || topRight > tileCheck || bottomLeft > tileCheck || bottomRight > tileCheck);
 
     }
+    tileOverlapCheck(tileIndex) {
+        let playerTileIndex = tileMap.pixelToTileIndex(this.x, this.y);
+        return (playerTileIndex == tileIndex);
+    }
+
+
     isOnWall() {
         //isOnWall is used to determine if the player is on a wall and can jump off of it
         let left = tileMap.data[tileMap.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y)];
@@ -424,13 +430,17 @@ class Player {
                         //emit some particles at the tile location
                         emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
                         if (damage >= 100) {
+                            
                             tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
                             const newProps = this.getDigPropsForIndex(tileIndex);
                             this.digWithProps(newProps.startTileValue, tileIndex, newProps.spawnX, newProps.spawnY, 100);
+                            if(this.tileOverlapCheck(tileIndex)){
+                                this.hurt(10);
+                            }
                         } else {
                             // Do something with partially damaged explosive tile...
                         }
-                    }    
+                    }
                 });
                 break;
             }
