@@ -10,11 +10,15 @@ const playScreen = {
         clearScreen("black");
         tileMap.draw();
         //player debug text
-        tinyFont.drawText(`player:  x: ${player.x} y: ${player.y} \nyvel: ${player.yvel} xvel: ${player.xvel} health: ${player.health}`, { x: 10, y: 12 }, 0, 0);
+        tinyFont.drawText(
+`player:  x: ${player.x} y: ${player.y}
+yvel: ${player.yvel} xvel: ${player.xvel} health: ${player.health}
+diggerang: x: ${player.diggerang.x} y: ${player.diggerang.y}`,
+ { x: 10, y: 12 }, 0, 0);
         player.draw();
         actors.forEach(actor => actor.draw());
         ui.draw();
-        
+
         drawTransition();
             
     },

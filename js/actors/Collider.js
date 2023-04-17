@@ -59,8 +59,7 @@ class Collider {
         top = Math.floor(this.top),
         bottom = Math.floor(this.bottom)
 
-    //check for collision with tile
-    //check tile index of each corner of the player
+    //check for collision with tile at corners of collider
     const topLeft = tileMap.data[tileMap.pixelToTileIndex(left, top)];
     const topRight = tileMap.data[tileMap.pixelToTileIndex(right, top)];
     const bottomLeft = tileMap.data[tileMap.pixelToTileIndex(left, bottom)];

@@ -23,9 +23,9 @@ class Player {
         this.wallSliding = false;
         this.helicopterCapacity = 120;
         this.facing = LEFT;
-        this.diggerang = new Diggerang(this.x, this.y);
+        this.diggerang = new Diggerang(this.x, this.y-10);
         this.inventory = {
-            ore: 0,
+            ore: 1000,
         }
         
 
@@ -286,6 +286,7 @@ class Player {
         
     
     }
+
     moveRight() {
         this.moveLeftCooldown = 0;
         if(!this.moveRightCooldown){
@@ -497,8 +498,8 @@ class Player {
             case RIGHT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
-                this.diggerang.velocityX = 10; // Set the initial horizontal velocity
-                this.diggerang.velocityY = -5; // Set the initial vertical velocity
+                this.diggerang.xvel = 10; // Set the initial horizontal velocity
+                this.diggerang.yvel = -5; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
@@ -506,8 +507,8 @@ class Player {
             case LEFT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
-                this.diggerang.velocityX = -10; // Set the initial horizontal velocity
-                this.diggerang.velocityY = -5; // Set the initial vertical velocity
+                this.diggerang.xvel = -10; // Set the initial horizontal velocity
+                this.diggerang.yvel = -5; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }

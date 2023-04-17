@@ -271,4 +271,41 @@ class TileMap {
         delete this.damagedTiles[tileIndex];
         delete this.shakingTiles[tileIndex];
     }
+
+    getXinTiles(x){
+        return Math.floor(x/this.tileWidth);
+    }
+
+    getYinTiles(y){
+        return Math.floor(y/this.tileHeight);
+    }
+
+    getCollisionNormal(x, y) {
+        // Calculate the normal based on the neighboring tiles
+        const left = this.collidesWith(x - 1, y);
+        const right = this.collidesWith(x + 1, y);
+        const up = this.collidesWith(x, y - 1);
+        const down = this.collidesWith(x, y + 1);
+    
+        let normalX = left ? 1 : (right ? -1 : 0);
+        let normalY = up ? 1 : (down ? -1 : 0);
+    
+        // Normalize the normal vector
+        if (normalX === 0 && normalY === 0) {
+            normalX = 1;
+            normalY = 0;
+          } else {
+        const length = Math.sqrt(normalX ** 2 + normalY ** 2);
+        normalX /= length;
+        normalY /= length;
+          }
+    
+        return { x: normalX, y: normalY };
+      }
+
+    collidesWith(x, y) {
+        //const tileCoords = this.getTileCoordsAtPosition(x, y);
+        const tileIndex = this.pixelToTileIndex(x,y);
+        return this.data[tileIndex] !== TILE_EMPTY;
+    }
 }
