@@ -28,6 +28,7 @@ const ui = {
         boxStroke: "green",
         barColor: "aquamarine"
     },
+    miniMap: new uiMinimap(),
 
     draw: function () {
         canvasContext.save();
@@ -62,6 +63,9 @@ const ui = {
         canvasContext.fillRect(ui.oreBar.x + 66, ui.oreBar.y, Math.min(100, oreBarWidth), ui.oreBar.height);
 
         canvasContext.restore();
+
+        if (this.miniMap) this.miniMap.draw();
+
     },
 
     update: function () {
