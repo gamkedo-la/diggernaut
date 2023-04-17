@@ -4,8 +4,10 @@ class Diggerang {
     this.y = y;
     this.xvel = 0;
     this.yvel = 0;
-    this.width = 32;
-    this.height = 32;
+    this.previousX = this.x;
+    this.previousY = this.y;
+    this.width = 24;
+    this.height = 24;
     this.active = false;
     this.returning = false;
     this.timeSinceThrown = 0;
@@ -13,16 +15,21 @@ class Diggerang {
     this.sound = audio.playSound(sounds["diggerang_whoosh"], 0, 1, 1, true)
     this.volumeControl = this.sound.volume.gain;
     this.panControl = this.sound.pan.pan;
-    this.collider = new Collider (this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "diggerang");
+    this.collider = new Collider (this.x, this.y, this.width, this.height, {left: -4, right: -4, top: -4, bottom: -4}, "diggerang");
   }
 
   update (player) {
-  
     if (!this.active) {
+      this.x = player.x;
+      this.y = player.y;
+      this.previousX = this.x;
+      this.previousY = this.y;
       this.timeSinceThrown = 0;
       this.volumeControl.value = 0;
       return;
     }
+    this.previousX = this.x;
+    this.previousY = this.y;
     this.timeSinceThrown++;
     this.volumeControl.value = 1;
     //this.collider.update(this.x, this.y);
@@ -33,7 +40,8 @@ class Diggerang {
     
     this.x += this.xvel;
     this.y += this.yvel;
-    this.checkCollisionSimple(tileMap);
+
+    this.handleCollisions();
     
 
     const distanceToPlayer = Math.sqrt (
@@ -103,23 +111,64 @@ class Diggerang {
     }
   }
 
-  checkCollisionSimple(tileMap) {
-    const prevX = this.x - this.xvel;
-    const prevY = this.y - this.yvel;
-    const collidesInX = tileMap.collidesWith(this.x, prevY);
-    const collidesInY = tileMap.collidesWith(prevX, this.y);
+  handleCollisions(resolution = 3) {
+    //handle x and y collisions separately
 
-    if(collidesInX) {
-      this.xvel = -this.xvel;
-      //this.xvel *= 0.98;
-      //this.yvel *= 0.98;
+    //x collision
+    if (this.xvel == 0) {
+        this.collider.update(this.x, this.y);
+    } else {
+        let increment = this.xvel / resolution;
+        for (let i = 0; i < resolution; i++) {
+            this.collider.update(this.x + increment, this.y);
+            if (this.collider.tileCollisionCheck(0)) {
+              
+              this.x = this.previousX;
+              this.collider.update(this.x, this.y);
+              this.xvel = -this.xvel;
+
+              //slow down after bumping into a wall
+              this.xvel *= 0.9;
+              this.yvel *= 0.9;
+              break;
+            }
+        }
+    }
+    //y collision
+    if (this.yvel == 0) {
+        this.collider.update(this.x, this.y);
+    } else {
+        let increment = this.yvel / resolution;
+        for (let i = 0; i < resolution; i++) {
+            this.collider.update(this.x, this.y + increment);
+            if (this.collider.tileCollisionCheck(0)) {
+              // const tileCoords = tileMap.pixelToTileGrid(this.x, this.y + increment);
+
+              // // Calculate the reflection vector
+              // const normal = tileMap.getCollisionNormal(tileCoords.x, tileCoords.y);
+              // const dot = 2 * (this.xvel * normal.x + this.yvel * normal.y);
+              // this.xvel -= dot * normal.x ;
+              // this.yvel -= dot * normal.y ;
+              this.y = this.previousY;
+              this.collider.update(this.x, this.y);
+              this.yvel = -this.yvel;
+
+              //slow down after bumping into a wall
+              this.xvel *= 0.9;
+              this.yvel *= 0.9;
+              break;
+            }
+        }
     }
 
-    if(collidesInY) {
-      this.yvel = -this.yvel;
-      //this.xvel *= 0.98;
-      //t/his.yvel *= 0.98;
+    if (isNaN(this.xvel) || isNaN(this.yvel)) {
+      this.xvel = 0;
+      this.yvel = 0;
+      this.active = false;
+      this.returning = false;
     }
-  }
+
+    this.collider.update(this.x, this.y);
+}
 
 }

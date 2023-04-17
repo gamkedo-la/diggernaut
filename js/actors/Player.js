@@ -498,8 +498,8 @@ class Player {
             case RIGHT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
-                this.diggerang.xvel = 10; // Set the initial horizontal velocity
-                this.diggerang.yvel = -5; // Set the initial vertical velocity
+                this.diggerang.xvel = 6; // Set the initial horizontal velocity
+                this.diggerang.yvel = -3; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
@@ -507,8 +507,8 @@ class Player {
             case LEFT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
-                this.diggerang.xvel = -10; // Set the initial horizontal velocity
-                this.diggerang.yvel = -5; // Set the initial vertical velocity
+                this.diggerang.xvel = -6; // Set the initial horizontal velocity
+                this.diggerang.yvel = -3; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
