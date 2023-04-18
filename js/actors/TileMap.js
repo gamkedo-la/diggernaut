@@ -236,7 +236,18 @@ class TileMap {
                         (j) * this.tileHeight - view.y + dy,
                         this.tileWidth,
                         this.tileHeight
-                    );       
+                    );
+                    if(this.damagedTiles[j*this.widthInTiles + i]){
+                        //canvasContext.save();
+                        canvasContext.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                        canvasContext.fillRect(
+                            (i) * this.tileWidth - view.x + dx,
+                            (j) * this.tileHeight - view.y + dy,
+                            this.tileWidth,
+                            this.tileHeight
+                        );
+                        //canvasContext.restore();
+                    }  
                 }
             }
         }
@@ -251,6 +262,7 @@ class TileMap {
     }
 
     damageTileAt (tileIndex, damage, callback) {
+        
         if (!this.damagedTiles[tileIndex]) {
             this.damagedTiles[tileIndex] = 0;
         }

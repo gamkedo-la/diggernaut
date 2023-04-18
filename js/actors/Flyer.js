@@ -2,6 +2,8 @@ class Flyer {
     constructor(x,y){
         this.x = x;
         this.y = y;
+        this.width = 8;
+        this.height = 8;
         this.viewBlocked = false;
     }
     draw(){
@@ -26,5 +28,12 @@ class Flyer {
     update(){
         if(!inView(this)) return;
         this.viewBlocked = tileMap.tileRaycast(this.x, this.y, player.x, player.y);
+       if(rectCollision(this, player.diggerang)){
+            this.kill();
+       }
+    }
+
+    kill(){
+        actors.splice(actors.indexOf(this), 1);
     }
 }

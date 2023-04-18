@@ -18,7 +18,6 @@ diggerang: x: ${player.diggerang.x} y: ${player.diggerang.y}`,
         player.draw();
         actors.forEach(actor => actor.draw());
         ui.draw();
-
         drawTransition();
             
     },

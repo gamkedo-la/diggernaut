@@ -23,7 +23,7 @@ class Player {
         this.wallSliding = false;
         this.helicopterCapacity = 120;
         this.facing = LEFT;
-        this.diggerang = new Diggerang(this.x, this.y-10);
+        this.diggerang = new Diggerang(this.x, this.y);
         this.inventory = {
             ore: 1000,
         }

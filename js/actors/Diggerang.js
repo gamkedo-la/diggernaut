@@ -4,6 +4,8 @@ class Diggerang {
     this.y = y;
     this.xvel = 0;
     this.yvel = 0;
+    this.xAccel = 0;
+    this.yAccel = 0;
     this.previousX = this.x;
     this.previousY = this.y;
     this.width = 24;
@@ -16,39 +18,36 @@ class Diggerang {
     this.volumeControl = this.sound.volume.gain;
     this.panControl = this.sound.pan.pan;
     this.collider = new Collider (this.x, this.y, this.width, this.height, {left: -4, right: -4, top: -4, bottom: -4}, "diggerang");
+    this.limits = {
+      maxXVel: 7,
+      maxYVel: 7,
+      minXVel: -7,
+      minYVel: -7
+    }
   }
 
   update (player) {
-    if (!this.active) {
-      this.x = player.x;
-      this.y = player.y;
-      this.previousX = this.x;
-      this.previousY = this.y;
-      this.timeSinceThrown = 0;
-      this.volumeControl.value = 0;
-      return;
-    }
+    if (!this.active) { this.stop(); return; }
     this.previousX = this.x;
     this.previousY = this.y;
+
     this.timeSinceThrown++;
     this.volumeControl.value = 1;
-    //this.collider.update(this.x, this.y);
     
-    
-
     this.pan();
     
     this.x += this.xvel;
     this.y += this.yvel;
 
     this.handleCollisions();
+    this.applyForces();
     
 
     const distanceToPlayer = Math.sqrt (
       (this.x - player.x) ** 2 + (this.y - player.y) ** 2
     );
 
-    if (this.returning && distanceToPlayer < 20) {
+    if (this.returning && distanceToPlayer < 40) {
       this.active = false;
       this.returning = false;
       return;
@@ -66,7 +65,7 @@ class Diggerang {
       this.xvel = this.xvel + 0.1 * returnXVel;
       this.yvel = this.yvel + 0.1 * returnYVel;
     } else {
-      this.yvel += 0.2; // Apply gravity
+      //this.yvel += 0.2; // Apply gravity
     }
   }
 
@@ -122,7 +121,11 @@ class Diggerang {
         for (let i = 0; i < resolution; i++) {
             this.collider.update(this.x + increment, this.y);
             if (this.collider.tileCollisionCheck(0)) {
-              
+              const tileIndex = tileMap.pixelToTileIndex(this.x + increment, this.y);
+              tileMap.damageTileAt(tileIndex, 25, ()=>
+              {
+                emitParticles(this.x + increment, this.y, particleDefinitions.hurt)
+              });
               this.x = this.previousX;
               this.collider.update(this.x, this.y);
               this.xvel = -this.xvel;
@@ -169,6 +172,24 @@ class Diggerang {
     }
 
     this.collider.update(this.x, this.y);
-}
+  }
+
+  stop() {
+    this.x = player.x;
+    this.y = player.y;
+    this.previousX = this.x;
+    this.previousY = this.y;
+    this.timeSinceThrown = 0;
+    this.volumeControl.value = 0;
+  }
+
+  applyForces() {
+    
+    if(this.xvel > this.limits.maxXVel) { this.xvel = this.limits.maxXVel; }
+    if(this.xvel < -this.limits.maxXVel) { this.xvel = -this.limits.maxXVel; }
+    if(this.yvel > this.limits.maxYVel) { this.yvel = this.limits.maxYVel; }
+    if(this.yvel < -this.limits.maxYVel) { this.yvel = -this.limits.maxYVel; }
+
+  }
 
 }
