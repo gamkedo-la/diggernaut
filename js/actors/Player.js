@@ -441,6 +441,12 @@ class Player {
 
     digWithProps (startTileValue, startTileIndex, dmg) {
         let type = TILE_TYPES[startTileValue];
+        let canDig = (
+            startTileValue !== TILE_UNBREAKABLE_METAL &&
+            startTileValue !== TILE_UNBREAKABLE_STONE
+        )
+        if (!canDig){ return damageTileEffects[type](startTileIndex); }
+
         tileMap.damageTileAt(
             startTileIndex,
             dmg || 100,
@@ -454,7 +460,7 @@ class Player {
         const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
         
-        if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex);
+        if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
     }
 
     hurt(damage) {

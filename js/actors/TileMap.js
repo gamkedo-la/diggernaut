@@ -323,11 +323,13 @@ class TileMap {
     }
 
     updateDamagedTiles() {
+        //TODO: optimize this to only update onscreen tiles
+        //plus a bit of vertical padding
         for (let tileIndex in this.damagedTiles) {
             if (this.damagedTiles[tileIndex] >= 100) {
                 let type = TILE_TYPES[this.data[tileIndex]];
                 destroyTiles[type](tileIndex);
-                this.replaceTileAt(tileIndex, TILE_EMPTY);
+                //this.replaceTileAt(tileIndex, TILE_EMPTY);
             }
         }
     }

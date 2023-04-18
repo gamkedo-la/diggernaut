@@ -12,6 +12,9 @@ const RIGHT = 1;
 const UP = 2;
 const DOWN = 3;
 
+
+//TODO: maybe roll all the tile data into a single object?
+//have to be able to access the tile type by index, but also by name
 const TILE_EMPTY = 0;
 const TILE_DIRT = 1;
 const TILE_UNBREAKABLE_STONE = 2;
@@ -34,6 +37,19 @@ const TILE_TYPES = [
     "TILE_DENSE_UNOBTANIUM",
     "TILE_ROCK",
     "TILE_DENSE_ROCK"
+]
+
+const damageValues = [
+    100, //TILE_EMPTY
+    100, //TILE_DIRT
+    0, //TILE_UNBREAKABLE_STONE
+    0, //TILE_UNBREAKABLE_METAL
+    0, //TILE_UNOBTANIUM
+    100, //TILE_FALLING_ROCK
+    100, //TILE_EXPLOSIVE
+    25, //TILE_DENSE_UNOBTANIUM
+    100, //TILE_ROCK
+    100, //TILE_DENSE_ROCK
 ]
 
 
@@ -369,7 +385,7 @@ const destroyTiles = {
     TILE_EMPTY : function () { return; },
 
     TILE_DIRT : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -377,7 +393,7 @@ const destroyTiles = {
     },
 
     TILE_UNBREAKABLE_STONE : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -385,7 +401,7 @@ const destroyTiles = {
     },
 
     TILE_UNBREAKABLE_METAL : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -393,15 +409,18 @@ const destroyTiles = {
     },
 
     TILE_UNOBTANIUM : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
         audio.playSound(sounds[randChoice(rock_crumbles)])
+        audio.playSound(sounds.pickup);
+        let i = 10;
+        while(--i){ actors.push(new Ore(x, y))}  
     },
 
     TILE_FALLING_ROCK : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -409,7 +428,7 @@ const destroyTiles = {
     },
 
     TILE_EXPLOSIVE : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -417,7 +436,7 @@ const destroyTiles = {
     },
 
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_UNOBTANIUM);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -425,7 +444,7 @@ const destroyTiles = {
     },
 
     TILE_ROCK : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -433,7 +452,7 @@ const destroyTiles = {
     },
 
     TILE_DENSE_ROCK : function (tileIndex) {
-        tileMap[tileIndex] = TILE_EMPTY;
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -453,12 +472,16 @@ const damageTileEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.jumpPuff);
+        audio.playSound(sounds[randChoice(metal_dings)])
     },
-    TILE_UNBREAKABLE_METAL : function (tileIndex) { 
-        
+    TILE_UNBREAKABLE_METAL : function (tileIndex) {
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.jumpPuff);
+        audio.playSound(sounds[randChoice(metal_dings)])
     },
     TILE_UNOBTANIUM : function (tileIndex) { 
-        
+
     },
     TILE_FALLING_ROCK : function (tileIndex) { 
         
@@ -466,8 +489,12 @@ const damageTileEffects = {
     TILE_EXPLOSIVE : function (tileIndex) { 
         
     },
-    TILE_DENSE_UNOBTANIUM : function (tileIndex) { 
-        
+    TILE_DENSE_UNOBTANIUM : function (tileIndex) {
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.jumpPuff);
+        let i = 10;
+        while(--i){ actors.push(new Ore(x, y))}
     },
     TILE_ROCK : function (tileIndex) { 
         
