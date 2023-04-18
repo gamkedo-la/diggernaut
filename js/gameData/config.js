@@ -428,12 +428,21 @@ const destroyTileWithEffects = {
         audio.playSound(sounds[randChoice(rock_crumbles)])
     },
 
-    TILE_EXPLOSIVE : function (tileIndex) {
-        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
-        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
-        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
-        emitParticles(x, y, particleDefinitions.destroyDirt);
-        audio.playSound(sounds[randChoice(rock_crumbles)])
+    TILE_EXPLOSIVE : function (startTileIndex) {
+        let i = 25;
+        while(--i){
+            const x = i % 5;
+            const y = Math.floor(i / 5);
+            const tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
+            //emit some particles at the tile location
+            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
+            tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+            const newProps = player.getDigPropsForIndex(tileIndex);
+            player.digWithProps(newProps.startTileValue, tileIndex, newProps.spawnX, newProps.spawnY, 100);
+            if(player.tileOverlapCheck(tileIndex)){
+                player.hurt(10);
+            }
+        }
     },
 
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
@@ -487,9 +496,10 @@ const damageTileWithEffects = {
     TILE_FALLING_ROCK : function (tileIndex) { 
         
     },
-    TILE_EXPLOSIVE : function (tileIndex) { 
+    TILE_EXPLOSIVE : function (startTileIndex) { 
         
     },
+
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
