@@ -205,7 +205,7 @@ class TileMap {
                 
                 this.drawTile(caveTileset, this.data[index], i, j)
                 this.drawDamagedTiles(index, i, j);
-                this.drawFlashingTiles(index) 
+                this.drawFlashingTiles(index, i, j);
                 
             }
         }
@@ -264,9 +264,11 @@ class TileMap {
     }
 
     drawDamagedTiles(index, x, y) {
+        if(this.data[index] === TILE_EMPTY){ return; }
         if(!this.damagedTiles[index]){ return; }
         //TODO:  make a damaged tileset strip and just call drawTile() from here
             let damage = this.damagedTiles[index]/100;
+            
             canvasContext.fillStyle = `rgba(255, 0, 0, ${damage})`;
             canvasContext.fillRect(
                 x * this.tileWidth - view.x,
@@ -277,20 +279,20 @@ class TileMap {
     }
             
     drawFlashingTiles(index, x, y) {
-        if ( !(this.data[index] === TILE_EXPLOSIVE &&
+        if ( this.data[index] === TILE_EXPLOSIVE &&
             this.shakingTiles[index] &&
-            this.whiteExplosionFrames.includes(this.shakingTiles[index].timeRemaining) ))
-            { return; }
-        
-        canvasContext.save();
-        canvasContext.fillStyle = 'white';
-        canvasContext.fillRect(
-            x * this.tileWidth - view.x,
-            y * this.tileHeight - view.y,
-            this.tileWidth,
-            this.tileHeight
-        );
-        canvasContext.restore();
+            this.whiteExplosionFrames.includes(this.shakingTiles[index].timeRemaining) )
+        { 
+            canvasContext.save();
+            canvasContext.fillStyle = 'white';
+            canvasContext.fillRect(
+                x * this.tileWidth - view.x,
+                y * this.tileHeight - view.y,
+                this.tileWidth,
+                this.tileHeight
+            );
+            canvasContext.restore();
+        }
     }
 
     insertPrefab(prefab, x, y){

@@ -46,7 +46,7 @@ const damageValues = [
     0, //TILE_UNBREAKABLE_METAL
     100, //TILE_UNOBTANIUM
     100, //TILE_FALLING_ROCK
-    100, //TILE_EXPLOSIVE
+    0, //TILE_EXPLOSIVE
     25, //TILE_DENSE_UNOBTANIUM
     100, //TILE_ROCK
     100, //TILE_DENSE_ROCK
@@ -429,20 +429,7 @@ const destroyTileWithEffects = {
     },
 
     TILE_EXPLOSIVE : function (startTileIndex) {
-        let i = 25;
-        while(--i){
-            const x = i % 5;
-            const y = Math.floor(i / 5);
-            const tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
-            //emit some particles at the tile location
-            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
-            tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-            const newProps = player.getDigPropsForIndex(tileIndex);
-            player.digWithProps(newProps.startTileValue, tileIndex, newProps.spawnX, newProps.spawnY, 100);
-            if(player.tileOverlapCheck(tileIndex)){
-                player.hurt(10);
-            }
-        }
+       
     },
 
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
@@ -497,7 +484,20 @@ const damageTileWithEffects = {
         
     },
     TILE_EXPLOSIVE : function (startTileIndex) { 
-        
+        let i = 25;
+        while(--i){
+            const x = i % 5;
+            const y = Math.floor(i / 5);
+            const tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
+            //emit some particles at the tile location
+            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
+            tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
+            const newProps = player.getDigPropsForIndex(tileIndex);
+            player.digWithProps(newProps.startTileValue, tileIndex, 100);
+            if(player.tileOverlapCheck(tileIndex)){
+                player.hurt(10);
+            }
+        }
     },
 
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
