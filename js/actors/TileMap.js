@@ -265,8 +265,9 @@ class TileMap {
 
     drawDamagedTiles(index, x, y) {
         if(!this.damagedTiles[index]){ return; }
-        //TODO:  make a damaged tileset strip and just call drawTile() from ehre
-            canvasContext.fillStyle = 'rgba(255, 0, 0, 0.5)';
+        //TODO:  make a damaged tileset strip and just call drawTile() from here
+            let damage = this.damagedTiles[index]/100;
+            canvasContext.fillStyle = `rgba(255, 0, 0, ${damage})`;
             canvasContext.fillRect(
                 x * this.tileWidth - view.x,
                 y * this.tileHeight - view.y,
