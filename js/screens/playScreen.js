@@ -27,6 +27,7 @@ diggerang: x: ${player.diggerang.x} y: ${player.diggerang.y}`,
         player.update();
         ui.update();
         actors.forEach(actor => actor.update());
+        tileMap.updateDamagedTiles();
         if(Key.justReleased(Key.m)){signal.dispatch('gotoMap')}
 
     },

@@ -68,6 +68,26 @@ class Collider {
     return (topLeft > tileCheck || topRight > tileCheck || bottomLeft > tileCheck || bottomRight > tileCheck);
 }
 
+getTilesAtCorners(tileCheck) {
+  const left = Math.floor(this.left),
+      right = Math.floor(this.right),
+      top = Math.floor(this.top),
+      bottom = Math.floor(this.bottom)
+
+  //check for collision with tile at corners of collider
+  const topLeft = tileMap.data[tileMap.pixelToTileIndex(left, top)];
+  const topRight = tileMap.data[tileMap.pixelToTileIndex(right, top)];
+  const bottomLeft = tileMap.data[tileMap.pixelToTileIndex(left, bottom)];
+  const bottomRight = tileMap.data[tileMap.pixelToTileIndex(right, bottom)];
+
+  return {
+    topLeft: { index: topLeft, collides: topLeft > tileCheck },
+    topRight: { index: topRight, collides: topRight > tileCheck },
+    bottomLeft: { index: bottomLeft, collides: bottomLeft > tileCheck },
+    bottomRight: { index: bottomRight, collides: bottomRight > tileCheck }
+  }
+}
+
   draw () {
     canvasContext.save();
     canvasContext.fillStyle = "Red";

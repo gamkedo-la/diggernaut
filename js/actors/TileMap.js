@@ -238,7 +238,6 @@ class TileMap {
                         this.tileHeight
                     );
                     if(this.damagedTiles[j*this.widthInTiles + i]){
-                        //canvasContext.save();
                         canvasContext.fillStyle = 'rgba(255, 0, 0, 0.5)';
                         canvasContext.fillRect(
                             (i) * this.tileWidth - view.x + dx,
@@ -246,7 +245,6 @@ class TileMap {
                             this.tileWidth,
                             this.tileHeight
                         );
-                        //canvasContext.restore();
                     }  
                 }
             }
@@ -320,4 +318,22 @@ class TileMap {
         const tileIndex = this.pixelToTileIndex(x,y);
         return this.data[tileIndex] !== TILE_EMPTY;
     }
+    collidesWithPoint(point){
+        return this.collidesWith(point.x, point.y);
+    }
+
+    updateDamagedTiles() {
+        for (let tileIndex in this.damagedTiles) {
+            if (this.damagedTiles[tileIndex] >= 100) {
+                let type = TILE_TYPES[this.data[tileIndex]];
+                destroyTiles[type](tileIndex);
+                this.replaceTileAt(tileIndex, TILE_EMPTY);
+            }
+        }
+    }
+
+    
 }
+    
+
+

@@ -17,7 +17,7 @@ class Diggerang {
     this.sound = audio.playSound(sounds["diggerang_whoosh"], 0, 1, 1, true)
     this.volumeControl = this.sound.volume.gain;
     this.panControl = this.sound.pan.pan;
-    this.collider = new Collider (this.x, this.y, this.width, this.height, {left: -4, right: -4, top: -4, bottom: -4}, "diggerang");
+    this.collider = new Collider (this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "diggerang");
     this.limits = {
       maxXVel: 7,
       maxYVel: 7,
@@ -122,10 +122,7 @@ class Diggerang {
             this.collider.update(this.x + increment, this.y);
             if (this.collider.tileCollisionCheck(0)) {
               const tileIndex = tileMap.pixelToTileIndex(this.x + increment, this.y);
-              tileMap.damageTileAt(tileIndex, 25, ()=>
-              {
-                emitParticles(this.x + increment, this.y, particleDefinitions.hurt)
-              });
+              this.damageTilesAtCollision(tileIndex)
               this.x = this.previousX;
               this.collider.update(this.x, this.y);
               this.xvel = -this.xvel;
@@ -145,13 +142,8 @@ class Diggerang {
         for (let i = 0; i < resolution; i++) {
             this.collider.update(this.x, this.y + increment);
             if (this.collider.tileCollisionCheck(0)) {
-              // const tileCoords = tileMap.pixelToTileGrid(this.x, this.y + increment);
-
-              // // Calculate the reflection vector
-              // const normal = tileMap.getCollisionNormal(tileCoords.x, tileCoords.y);
-              // const dot = 2 * (this.xvel * normal.x + this.yvel * normal.y);
-              // this.xvel -= dot * normal.x ;
-              // this.yvel -= dot * normal.y ;
+              const tileIndex = tileMap.pixelToTileIndex(this.x + increment, this.y);
+              this.damageTilesAtCollision(tileIndex)
               this.y = this.previousY;
               this.collider.update(this.x, this.y);
               this.yvel = -this.yvel;
@@ -182,6 +174,49 @@ class Diggerang {
     this.timeSinceThrown = 0;
     this.volumeControl.value = 0;
   }
+
+  damageTilesAtCollision(tileIndex) {
+   
+      const left = tileMap.collidesWithPoint(this.collider.leftFeeler)
+      const right = tileMap.collidesWithPoint(this.collider.rightFeeler)
+      const top = tileMap.collidesWithPoint(this.collider.topFeeler)
+      const bottom = tileMap.collidesWithPoint(this.collider.bottomFeeler)
+
+    if (left) {
+      const point = this.collider.leftFeeler;
+      const tile = tileMap.pixelToTileIndex(point.x, point.y);
+      tileMap.damageTileAt(tile, 25, ()=>
+              {
+                emitParticles(point.x, point.y, particleDefinitions.hurt)
+              });
+    }
+    if (right) {
+      const point = this.collider.rightFeeler;
+      const tile = tileMap.pixelToTileIndex(point.x, point.y);
+      tileMap.damageTileAt(tile, 25, ()=>
+              {
+                emitParticles(point.x, point.y, particleDefinitions.hurt)
+              });
+    }
+    if (top) {
+      const point = this.collider.topFeeler;
+      const tile = tileMap.pixelToTileIndex(point.x, point.y);
+      tileMap.damageTileAt(tile, 25, ()=>
+              {
+                emitParticles(point.x, point.y, particleDefinitions.hurt)
+              });
+    }
+    if (bottom) {
+      const point = this.collider.bottomFeeler;
+      const tile = tileMap.pixelToTileIndex(point.x, point.y);
+      tileMap.damageTileAt(tile, 25, ()=>
+              {
+                emitParticles(point.x, point.y, particleDefinitions.hurt)
+              });
+    }
+
+  }
+    
 
   applyForces() {
     

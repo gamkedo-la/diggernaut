@@ -23,6 +23,19 @@ const TILE_DENSE_UNOBTANIUM = 7;
 const TILE_ROCK = 8;
 const TILE_DENSE_ROCK = 9;
 
+const TILE_TYPES = [
+    "TILE_EMPTY",
+    "TILE_DIRT",
+    "TILE_UNBREAKABLE_STONE",
+    "TILE_UNBREAKABLE_METAL",
+    "TILE_UNOBTANIUM",
+    "TILE_FALLING_ROCK",
+    "TILE_EXPLOSIVE",
+    "TILE_DENSE_UNOBTANIUM",
+    "TILE_ROCK",
+    "TILE_DENSE_ROCK"
+]
+
 
 const GAMESTATE_TITLE = 0
 const GAMESTATE_PLAY = 1;
@@ -335,4 +348,133 @@ const soundList = [
 const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3", "digging_dirt" ]
 const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
 const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
+
+
+/*
+                                                                                                          
+@@@@@@@  @@@  @@@       @@@@@@@@     @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@   @@@@@@@  @@@@@@@   @@@@@@   
+@@@@@@@  @@@  @@@       @@@@@@@@     @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@  @@@@@@@   
+  @@!    @@!  @@!       @@!          @@!       @@!       @@!       @@!       !@@         @@!    !@@       
+  !@!    !@!  !@!       !@!          !@!       !@!       !@!       !@!       !@!         !@!    !@!       
+  @!!    !!@  @!!       @!!!:!       @!!!:!    @!!!:!    @!!!:!    @!!!:!    !@!         @!!    !!@@!!    
+  !!!    !!!  !!!       !!!!!:       !!!!!:    !!!!!:    !!!!!:    !!!!!:    !!!         !!!     !!@!!!   
+  !!:    !!:  !!:       !!:          !!:       !!:       !!:       !!:       :!!         !!:         !:!  
+  :!:    :!:   :!:      :!:          :!:       :!:       :!:       :!:       :!:         :!:        !:!   
+   ::     ::   :: ::::   :: ::::      :: ::::   ::        ::        :: ::::   ::: :::     ::    :::: ::   
+   :     :    : :: : :  : :: ::      : :: ::    :         :        : :: ::    :: :: :     :     :: : :    
+                                                                                                          
+*/
+
+const destroyTiles = {
+    TILE_EMPTY : function () { return; },
+
+    TILE_DIRT : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_UNBREAKABLE_STONE : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_UNBREAKABLE_METAL : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_UNOBTANIUM : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_FALLING_ROCK : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_EXPLOSIVE : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_DENSE_UNOBTANIUM : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_ROCK : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_DENSE_ROCK : function (tileIndex) {
+        tileMap[tileIndex] = TILE_EMPTY;
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.destroyDirt);
+        audio.playSound(sounds[randChoice(rock_crumbles)])
+    }
+}
+
+const damageTileEffects = {
+    
+    TILE_EMPTY : function (tileIndex) { },
+    TILE_DIRT : function (tileIndex) {
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.jumpPuff);
+    },
+    TILE_UNBREAKABLE_STONE : function (tileIndex) { 
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.jumpPuff);
+    },
+    TILE_UNBREAKABLE_METAL : function (tileIndex) { 
+        
+    },
+    TILE_UNOBTANIUM : function (tileIndex) { 
+        
+    },
+    TILE_FALLING_ROCK : function (tileIndex) { 
+        
+    },
+    TILE_EXPLOSIVE : function (tileIndex) { 
+        
+    },
+    TILE_DENSE_UNOBTANIUM : function (tileIndex) { 
+        
+    },
+    TILE_ROCK : function (tileIndex) { 
+        
+    },
+    TILE_DENSE_ROCK : function (tileIndex) { 
+        
+    }
+}
+
 

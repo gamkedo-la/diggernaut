@@ -324,6 +324,7 @@ class Player {
         }
     }
 
+    /*
     digWithProps (startTileValue, startTileIndex, spawnX, spawnY, dmg) {
         switch(startTileValue){
             case TILE_DIRT : {
@@ -359,14 +360,8 @@ class Player {
                 emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
                 
                 tileMap.damageTileAt(startTileIndex, dmg || 35, (damage) => {
-                    if (damage >= 100) {
-                        // Do we have/want a different sound for diggin in rock than for dirt?
                         audio.playSound(sounds[randChoice(rock_crumbles)])
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // TODO: Play a sound for parially damaged rock
-                    }
-                });
+                    });
                 break;
             }
             case TILE_UNBREAKABLE_METAL : {
@@ -442,14 +437,24 @@ class Player {
             }
         }
     }
+    */
+
+    digWithProps (startTileValue, startTileIndex, dmg) {
+        let type = TILE_TYPES[startTileValue];
+        tileMap.damageTileAt(
+            startTileIndex,
+            dmg || 100,
+            () => { damageTileEffects[type](startTileIndex) }
+        );
+    }
 
     dig(direction) {
         this.play("dig")
         if (!this.canDig) return;
-        const { startTileIndex, spawnX, spawnY } = this.collider.getTileIndexAndSpawnPos(direction);
+        const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
         
-        if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, spawnX, spawnY);
+        if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex);
     }
 
     hurt(damage) {
