@@ -22,7 +22,6 @@ function clearScreen(color = '#040408') {
  */
 function strokePolygon(x, y, r, sides, rotation = 0) {
     //sides = sides || Math.floor( 120 * (r*2) )+16;
-    canvasContext.beginPath();
     let ox, oy, px, py;
     for (let i = 0; i < sides; i++) {
         let j = i / sides * 6.283185; //tau radians
@@ -33,8 +32,6 @@ function strokePolygon(x, y, r, sides, rotation = 0) {
         py = y + Math.sin(j2 + rotation) * r;
         line(px, py, ox, oy, canvasContext.fillStyle);
     }
-    //canvasContext.closePath();
-    //canvasContext.stroke();
 }
 
 /**
@@ -69,7 +66,6 @@ function line(x1, y1, x2, y2, color = '#FF00FF') {
     y1 = Math.round(y1);
     x2 = Math.round(x2);
     y2 = Math.round(y2);
-    
     canvasContext.fillStyle = color;
     let dx = Math.abs(x2 - x1);
     let dy = Math.abs(y2 - y1);

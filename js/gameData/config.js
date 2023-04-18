@@ -44,7 +44,7 @@ const damageValues = [
     100, //TILE_DIRT
     0, //TILE_UNBREAKABLE_STONE
     0, //TILE_UNBREAKABLE_METAL
-    0, //TILE_UNOBTANIUM
+    100, //TILE_UNOBTANIUM
     100, //TILE_FALLING_ROCK
     100, //TILE_EXPLOSIVE
     25, //TILE_DENSE_UNOBTANIUM
@@ -90,6 +90,7 @@ const mapConfig = {
 }
 
 var sounds = {};
+var caveTileset = {};
 
 const inventory = {
     collections: {
@@ -381,7 +382,7 @@ const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
                                                                                                           
 */
 
-const destroyTiles = {
+const destroyTileWithEffects = {
     TILE_EMPTY : function () { return; },
 
     TILE_DIRT : function (tileIndex) {
@@ -460,7 +461,7 @@ const destroyTiles = {
     }
 }
 
-const damageTileEffects = {
+const damageTileWithEffects = {
     
     TILE_EMPTY : function (tileIndex) { },
     TILE_DIRT : function (tileIndex) {

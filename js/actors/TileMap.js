@@ -13,9 +13,10 @@ class TileMap {
     this.widthInTiles = widthInTiles;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
+    
     this.data = new Uint16Array(widthInTiles * heightInTiles);
     this.damagedTiles = {} // {[tileIndex]: 10, [tileIndex]: 35}
-    this.shakingTiles = {} // {[tileIndex]: {timeRemaining: 0, callback: callbackFunction}}
+    this.shakingTiles = {} // {[tileIndex]: {timeRemaining: 0, callback: callbackFunction, shake: {x: 0, y: 0}}}
     this.standardShakeTime = 4;
     this.explosiveShakeTime = 42;
     this.whiteExplosionFrames = [0, 2, 5, 6, 10, 11, 12, 17, 18, 19, 20, 26, 27, 28, 29, 30, 37, 38, 39, 40, 41, 42]
@@ -101,8 +102,8 @@ class TileMap {
             y: Math.floor(y / this.tileHeight)
             }
     }
-    //the following functions meant for use when you want to dynamically add tiles to the world. 
-    //also good for prototyping before you have a map.
+//the following functions meant for use when you want to dynamically add tiles to the world. 
+//also good for prototyping or procedural generation.
     tileDrawLine( x1, x2, y1, y2, value ) {
         
         var x1 = x1|0;
@@ -189,7 +190,7 @@ class TileMap {
             }
         }
     }
-
+//-=============================================================================
     draw(){
         let left = Math.floor(view.x/this.tileWidth);
         let right = Math.ceil((view.x+view.width)/this.tileWidth);
@@ -201,10 +202,39 @@ class TileMap {
                 const index = this.getIndexAtPosition(i, j)
                 let dx = 0;
                 let dy = 0;
+                
+                this.drawTile(caveTileset, this.data[index], i, j)
+                this.drawDamagedTiles(index, i, j);
+                this.drawFlashingTiles(index) 
+                
+            }
+        }
+    }
+
+    update() {
+
+        //TODO: a bit of vertical padding on this? 
+        let left = Math.floor(view.x/this.tileWidth);
+        let right = Math.ceil((view.x+view.width)/this.tileWidth);
+        let top = Math.floor(view.y/this.tileHeight);
+        let bottom = Math.ceil((view.y+view.height)/this.tileHeight);
+    
+        for(let x = left; x < right; x++){
+            for(let y = top; y < bottom; y++){
+
+                let index = this.getIndexAtPosition(x, y);
+
+                //take care of damaged tiles, destroy if dead
+                if (this.damagedTiles[index] >= 100) {
+                    let type = TILE_TYPES[this.data[index]];
+                    destroyTileWithEffects[type](index);
+                }
+
+                //handle timers on shaking tiles
                 if (this.shakingTiles[index]) {
                     if (this.shakingTiles[index].timeRemaining > 0) {
-                        dx = Math.floor(2 * Math.random()) % 2 === 0 ? -1 : 1;
-                        dy = Math.floor(2 * Math.random()) % 2 === 0 ? -1 : 1;
+                        this.shakingTiles[index].shake.x = randChoice([-1, 1]);
+                        this.shakingTiles[index].shake.y = randChoice([-1, 1]);
                         this.shakingTiles[index].timeRemaining--;
                     } else {
                         this.shakingTiles[index].callback(this.damagedTiles[index] || 100);
@@ -212,43 +242,54 @@ class TileMap {
                     }    
                 }
 
-                if (this.data[index] === TILE_EXPLOSIVE && this.shakingTiles[index] && this.whiteExplosionFrames.includes(this.shakingTiles[index].timeRemaining)) {
-                    canvasContext.save();
-                    canvasContext.fillStyle = 'white';
-                    canvasContext.fillRect(
-                        (i) * this.tileWidth - view.x + dx,
-                        (j) * this.tileHeight - view.y + dy,
-                        this.tileWidth,
-                        this.tileHeight
-                    );
-                    canvasContext.restore();
-                } else {
-                    canvasContext.drawImage(
-                        img['basic-tiles'],
-                        //TODO: pull out into drawTile function
-                        //TODO: make tileset class that stores tileset image and tile size
-                        //16 is the number of tiles in a row
-                        (this.data[j*this.widthInTiles + i] % 10) * this.tileWidth,
-                        Math.floor(this.data[j*this.widthInTiles + i] / 10) * this.tileHeight,
-                        this.tileWidth,
-                        this.tileHeight,
-                        (i) * this.tileWidth - view.x + dx,
-                        (j) * this.tileHeight - view.y + dy,
-                        this.tileWidth,
-                        this.tileHeight
-                    );
-                    if(this.damagedTiles[j*this.widthInTiles + i]){
-                        canvasContext.fillStyle = 'rgba(255, 0, 0, 0.5)';
-                        canvasContext.fillRect(
-                            (i) * this.tileWidth - view.x + dx,
-                            (j) * this.tileHeight - view.y + dy,
-                            this.tileWidth,
-                            this.tileHeight
-                        );
-                    }  
-                }
             }
         }
+    }
+
+    drawTile(tileset, tileData, x, y){
+        let index = this.getIndexAtPosition(x, y);
+        let dx = this.shakingTiles[index] ? this.shakingTiles[index].shake.x : 0;
+        let dy = this.shakingTiles[index] ? this.shakingTiles[index].shake.y : 0;
+        canvasContext.drawImage(
+            tileset.image,
+            (tileData % tileset.tileColumns) * this.tileWidth,
+            Math.floor(tileData / tileset.tileColumns) * this.tileHeight,
+            this.tileWidth,
+            this.tileHeight,
+            x * this.tileWidth -  view.x + dx,
+            y * this.tileHeight - view.y + dy,
+            this.tileWidth,
+            this.tileHeight
+        );
+    }
+
+    drawDamagedTiles(index, x, y) {
+        if(!this.damagedTiles[index]){ return; }
+        //TODO:  make a damaged tileset strip and just call drawTile() from ehre
+            canvasContext.fillStyle = 'rgba(255, 0, 0, 0.5)';
+            canvasContext.fillRect(
+                x * this.tileWidth - view.x,
+                y * this.tileHeight - view.y,
+                this.tileWidth,
+                this.tileHeight
+            );
+    }
+            
+    drawFlashingTiles(index, x, y) {
+        if ( !(this.data[index] === TILE_EXPLOSIVE &&
+            this.shakingTiles[index] &&
+            this.whiteExplosionFrames.includes(this.shakingTiles[index].timeRemaining) ))
+            { return; }
+        
+        canvasContext.save();
+        canvasContext.fillStyle = 'white';
+        canvasContext.fillRect(
+            x * this.tileWidth - view.x,
+            y * this.tileHeight - view.y,
+            this.tileWidth,
+            this.tileHeight
+        );
+        canvasContext.restore();
     }
 
     insertPrefab(prefab, x, y){
@@ -268,7 +309,8 @@ class TileMap {
         if (this.damagedTiles[tileIndex] < 100) {
             this.shakingTiles[tileIndex] = {
                 timeRemaining: this.data[tileIndex] === TILE_EXPLOSIVE ? this.explosiveShakeTime : this.standardShakeTime,
-                callback
+                callback,
+                shake: { x: randChoice([-1,1]), y: randChoice([-1,1]) }
             };
         }
 
@@ -311,30 +353,18 @@ class TileMap {
           }
     
         return { x: normalX, y: normalY };
-      }
+    }
 
     collidesWith(x, y) {
         //const tileCoords = this.getTileCoordsAtPosition(x, y);
         const tileIndex = this.pixelToTileIndex(x,y);
         return this.data[tileIndex] !== TILE_EMPTY;
     }
+
     collidesWithPoint(point){
         return this.collidesWith(point.x, point.y);
     }
 
-    updateDamagedTiles() {
-        //TODO: optimize this to only update onscreen tiles
-        //plus a bit of vertical padding
-        for (let tileIndex in this.damagedTiles) {
-            if (this.damagedTiles[tileIndex] >= 100) {
-                let type = TILE_TYPES[this.data[tileIndex]];
-                destroyTiles[type](tileIndex);
-                //this.replaceTileAt(tileIndex, TILE_EMPTY);
-            }
-        }
-    }
-
-    
 }
     
 

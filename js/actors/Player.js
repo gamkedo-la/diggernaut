@@ -444,7 +444,7 @@ class Player {
         tileMap.damageTileAt(
             startTileIndex,
             dmg,
-            () => { damageTileEffects[type](startTileIndex) }
+            () => { damageTileWithEffects[type](startTileIndex) }
         );
     }
 

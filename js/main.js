@@ -41,6 +41,11 @@ function loadSounds() {
 }
 
 function loadingComplete() {
+    caveTileset = new Tileset(
+        img["basic-tiles"], 
+        {tileWidth: 32, tileHeight: 32,
+        tileCount: 16, tileColumns: 10, tileRows: 1});
+    
     console.log('loading complete, starting game')
     sounds = loader.sounds;
     generateMap(mapConfig);    
