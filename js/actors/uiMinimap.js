@@ -57,6 +57,10 @@ class uiMinimap {
         let pY = -8 + this.height * (player.y / (tileMap.tileHeight*tileMap.heightInTiles));
         //console.log("player.y="+player.y+" pY="+pY+" map height="+tileMap.tileHeight*tileMap.heightInTiles);
 
+        // arrow icon showing player pos on map
         canvasContext.drawImage(img['minimap'],0,0,16,16,this.x+pX,this.y+pY,16,16);
+
+        // display depth in meters
+        tinyFont.drawText(Math.round(player.y/8)+"m",{x:this.x+pX,y:this.y+pY+12},0,0);
     }
 }
