@@ -3,8 +3,8 @@ class Ore {
         this.x = x;
         this.y = y;
         this.speed = 4;
-        this.xvel = (Math.random() * 2 - 1) * this.speed;
-        this.yvel = (Math.random() * 2 - 1) * this.speed; 
+        this.xvel = (mapRNG() * 2 - 1) * this.speed;
+        this.yvel = (mapRNG() * 2 - 1) * this.speed; 
         this.friction = 0.7;
         this.color = "green";
     }

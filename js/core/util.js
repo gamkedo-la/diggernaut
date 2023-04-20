@@ -190,20 +190,20 @@ function pointInRect(x, y, rect){
 }
 
 function screenShake (intensity) {
-    view.x += Math.random() * intensity - intensity / 2;
-    view.y += Math.random() * intensity - intensity / 2;
+    view.x += mapRNG() * intensity - intensity / 2;
+    view.y += mapRNG() * intensity - intensity / 2;
 }
 
 function rand(min, max) {
-    return Math.random() * (max - min) + min;
+    return mapRNG() * (max - min) + min;
 }
 
 function randInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(mapRNG() * (max - min + 1)) + min;
 }
 
 function randChoice(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+    return arr[Math.floor(mapRNG() * arr.length)];
 }
 
 

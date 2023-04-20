@@ -165,7 +165,7 @@ class TileMap {
     tileFillRectRandom(tx, ty, width, height, rangeStart, rangeEnd){
         for(let i = tx; i <= tx + width; i++){
             for(let j = ty; j <= ty + height; j++){
-                this.data[j * this.widthInTiles + i] = Math.floor( Math.random() * (rangeEnd-rangeStart) ) + rangeStart
+                this.data[j * this.widthInTiles + i] = Math.floor( mapRNG() * (rangeEnd-rangeStart) ) + rangeStart
             }
         }
     }

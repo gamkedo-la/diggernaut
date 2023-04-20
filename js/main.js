@@ -102,44 +102,44 @@ function generateMap(config){
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
-        tileMap.data[i] = choices[ Math.floor(Math.random() * choices.length) ];
+        tileMap.data[i] = choices[ Math.floor(mapRNG() * choices.length) ];
     }
     
     //random tiny holes
     for(let i = 0; i < 12000; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
         tileMap.tileFillRect(x, y, 1, 1, 0);
         //tileMap.data[i] = 0;
     }
 
     //random room sized voids
     for(let i = 0; i < 200; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
         tileMap.tileFillRect(x, y, 10, 10, 0);
     }
 
     //random round voids, random size
     for(let i = 0; i < 200; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
-        let radius = Math.floor(Math.random() * 8 + 2);
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        const radius = Math.floor(mapRNG() * 8 + 2);
         tileMap.tileFillCircle(x, y, radius, 0);
     }
 
     //random ledges of random length
     for(let i = 0; i < 300; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
-        let length = Math.floor(Math.random() * 8 + 4);
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        const length = Math.floor(mapRNG() * 8 + 4);
         tileMap.tileFillRect(x, y, length, 1, 0);
     }
 
     //test of prefab function
     for(let i = 0; i < 10; i++){
-        let x = Math.floor(Math.random() * tileMap.widthInTiles);
-        let y = Math.floor(Math.random() * tileMap.heightInTiles);
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
         tileMap.insertPrefab(rooms.room1, x, y)
     }
 
@@ -158,7 +158,7 @@ function generateMap(config){
 
 function populateMap(){
     for (let i = 0; i < 100; i++) {
-        actors.push(new Flyer(Math.random() * tileMap.widthInTiles * tileMap.tileWidth, Math.random() * mapConfig.tileSize * mapConfig.mapStartY));
+        actors.push(new Flyer(mapRNG() * tileMap.widthInTiles * tileMap.tileWidth, mapRNG() * mapConfig.tileSize * mapConfig.mapStartY));
     }
 }
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);

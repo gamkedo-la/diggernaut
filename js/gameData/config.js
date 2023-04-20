@@ -89,6 +89,10 @@ const mapConfig = {
                   1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7]
 }
 
+// Setting seed to a specific value causes mapRNG to run the same sequence of numbers each time it restarts
+let seed = Math.random();
+const mapRNG = new Math.seedrandom(seed);
+
 var sounds = {};
 var caveTileset = {};
 
