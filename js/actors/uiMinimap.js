@@ -53,11 +53,10 @@ class uiMinimap {
         canvasContext.drawImage(this.cachedCanvas,0,0,this.cachedCanvas.width,this.cachedCanvas.height,this.x,this.y,this.width,this.height);
 
         // and show where the player is
-        let pX = -10;
-        let pY = this.height * (player.y / (tileMap.tileHeight*tileMap.heightInTiles));
+        let pX = -16;
+        let pY = -8 + this.height * (player.y / (tileMap.tileHeight*tileMap.heightInTiles));
         //console.log("player.y="+player.y+" pY="+pY+" map height="+tileMap.tileHeight*tileMap.heightInTiles);
 
-        // fixme: replace with an arrow icon or flashing blip? or just the helmet?
-        canvasContext.drawImage(img['placeholder-player'],0,0,16,24,this.x+pX,this.y+pY,8,12);
+        canvasContext.drawImage(img['minimap'],0,0,16,16,this.x+pX,this.y+pY,16,16);
     }
 }

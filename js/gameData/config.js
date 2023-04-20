@@ -344,7 +344,8 @@ const imageList = [
     '3x5font',
     'earthTiles',
     'placeholder-player',
-    'basic-tiles'
+    'basic-tiles',
+    'minimap'
 ]
 
 const soundList = [
