@@ -63,11 +63,13 @@ class uiMinimap {
         // and show where the player is
         let pX = -16;
         let pY = -8 + Math.round(this.height * (player.y / (tileMap.tileHeight*tileMap.heightInTiles)));
+        let txtX = Math.round(this.x+pX);
+        let txtY = Math.round(this.y+pY+13);
 
         // arrow icon showing player pos on map
-        canvasContext.drawImage(img['minimap'],0,0,16,16,this.x+pX,this.y+pY,16,16);
+        canvasContext.drawImage(img['minimap'],0,0,32,16,this.x+pX,this.y+pY,32,16);
 
         // display depth in meters
-        tinyFont.drawText(Math.round(player.y/8)+"m",{x:this.x+pX,y:this.y+pY+12},0,0);
+        tinyFont.drawText(Math.round(player.y/8)+"m",{x:txtX,y:txtY},0,0);
     }
 }
