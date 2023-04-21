@@ -3,7 +3,8 @@ const playScreen = {
     hitCounter: 0,
 
     reset: function () {
-        this.hitCounter = 0;
+        player.reset();
+        
     },
 
     draw: function () {

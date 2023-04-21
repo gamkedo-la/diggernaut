@@ -94,6 +94,29 @@ class Player {
             left: 2, right: 2, top: 10, bottom: 6
         }, 'player')
     }
+
+    reset() {
+        this.x = this.previousX;
+        this.y = this.previousY;
+        this.canJump = false;
+        this.canDig = true;
+        this.xvel = 0;
+        this.yvel = 0;
+        this.xAccel = 0;
+        this.yAccel = 0;
+        this.digCooldown = 0;
+        this.hurtCooldown = 0;
+        this.health = 100;
+        this.moveLeftCooldown = 0;
+        this.moveRightCooldown = 0;
+        this.coyoteCooldown = 0;
+        this.wallSliding = false;
+        this.facing = LEFT;
+        this.diggerang = new Diggerang(this.x, this.y);
+        this.inventory = {
+            ore: 1000,
+        }
+    }
     draw() {
        this.currentAnimation.render({
         x: Math.floor(this.x-view.x), 

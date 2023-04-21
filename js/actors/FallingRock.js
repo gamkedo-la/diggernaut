@@ -1,13 +1,14 @@
 class FallingRock {
     constructor(x,y){
         this.x = x;
-        this.y = y;
+        this.y = y-1;
         this.previousY = 0;
         this.yvel = 0;
         this.width = 32;
         this.height = 32;
         this.gravity = 0.5;
         this.yvelLimit = 5;
+        this.health = 10;
         this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: -1}, "fallingBrick")
     }
     draw(){
@@ -57,19 +58,29 @@ class FallingRock {
     resolvePlayerCollision(collisionInfo){
         player.collisionInfo = collisionInfo;
         if(collisionInfo.left || collisionInfo.right){
+            player.x = player.previousX;
+            player.updateCollider(player.x, player.y);
             player.xvel = 0;
             if(Key.isDown(Key.z)){
                 this.kill();
             }
         }else if (collisionInfo.top){
+
             player.y = player.previousY;
+            player.updateCollider(player.x, player.y);
             player.yvel = Math.max(0, player.yvel);
             this.kill();
             player.hurt(5);
+
         } else if(collisionInfo.bottom){
-            player.y = this.y - player.height;
+
+            player.y = player.previousY-1;
+            player.updateCollider(player.x, player.y);
+            this.health--;
+            if(this.health <= 0){ this.kill(); }
             player.yvel = Math.min(0, player.yvel);
             player.canJump = true;
+
         }
         
         
