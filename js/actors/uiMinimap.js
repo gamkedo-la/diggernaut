@@ -62,8 +62,7 @@ class uiMinimap {
 
         // and show where the player is
         let pX = -16;
-        let pY = -8 + this.height * (player.y / (tileMap.tileHeight*tileMap.heightInTiles));
-        //console.log("player.y="+player.y+" pY="+pY+" map height="+tileMap.tileHeight*tileMap.heightInTiles);
+        let pY = -8 + Math.round(this.height * (player.y / (tileMap.tileHeight*tileMap.heightInTiles)));
 
         // arrow icon showing player pos on map
         canvasContext.drawImage(img['minimap'],0,0,16,16,this.x+pX,this.y+pY,16,16);
