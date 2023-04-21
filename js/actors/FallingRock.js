@@ -8,7 +8,7 @@ class FallingRock {
         this.height = 32;
         this.gravity = 0.5;
         this.yvelLimit = 5;
-        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 1}, "fallingBrick")
+        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: -1}, "fallingBrick")
     }
     draw(){
         tileMap.drawTileSprite(caveTileset, 5, this.x - view.x, this.y - view.y)
@@ -37,10 +37,10 @@ class FallingRock {
 
     handleCollisions(){
         this.y += this.yvel;
-        //handle X collision
-        if(rectCollision(this.collider, player.collider)){
-            this.collider.update(this.x, this.y)
-            this.resolvePlayerCollision();
+        this.collider.update(this.x, this.y)
+        const collisionInfo = rectCollision(this.collider, player.collider);
+        if(collisionInfo){
+            this.resolvePlayerCollision(collisionInfo);
         }
     }
 
@@ -54,18 +54,26 @@ class FallingRock {
         }
     }
 
-    resolvePlayerCollision(){
-        let repelX = normalize(this.x - player.x, -player.width/2, player.width/2);
-        let repelY = normalize(this.y - player.y, -player.height/2, player.height/2);
-        if(player.collider.topFeeler.y >= this.y ) {
-            player.hurt(1)
-            //player.stop();
-            player.xAccel = -repelX * 2;
-            player.yAccel = -repelY * 2;
+    resolvePlayerCollision(collisionInfo){
+        player.collisionInfo = collisionInfo;
+        if(collisionInfo.left || collisionInfo.right){
+            player.xvel = 0;
+            if(Key.isDown(Key.z)){
+                this.kill();
+            }
+        }else if (collisionInfo.top){
+            player.y = player.previousY;
+            player.yvel = Math.max(0, player.yvel);
             this.kill();
-        }else {
-            
+            player.hurt(5);
+        } else if(collisionInfo.bottom){
+            player.y = this.y - player.height;
+            player.yvel = Math.min(0, player.yvel);
+            player.canJump = true;
         }
+        
+        
+
     }
 
 

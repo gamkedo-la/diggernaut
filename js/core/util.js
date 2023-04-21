@@ -165,13 +165,40 @@ function inView(actor, pad = 200){
  * @param {*} rect2
  * @returns {boolean}
  */
-function rectCollision(rect1, rect2) {
-    return (
-        rect1.left < rect2.right &&
-        rect2.left < rect1.right &&
-        rect1.top < rect2.bottom &&
-        rect2.top < rect1.bottom
-      );
+function rectCollision(collider1, collider2) {
+    const dx = collider1.centerX() - collider2.centerX();
+    const dy = collider1.centerY() - collider2.centerY();
+    const combinedHalfWidths = (collider1.width + collider2.width) / 2;
+    const combinedHalfHeights = (collider1.height + collider2.height) / 2;
+
+    if (Math.abs(dx) < combinedHalfWidths && Math.abs(dy) < combinedHalfHeights) {
+        const overlapX = combinedHalfWidths - Math.abs(dx);
+        const overlapY = combinedHalfHeights - Math.abs(dy);
+
+        const collisionInfo = {
+            top: false,
+            bottom: false,
+            left: false,
+            right: false,
+        };
+
+        if (overlapX < overlapY) {
+            if (dx < 0) {
+                collisionInfo.right = true;
+            } else {
+                collisionInfo.left = true;
+            }
+        } else {
+            if (dy < 0) {
+                collisionInfo.top = true;
+            } else {
+                collisionInfo.bottom = true;
+            }
+        }
+
+        return collisionInfo;
+    }
+    return false;
 }
 
 /**

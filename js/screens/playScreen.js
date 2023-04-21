@@ -23,10 +23,10 @@ diggerang: x: ${player.diggerang.x} y: ${player.diggerang.y}`,
     },
     update: function () {
         this.followPlayer();
-        player.handleInput();
-        player.update();
         ui.update();
         actors.forEach(actor => actor.update());
+        player.handleInput();
+        player.update();
         tileMap.update();
         if(Key.justReleased(Key.m)){signal.dispatch('gotoMap')}
 

@@ -135,4 +135,13 @@ getTilesAtCorners(tileCheck) {
   emit(definition) {
     emitParticles(this.bottomFeeler.x, this.bottom, definition);
   }
+
+  centerX() {
+    return this.x + this.width / 2;
+  }
+
+  centerY() {
+    return this.y + this.height / 2;
+  }
+
 }
