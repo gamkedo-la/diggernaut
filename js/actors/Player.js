@@ -349,12 +349,12 @@ class Player {
     }
 
     checkForFallingRocks() {
-        let feelers = [this.collider.bottomFeeler, this.collider.leftFeeler, this.collider.rightFeeler];
+        let feelers = [this.collider.bottomFeeler, this.collider.leftFeeler, this.collider.rightFeeler, this.collider.topFeeler];
         for (let i = 0; i < feelers.length; i++) {
             let tileIndex = tileMap.pixelToTileIndex(feelers[i].x, feelers[i].y);
             let tileValue = tileMap.data[tileIndex];
             if (tileValue == 5) {
-                destroyTileWithEffects["TILE_FALLING_ROCK"](tileIndex);
+                tileMap.damageTileAt(tileIndex, 25, () => { damageTileWithEffects["TILE_FALLING_ROCK"](tileIndex) });
             }
         }
     }

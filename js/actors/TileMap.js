@@ -17,7 +17,7 @@ class TileMap {
     this.data = new Uint16Array(widthInTiles * heightInTiles);
     this.damagedTiles = {} // {[tileIndex]: 10, [tileIndex]: 35}
     this.shakingTiles = {} // {[tileIndex]: {timeRemaining: 0, callback: callbackFunction, shake: {x: 0, y: 0}}}
-    this.standardShakeTime = 4;
+    this.standardShakeTime = 7;
     this.explosiveShakeTime = 42;
     this.whiteExplosionFrames = [0, 2, 5, 6, 10, 11, 12, 17, 18, 19, 20, 26, 27, 28, 29, 30, 37, 38, 39, 40, 41, 42]
     }
@@ -34,8 +34,8 @@ class TileMap {
         return this.widthInTiles*ty + tx;
     }
 
-    pixelToTileID(x, y){
-        return this.data[this.pixelToTileIndex(x - this.worldPosition.x * this.tileWidth, y - this.worldPosition.y * this.tileHeight)];
+    getTileAtPixelPosition(x, y){
+        return this.data[this.pixelToTileIndex(x, y)];
     }
 
     tileIndexToPixelX(index){
