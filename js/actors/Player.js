@@ -15,6 +15,7 @@ class Player {
         this.xAccel = 0;
         this.yAccel = 0;
         this.digCooldown = 0;
+        this.hurtCooldown = 0;
         this.health = 100;
         this.friction = 0.80;
         this.moveLeftCooldown = 0;
@@ -74,6 +75,7 @@ class Player {
             minYAccel: -3,
             maxYAccel: 5,
             digCooldown: 7,
+            hurtCooldown: 20,
             healthMax: 100,
             moveLeftCooldown: 20,
             moveRightCooldown: 20,
@@ -109,6 +111,7 @@ class Player {
         this.applyForces();
         this.handleCollisions();
         this.checkBounds();
+        this.hurtCooldown--;
         this.canDig = this.checkDig();
         this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
         if(this.canJump){ this.helicopterCapacity = this.limits.helicopterCapacity; }
@@ -344,13 +347,15 @@ class Player {
     }
 
     hurt(damage) {
-        screenShake(5);
+        if(this.hurtCooldown > 0){ return; }
+        //TODO: blink player sprite
         this.collider.emit(particleDefinitions.hurt);
         this.health -= damage;
         if (this.health <= 0) {
             this.health = 0;
             this.die();
         }
+        this.hurtCooldown = this.limits.hurtCooldown;
     }
 
     die() {
