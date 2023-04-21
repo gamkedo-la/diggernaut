@@ -4,8 +4,8 @@ class Flyer {
         this.y = y;
         this.width = 16;
         this.height = 16;
-        this.xspeed = Math.random();
-        this.yspeed = Math.random();
+        this.xspeed = Math.random() + 0.05;
+        this.yspeed = Math.random() + 0.05;
         this.direction = randChoice([0, 1]);
         this.viewBlocked = false;
         this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "flyer")

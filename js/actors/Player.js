@@ -116,6 +116,7 @@ class Player {
     update() {
         this.applyForces();
         this.handleCollisions();
+        this.checkForFallingRocks();
         this.checkBounds();
         this.hurtCooldown--;
         this.canDig = this.checkDig();
@@ -344,6 +345,17 @@ class Player {
             let tileHeight = tileMap.tileHeight;
             canvasContext.fillStyle = "rgba(255,255,255,0.5)";
             canvasContext.fillRect(tileX-view.x, tileY-view.y, tileWidth, tileHeight);
+        }
+    }
+
+    checkForFallingRocks() {
+        let feelers = [this.collider.bottomFeeler, this.collider.leftFeeler, this.collider.rightFeeler];
+        for (let i = 0; i < feelers.length; i++) {
+            let tileIndex = tileMap.pixelToTileIndex(feelers[i].x, feelers[i].y);
+            let tileValue = tileMap.data[tileIndex];
+            if (tileValue == 5) {
+                destroyTileWithEffects["TILE_FALLING_ROCK"](tileIndex);
+            }
         }
     }
 

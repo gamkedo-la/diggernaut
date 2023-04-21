@@ -5,6 +5,7 @@ class Ore {
         this.speed = 4;
         this.xvel = (mapRNG() * 2 - 1) * this.speed;
         this.yvel = (mapRNG() * 2 - 1) * this.speed; 
+        this.collider = new Collider(this.x, this.y, 4, 4, {left: 0, right: 0, top: 0, bottom: 0}, "ore");
         this.friction = 0.7;
         this.color = "green";
     }
@@ -19,6 +20,7 @@ class Ore {
     update(){
         if(!inView(this)) return;
         
+        this.collider.update(this.x, this.y);
         this.x += this.xvel;
         this.y += this.yvel;
         this.xvel *= this.friction;

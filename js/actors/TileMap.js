@@ -212,8 +212,7 @@ class TileMap {
     }
 
     update() {
-
-        //TODO: a bit of vertical padding on this? 
+        
         let left = Math.floor(view.x/this.tileWidth);
         let right = Math.ceil((view.x+view.width)/this.tileWidth);
         let top = Math.floor(view.y/this.tileHeight);
@@ -247,8 +246,8 @@ class TileMap {
         }
     }
 
-    drawTile(tileset, tileData, x, y){
-        let index = this.getIndexAtPosition(x, y);
+    drawTile(tileset, tileData, tx, ty){
+        let index = this.getIndexAtPosition(tx, ty);
         let dx = this.shakingTiles[index] ? this.shakingTiles[index].shake.x : 0;
         let dy = this.shakingTiles[index] ? this.shakingTiles[index].shake.y : 0;
         canvasContext.drawImage(
@@ -257,8 +256,22 @@ class TileMap {
             Math.floor(tileData / tileset.tileColumns) * this.tileHeight,
             this.tileWidth,
             this.tileHeight,
-            x * this.tileWidth -  view.x + dx,
-            y * this.tileHeight - view.y + dy,
+            tx * this.tileWidth -  view.x + dx,
+            ty * this.tileHeight - view.y + dy,
+            this.tileWidth,
+            this.tileHeight
+        );
+    }
+    //for drawing from the tileset at a non-grid position
+    drawTileSprite(tileset, tileData, x, y){
+        canvasContext.drawImage(
+            tileset.image,
+            (tileData % tileset.tileColumns) * this.tileWidth,
+            Math.floor(tileData / tileset.tileColumns) * this.tileHeight,
+            this.tileWidth,
+            this.tileHeight,
+            x,
+            y,
             this.tileWidth,
             this.tileHeight
         );

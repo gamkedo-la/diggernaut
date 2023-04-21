@@ -85,7 +85,7 @@ const mapConfig = {
     tileSize: 32,
     mapStartY: 20, //start generating tiles at this Y position
     choicePool:  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                  1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,
                   1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7]
 }
 
@@ -427,10 +427,10 @@ const destroyTileWithEffects = {
 
     TILE_FALLING_ROCK : function (tileIndex) {
         tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
-        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
-        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
-        emitParticles(x, y, particleDefinitions.destroyDirt);
-        audio.playSound(sounds[randChoice(rock_crumbles)])
+        let x = tileMap.tileIndexToPixelX(tileIndex) ;
+        let y = tileMap.tileIndexToPixelY(tileIndex) ;
+        //emitParticles(x, y, particleDefinitions.destroyDirt);
+        actors.push(new FallingRock(x, y));
     },
 
     TILE_EXPLOSIVE : function (startTileIndex) {
