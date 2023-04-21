@@ -74,7 +74,7 @@ class Player {
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
-            digCooldown: 7,
+            digCooldown: 1,
             hurtCooldown: 20,
             healthMax: 100,
             moveLeftCooldown: 20,

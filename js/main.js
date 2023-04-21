@@ -121,12 +121,27 @@ function generateMap(config){
         tileMap.tileFillRect(x, y, 10, 10, 0);
     }
 
+    //random giant gaps -fall spaces
+    for(let i = 0; i < 20; i++){
+        //const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        tileMap.tileFillRect(0, y, 40, 200, 0);
+    }
+
     //random round voids, random size
     for(let i = 0; i < 200; i++){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
         const radius = Math.floor(mapRNG() * 8 + 2);
         tileMap.tileFillCircle(x, y, radius, 0);
+    }
+
+    //random round blobs, random size
+    for(let i = 0; i < 200; i++){
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        const radius = Math.floor(mapRNG() * 8 + 2);
+        tileMap.tileFillCircle(x, y, radius, 1);
     }
 
     //random ledges of random length
@@ -149,7 +164,7 @@ function generateMap(config){
     tileMap.insertPrefab(rooms.columns, 20, 20);
 
     //fill bottom half of map with exploding blocks
-    tileMap.tileFillRect(0, tileMap.heightInTiles/2, tileMap.widthInTiles, tileMap.heightInTiles/2, 6);
+    //tileMap.tileFillRect(0, tileMap.heightInTiles/2, tileMap.widthInTiles, tileMap.heightInTiles/2, 6);
 
     //fill two columns at left and right edge with unbreakable blocks
     tileMap.tileFillRect(0, 0, 1, tileMap.heightInTiles, 3);

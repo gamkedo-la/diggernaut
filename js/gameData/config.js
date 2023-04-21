@@ -90,7 +90,7 @@ const mapConfig = {
 }
 
 // Setting seed to a specific value causes mapRNG to run the same sequence of numbers each time it restarts
-let seed = Math.random();
+let seed = 88881654;
 const mapRNG = new Math.seedrandom(seed);
 
 var sounds = {};
