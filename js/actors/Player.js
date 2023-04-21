@@ -105,6 +105,12 @@ class Player {
         this.collider.draw()
 
         this.diggerang.draw();
+
+        
+        if(Key.isDown(Key.LEFT)){ this.drawDigTileHighlight("LEFT") };
+        if(Key.isDown(Key.RIGHT)){ this.drawDigTileHighlight("RIGHT") };
+        if(Key.isDown(Key.UP)){ this.drawDigTileHighlight("UP") };
+        if(Key.isDown(Key.DOWN)){ this.drawDigTileHighlight("DOWN") };
     }
 
     update() {
@@ -317,6 +323,28 @@ class Player {
         this.yAccel = 0;
         this.yVel = 0;
         this.xVel = 0;
+    }
+
+    drawDigTileHighlight(direction="DOWN") {
+
+        const directionTiles = {
+            "UP": this.collider.topFeeler,
+            "DOWN": this.collider.bottomFeeler,
+            "LEFT": this.collider.leftFeeler,
+            "RIGHT": this.collider.rightFeeler
+        }
+        const highlightDirection = directionTiles[direction];
+        //if the collider feelers are on a tile and player is pressing an arrow key, draw a highlight
+        let tileIndex = tileMap.pixelToTileIndex(highlightDirection.x, highlightDirection.y);
+        let tileValue = tileMap.data[tileIndex];
+        if (tileValue > 0) {
+            let tileX = tileMap.tileIndexToPixelX(tileIndex);
+            let tileY = tileMap.tileIndexToPixelY(tileIndex);
+            let tileWidth = tileMap.tileWidth;
+            let tileHeight = tileMap.tileHeight;
+            canvasContext.fillStyle = "rgba(255,255,255,0.5)";
+            canvasContext.fillRect(tileX-view.x, tileY-view.y, tileWidth, tileHeight);
+        }
     }
 
     getDigPropsForIndex (tileIndex) {
