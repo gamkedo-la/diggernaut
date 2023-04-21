@@ -324,121 +324,6 @@ class Player {
         }
     }
 
-    /*
-    digWithProps (startTileValue, startTileIndex, spawnX, spawnY, dmg) {
-        switch(startTileValue){
-            case TILE_DIRT : {
-                emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
-                
-                tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
-                    if (damage >= 100) {
-                        audio.playSound(sounds[randChoice(rock_crumbles)])
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // Do something with partially damaged Tiles...
-                    }
-                });
-                break;
-            }
-            case TILE_ROCK : {
-                // TODO: Update this to be different for Rocks
-                emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
-                
-                tileMap.damageTileAt(startTileIndex, dmg || 50, (damage) => {
-                    if (damage >= 100) {
-                        // Do we have/want a different sound for diggin in rock than for dirt?
-                        audio.playSound(sounds[randChoice(rock_crumbles)])
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // TODO: Play a sound for parially damaged rock
-                    }
-                });
-                break;
-            }
-            case TILE_DENSE_ROCK : {
-                // TODO: Update this to be different for Dense Rocks
-                emitParticles(tileMap.tileIndexToPixelX(startTileIndex)+16, tileMap.tileIndexToPixelY(startTileIndex)+16, particleDefinitions.destroyDirt);
-                
-                tileMap.damageTileAt(startTileIndex, dmg || 35, (damage) => {
-                        audio.playSound(sounds[randChoice(rock_crumbles)])
-                    });
-                break;
-            }
-            case TILE_UNBREAKABLE_METAL : {
-                audio.playSound(sounds[ randChoice(metal_dings) ]);
-                break;
-            }
-            case TILE_UNBREAKABLE_STONE : {
-                audio.playSound(sounds[ randChoice(metal_dings) ]);
-                break;
-            }
-            case TILE_UNOBTANIUM : {
-                tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
-                    if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // Do something with partially damaged Tiles...
-                    }
-
-                    audio.playSound(sounds.pickup);
-                    let i = 10;
-                    while(--i){ actors.push(new Ore(spawnX, spawnY))}    
-                });
-                break;   
-            }
-            case TILE_DENSE_UNOBTANIUM : {
-                tileMap.damageTileAt(startTileIndex, dmg || 25, (damage) => {
-                    if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_UNOBTANIUM);
-                    } else {
-                        audio.playSound(sounds.super_pickup, 1, 0.1);
-                        let i = 10;
-                        while(--i){ actors.push(new Ore(spawnX, spawnY))}
-                    }                            
-                });
-                break;  
-            }
-            case TILE_EXPLOSIVE : {
-                //destroy a 3x3 area around the explosive tile
-                //TODO: refactor to explode(radius) function, so we can leave ore behind and handle effects on other tiles
-                tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
-                    audio.playSound( sounds[ randChoice(explosions) ] );
-                    let i = 25;
-                    while(--i){
-                        const x = i % 5;
-                        const y = Math.floor(i / 5);
-                        const tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
-                        //emit some particles at the tile location
-                        emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
-                        if (damage >= 100) {
-                            
-                            tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                            const newProps = this.getDigPropsForIndex(tileIndex);
-                            this.digWithProps(newProps.startTileValue, tileIndex, newProps.spawnX, newProps.spawnY, 100);
-                            if(this.tileOverlapCheck(tileIndex)){
-                                this.hurt(10);
-                            }
-                        } else {
-                            // Do something with partially damaged explosive tile...
-                        }
-                    }
-                });
-                break;
-            }
-
-            default: {
-                const damage = tileMap.damageTileAt(startTileIndex, dmg || 100, (damage) => {
-                    if (damage >= 100) {
-                        tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
-                    } else {
-                        // Do something with partially damaged Tiles...
-                    }
-                });
-            }
-        }
-    }
-    */
-
     digWithProps (startTileValue, startTileIndex, dmg) {
         let type = TILE_TYPES[startTileValue];
         tileMap.damageTileAt(
@@ -453,6 +338,7 @@ class Player {
         if (!this.canDig) return;
         const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
+        ;
         
         if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
     }

@@ -228,6 +228,7 @@ class TileMap {
                 if (this.damagedTiles[index] >= 100) {
                     let type = TILE_TYPES[this.data[index]];
                     destroyTileWithEffects[type](index);
+                    ui.miniMap.dirtyRectUpdate(x, y, 6, 6)
                 }
 
                 //handle timers on shaking tiles

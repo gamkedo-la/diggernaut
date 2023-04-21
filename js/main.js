@@ -97,6 +97,7 @@ function gameLoop() {
 function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
+    ui.miniMap = new uiMinimap(tileMap);
     let choices = mapConfig.choicePool;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
@@ -153,6 +154,9 @@ function generateMap(config){
     //fill two columns at left and right edge with unbreakable blocks
     tileMap.tileFillRect(0, 0, 1, tileMap.heightInTiles, 3);
     tileMap.tileFillRect(tileMap.widthInTiles-1, 0, 1, tileMap.heightInTiles, 3);
+
+    //full update on ui minimap
+    ui.miniMap.update();
 
 }
 

@@ -28,7 +28,8 @@ const ui = {
         boxStroke: "green",
         barColor: "aquamarine"
     },
-    miniMap: new uiMinimap(),
+    //init as empty object bc will be populated by main after tilemap is created
+    miniMap: {},
 
     draw: function () {
         canvasContext.save();

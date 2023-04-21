@@ -5,7 +5,7 @@
 
 class uiMinimap {
 
-    constructor() {
+    constructor(tileMap) {
         
         this.needsUpdating = true;
 
@@ -15,39 +15,47 @@ class uiMinimap {
         this.cachedCanvas.style.imageRendering = "pixelated";
         this.cachedCTX = this.cachedCanvas.getContext("2d");
 
-    }
-
-    update() { // only run when the map data has changed
-
-        if (!tileMap) return; // during constructor this is null
-
         this.width = 8;
         this.height = canvas.height;
         this.x = canvas.width - this.width;
         this.y = 0;
         this.cachedCanvas.width = tileMap.widthInTiles;
         this.cachedCanvas.height = tileMap.heightInTiles;
+        this.fills = ["black", "#553", "#333", "#999", "#88ff00", "magenta", "red", "yellow", "black" ]
 
-        let fills = ["black", "#553", "#333", "#999", "#88ff00", "magenta", "red", "yellow", "black" ]
+    }
 
-        // FIXME this takes half a second!!!
-        // we could use drawImage for 10x perf
+    update() { // only run full update when game begins, or transitioning to pause screen
+
         for(let y = 0; y < tileMap.heightInTiles; y++){
             for(let x = 0; x < tileMap.widthInTiles; x++){
                 let tile = tileMap.getTileAtPosition(x,y);
-                this.cachedCTX.fillStyle = fills[tile];
+                this.cachedCTX.fillStyle = this.fills[tile];
                 this.cachedCTX.fillRect(x,y,1,1);
             }
         }
-
-        this.needsUpdating = false;
-
      }
 
-    draw() {
+    dirtyRectUpdate(tx,ty,w,h) { 
+        // runs when tiles are changed, in a rect w, h around tx, ty
+        const left = Math.max(0,tx-Math.floor(w/2));
+        const right = Math.min(tileMap.widthInTiles-1,tx+Math.floor(w/2));
+        const top = Math.max(0,ty-Math.floor(h/2));
+        const bottom = Math.min(tileMap.heightInTiles-1,ty+Math.floor(h/2));
 
-        // slowly render the map offscreen (lags the game severely)
-        if (this.needsUpdating) this.update();
+        for(let y = top; y < bottom; y++){
+            for(let x = left; x < right; x++){
+                let tile = tileMap.getTileAtPosition(x,y);
+                this.cachedCTX.fillStyle = this.fills[tile];
+                this.cachedCTX.fillRect(x,y,1,1);
+            }
+        }
+    }
+
+
+        
+
+    draw() {
 
         // draw the entire map using the cached image (very fast)
         canvasContext.drawImage(this.cachedCanvas,0,0,this.cachedCanvas.width,this.cachedCanvas.height,this.x,this.y,this.width,this.height);
