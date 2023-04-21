@@ -4,6 +4,9 @@ class Flyer {
         this.y = y;
         this.width = 16;
         this.height = 16;
+        this.xspeed = Math.random();
+        this.yspeed = Math.random();
+        this.direction = randChoice([0, 1]);
         this.viewBlocked = false;
         this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "flyer")
     }
@@ -28,6 +31,8 @@ class Flyer {
     }
     update(){
         this.collider.update(this.x, this.y);
+        this.x += ( Math.cos(ticker/(10*this.xspeed*5)) * this.xspeed ) * this.direction;
+        this.y += ( Math.sin(ticker/(10*this.yspeed*10)) * this.yspeed ) * this.direction;
         if(!inView(this)) return;
         this.viewBlocked = tileMap.tileRaycast(this.x, this.y, player.x, player.y);
        if(rectCollision( this.collider, player.diggerang.collider)){
