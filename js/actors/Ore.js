@@ -8,17 +8,27 @@ class Ore {
         this.collider = new Collider(this.x, this.y, 4, 4, {left: 0, right: 0, top: 0, bottom: 0}, "ore");
         this.friction = 0.7;
         this.color = "green";
+        this.life = 300;
     }
 
     draw(){
         if(!inView(this)) return;
-        
+        this.life--;
         canvasContext.fillStyle = this.color;
-        strokePolygon(this.x - view.x, this.y - view.y, 4, 4, ticker/10);
+
+        if(this.life > 100){
+            strokePolygon(this.x - view.x, this.y - view.y, 4, 4, ticker/10);
+        } else {
+            let blink = ticker % 8 > 4;
+            if(blink){
+                strokePolygon(this.x - view.x, this.y - view.y, 4, 4, ticker/10);
+            }
+        }
+       
     }
 
     update(){
-        if(!inView(this)) return;
+        if(!inView(this)){ this.destroy; return; }
         
         this.collider.update(this.x, this.y);
         this.x += this.xvel;
@@ -38,6 +48,10 @@ class Ore {
 
         if(rectCollision(this.collider, player.diggerang.collider)){
             player.inventory.ore++;
+            this.destroy();
+        }
+
+        if(this.life <= 0){
             this.destroy();
         }
     }
