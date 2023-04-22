@@ -25,12 +25,18 @@ class Ore {
         this.y += this.yvel;
         this.xvel *= this.friction;
         this.yVel *= this.friction; 
+
         
         if(this.distanceTo(player) < 40){
             this.moveTowards(player);
         }
         
         if(this.distanceTo(player) < 10){
+            player.inventory.ore++;
+            this.destroy();
+        }
+
+        if(rectCollision(this.collider, player.diggerang.collider)){
             player.inventory.ore++;
             this.destroy();
         }
