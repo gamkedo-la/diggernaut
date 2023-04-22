@@ -48,8 +48,8 @@ const damageValues = [
     100, //TILE_FALLING_ROCK
     100, //TILE_EXPLOSIVE
     25, //TILE_DENSE_UNOBTANIUM
-    100, //TILE_ROCK
-    100, //TILE_DENSE_ROCK
+    50, //TILE_ROCK
+    25, //TILE_DENSE_ROCK
 ]
 
 
@@ -86,9 +86,9 @@ const mapConfig = {
     tileSize: 32,
     mapStartY: 20, //start generating tiles at this Y position
     caveGenPools:{
-        vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7],
+        vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7,8,9],
         fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,1,1,1,2,3,4,7,8,9],
-        OreGalore: []
+        OreGalore: [4,7,8,9.4,7,8,9.4,7,8,9,4,7,8,9,4,7,8,9,5,6,1]
     }  
 }
 

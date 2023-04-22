@@ -22,7 +22,9 @@ class Diggerang {
       maxXVel: 7,
       maxYVel: 7,
       minXVel: -7,
-      minYVel: -7
+      minYVel: -7,
+      timeBeforeReturn: 100,
+      airTimeBeforeTeleport: 300, 
     }
   }
 
@@ -53,9 +55,18 @@ class Diggerang {
       return;
     }
 
-    if (!this.returning && this.timeSinceThrown > 100) {
+    if (!this.returning && this.timeSinceThrown > this.limits.timeBeforeReturn) {
       this.returning = true;
     }
+
+    if(this.timeSinceThrown > this.limits.airTimeBeforeTeleport){
+      this.x = player.x;
+      this.y = player.y;
+      this.timeSinceThrown = 0
+      this.active = false;
+      this.returning = false;
+    }
+
 
     if (this.returning) {
       const angleToPlayer = Math.atan2 (player.y - this.y, player.x - this.x);
