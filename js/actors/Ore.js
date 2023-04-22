@@ -45,6 +45,9 @@ class Ore {
             player.inventory.ore++;
             this.destroy();
         }
+        if(this.distanceTo(player.diggerang) < 90 && player.diggerang.active){
+            this.moveTowards(player.diggerang, 2);
+        }
 
         if(rectCollision(this.collider, player.diggerang.collider)){
             player.inventory.ore++;
@@ -60,7 +63,7 @@ class Ore {
         return Math.sqrt(Math.pow(object.x - this.x, 2) + Math.pow(object.y - this.y, 2));
     }
 
-    moveTowards(object){
+    moveTowards(object, speed=1){
         let angle = Math.atan2(object.y - this.y, object.x - this.x);
         this.xvel += Math.cos(angle);
         this.yvel += Math.sin(angle);
