@@ -81,7 +81,7 @@ const view = {
 
 
 const mapConfig = {
-    widthInTiles: 40,
+    widthInTiles: 80,
     heightInTiles: 7000,
     tileSize: 32,
     mapStartY: 20, //start generating tiles at this Y position
@@ -93,7 +93,7 @@ const mapConfig = {
 }
 
 const playerSettings = {
-    x: 40 * 32/2, 
+    x: 80 * 32/2, 
     y: 20 * 32 - 64,
     previousX: 0,
     previousY: 0,

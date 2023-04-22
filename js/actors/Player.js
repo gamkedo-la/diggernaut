@@ -116,7 +116,7 @@ class Player {
         this.coyoteCooldown = 0;
         this.wallSliding = false;
         this.facing = LEFT;
-        this.diggerang = new Diggerang(this.x, this.y);
+        //this.diggerang = new Diggerang(this.x, this.y);
         this.inventory = {
             ore: 1000,
         }

@@ -14,7 +14,7 @@ class Diggerang {
     this.returning = false;
     this.timeSinceThrown = 0;
     this.soundPlayed = false;
-    this.sound = audio.playSound(sounds["diggerang_whoosh"], 0, 1, 1, true)
+    this.sound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1, true)
     this.volumeControl = this.sound.volume.gain;
     this.panControl = this.sound.pan.pan;
     this.collider = new Collider (this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "diggerang");
