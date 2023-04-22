@@ -400,11 +400,10 @@ class Player {
     }
 
     dig(direction) {
-        this.play("dig")
+        this.play("dig");
         if (!this.canDig) return;
         const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
-        ;
         
         if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
     }

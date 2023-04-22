@@ -2,6 +2,7 @@ class FallingRock {
     constructor(x,y){
         this.x = x;
         this.y = y-1;
+        this.spawnY = y - 1;
         this.previousY = 0;
         this.yvel = 0;
         this.width = 32;
@@ -48,10 +49,16 @@ class FallingRock {
     handleTileCollisions(){
         //check tile at bottom  feeler of collider for empty space
         let tile = tileMap.getTileAtPixelPosition(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y);
+        const crushedTileIndex = tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y);
         if(tile > 0){
             this.y = this.previousY;
             this.yvel = 0;
             this.collider.update(this.x, this.y)
+            this.kill();
+            
+            if (this.y - this.spawnY >= tileMap.tileHeight) {
+                tileMap.damageTileAt(crushedTileIndex, 100, () => { damageTileWithEffects[TILE_TYPES[tile]](crushedTileIndex) })
+            }
         }
     }
 
@@ -80,12 +87,6 @@ class FallingRock {
             if(this.health <= 0){ this.kill(); }
             player.yvel = Math.min(0, player.yvel);
             player.canJump = true;
-
         }
-        
-        
-
     }
-
-
 }
