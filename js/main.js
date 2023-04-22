@@ -51,7 +51,7 @@ function loadingComplete() {
     generateMap(mapConfig);    
     populateMap();
 
-    player = new Player(mapConfig.widthInTiles * mapConfig.tileSize/2, mapConfig.mapStartY * mapConfig.tileSize - 64),
+    player = new Player(playerSettings),
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
     processURLQuery();
@@ -98,7 +98,7 @@ function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
     ui.miniMap = new uiMinimap(tileMap);
-    let choices = mapConfig.choicePool;
+    let choices = mapConfig.caveGenPools.fallingFun;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     

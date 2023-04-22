@@ -80,12 +80,12 @@ class FallingRock {
             player.hurt(5);
 
         } else if(collisionInfo.bottom){
-
+            player.yvel = Math.min(0, player.yvel)
             player.y = player.previousY-1;
             player.updateCollider(player.x, player.y);
             this.health--;
             if(this.health <= 0){ this.kill(); }
-            player.yvel = Math.min(0, player.yvel);
+            ;
             player.canJump = true;
         }
     }

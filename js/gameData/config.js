@@ -78,15 +78,47 @@ const view = {
     width: 544,
     height: 306,
 }
+
+
 const mapConfig = {
     widthInTiles: 40,
     heightInTiles: 7000,
-    chasmWidth: 24,
     tileSize: 32,
     mapStartY: 20, //start generating tiles at this Y position
-    choicePool:  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                  1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,
-                  1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7]
+    caveGenPools:{
+        vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7],
+        fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,1,1,1,2,3,4,7,8,9],
+        OreGalore: []
+    }  
+}
+
+const playerSettings = {
+    x: 40 * 32/2, 
+    y: 20 * 32 - 64,
+    previousX: 0,
+    previousY: 0,
+    canJump: false,
+    canDig: true,
+    width: 16,
+    height: 24,
+    speed: 0.9,
+    xvel: 0,
+    yvel: 0,
+    xAccel: 0,
+    yAccel: 0,
+    digCooldown: 0,
+    hurtCooldown: 0,
+    health: 12000,
+    friction: 0.8,
+    moveLeftCooldown: 0,
+    moveRightCooldown: 0,
+    coyoteCooldown: 0,
+    wallSliding: false,
+    helicopterCapcity: 120,
+    facing: LEFT,
+    inventory: {
+            ore: 1000,
+        }
 }
 
 // Setting seed to a specific value causes mapRNG to run the same sequence of numbers each time it restarts
@@ -345,7 +377,8 @@ const imageList = [
     'earthTiles',
     'placeholder-player',
     'basic-tiles',
-    'minimap'
+    'minimap',
+    'gems'
 ]
 
 const soundList = [
