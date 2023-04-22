@@ -413,6 +413,7 @@ class Player {
         if(this.hurtCooldown > 0){ return; }
         //TODO: blink player sprite
         this.collider.emit(particleDefinitions.hurt);
+        audio.playSound(sounds[randChoice(player_damages)]);
         this.health -= damage;
         if (this.health <= 0) {
             this.health = 0;
