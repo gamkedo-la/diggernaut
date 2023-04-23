@@ -111,7 +111,7 @@ function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
     ui.miniMap = new uiMinimap(tileMap);
-    let choices = mapConfig.caveGenPools.OreGalore;
+    let choices = mapConfig.caveGenPools.fallingFun;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     
