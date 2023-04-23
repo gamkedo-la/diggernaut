@@ -15,13 +15,14 @@ class uiMinimap {
         this.cachedCanvas.style.imageRendering = "pixelated";
         this.cachedCTX = this.cachedCanvas.getContext("2d");
 
-        this.width = 8;
+        this.width = 16;
         this.height = canvas.height;
         this.x = canvas.width - this.width;
         this.y = 0;
         this.cachedCanvas.width = tileMap.widthInTiles;
         this.cachedCanvas.height = tileMap.heightInTiles;
-        this.fills = ["black", "#553", "#333", "#999", "#88ff00", "magenta", "red", "yellow", "black" ]
+        //this.fills = ["black", "#553", "#333", "#999", "#88ff00", "magenta", "red", "yellow", "black" ]
+        this.fills = ["black", "#553", "#553", "#553", "#553", "#553", "#553", "#553", "#553", "#553", "#553"]
 
     }
 

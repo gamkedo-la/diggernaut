@@ -41,7 +41,7 @@ class Ore {
             this.moveTowards(player);
         }
         
-        if(this.distanceTo(player) < 10){
+        if(this.distanceTo(player) < 10 && this.life < 270){
             player.inventory.ore++;
             this.destroy();
         }

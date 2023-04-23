@@ -137,8 +137,15 @@ function generateMap(config){
     //random giant gaps -fall spaces
     for(let i = 0; i < 20; i++){
         //const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        tileMap.tileFillRect(0, y, 40, 200, 0);
+        const startY = Math.floor(mapRNG() * tileMap.heightInTiles);
+        const gapHeight = Math.floor(mapRNG() * 200 + 150);   
+        let i = 300;
+        while(i--){
+            let x = Math.floor(mapRNG() * tileMap.widthInTiles);
+            let y = Math.floor(startY + mapRNG() * gapHeight);
+            tileMap.tileFillRect(x, y, 10, 10, 0);
+        }
+        
     }
 
     //random round voids, random size
