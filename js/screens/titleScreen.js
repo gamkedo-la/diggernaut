@@ -1,21 +1,43 @@
 const titleScreen = {
     clicked: false,
+   
     draw: function () {
 
         //fill background
         canvasContext.fillStyle = 'black';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-        //fun polygon background
-        for(let i = 0; i < 20; i++){
-            canvasContext.fillStyle = `
-            rgb(
-                ${Math.floor(255*Math.sin(ticker/300*i))},
-                ${Math.floor(255*Math.cos(ticker/100*i/20))},
-                ${Math.floor(255*Math.sin(ticker/60))})`;
-
-            strokePolygon(canvas.width/2, 180 - i*7, 10*i, 7, ticker/100*i/2);
+        titleRNG = new Math.seedrandom(456);
+        for(let i = 0; i < 100; i++){
+            const x = titleRNG() * canvas.width;
+            const y = titleRNG() * canvas.height * 3;
+            const speed = titleRNG() * 3 + 2;
+            const type = Math.floor(titleRNG() * 8);
+            const types = [1,1,1,1,4,7,8,9]
             
+            tileMap.drawTileSprite(caveTileset, types[type], x, y - (ticker*speed) % (canvas.height * 3) )
+        }
+        canvasContext.fillStyle = 'rgba(0,0,0,0.7)';
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+        for(let i = 0; i < 100; i++){
+            const x = titleRNG() * canvas.width;
+            const y = titleRNG() * canvas.height * 3;
+            const speed = titleRNG() * 3 + 2;
+            const type = Math.floor(titleRNG() * 8);
+            const types = [1,1,1,1,4,7,8,9]
+            
+            tileMap.drawTileSprite(caveTileset, types[type], x, y - (ticker*speed) % (canvas.height * 3) )
+        }
+        canvasContext.fillStyle = 'rgba(0,0,0,0.5)';
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+        for(let i = 0; i < 50; i++){
+            const x = titleRNG() * canvas.width;
+            const y = titleRNG() * canvas.height * 3;
+            const speed = titleRNG() * 3 + 2;
+            const type = Math.floor(titleRNG() * 8);
+            const types = [1,1,1,1,4,7,8,9]
+            
+            tileMap.drawTileSprite(caveTileset, types[type], x, y - (ticker*speed) % (canvas.height * 3) )
         }
         
         //title text
