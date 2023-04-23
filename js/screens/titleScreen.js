@@ -48,7 +48,7 @@ const titleScreen = {
     },
 
     update: function () {
-        if(Key.justReleased(Key.z)) { signal.dispatch('startGame'); }
+        if(Key.justReleased(Key.z) && titleScreen.clicked) { signal.dispatch('startGame'); }
 
     }
 }
