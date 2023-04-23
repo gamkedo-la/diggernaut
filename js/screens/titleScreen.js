@@ -32,12 +32,12 @@ const titleScreen = {
 
         let titleOffsets = [{x: 0, y: 0}, {x: 4, y: 0}, {x: 0, y: 4}, {x: 4, y: 4}];
         for(let i = 0; i < titleOffsets.length; i++){
-            gameFont.drawColorText("Diggernaut", { x: 95 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, 'black');
+            gameFont.drawText("Diggernaut", { x: 95 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, 'black');
         }
         
         titleOffsets = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}];
         for(let i = 0; i < titleOffsets.length; i++){
-            gameFont.drawColorText("Diggernaut", { x: 95 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, gradient);
+            gameFont.drawText("Diggernaut", { x: 95 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, gradient);
         }
         
         gameFont.drawText("Arrows to move, Z to dig, X to throw, SPACE to jump", { x: 125, y: 256 }, 0, 0);

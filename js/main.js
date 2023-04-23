@@ -12,6 +12,13 @@ canvas.style.imageRendering = "pixelated";
 canvas.width = 544;
 canvas.height = 306;
 
+//buffer canvas for colored text, or other effects
+bufferCanvas = document.createElement("canvas");
+bufferCanvas.width = canvas.width;
+bufferCanvas.height = canvas.height;
+bufferContext = bufferCanvas.getContext("2d");
+
+
 
 
 let gameState = GAMESTATE_TITLE,
