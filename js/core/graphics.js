@@ -125,20 +125,21 @@ class spriteFont {
      * @param {int} [vspacing=2]
      * @param {int} [scale=1]
      */
-    drawText(textString, pos = { x: 0, y: 0 }, hspacing = 0, vspacing = 2, scale = 1) {
+    drawText(textString, pos = { x: 0, y: 0 }, hspacing = 0, vspacing = 2, scale = 1, ctx=null) {
+        const canvasContext = ctx || window.canvasContext;
         if (!textString) return;
         var lines = textString.split("\n");
         var self = this;
         self.pos = pos, self.hspacing = hspacing, self.vspacing = vspacing;
         lines.forEach(function (line, index, arr) {
-            self._textLine({ textString: line, pos: { x: self.pos.x, y: self.pos.y + index * (self.characterHeight + self.vspacing) * scale }, hspacing: self.hspacing }, scale)
+            self._textLine({ textString: line, pos: { x: self.pos.x, y: self.pos.y + index * (self.characterHeight + self.vspacing) * scale }, hspacing: self.hspacing }, scale, canvasContext)
         })
     }
 
-    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1) {
+    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1, ctx=null) {
         var textStringArray = textString.split("");
         var self = this;
-
+        const canvasContext = ctx || window.canvasContext;
         textStringArray.forEach(function (character, index, arr) {
             //find index in characterMap
             let keyIndex = self.characterMap.indexOf(character);
@@ -161,4 +162,18 @@ class spriteFont {
             )
         })
     }
+
+    drawColorText(textString, pos = { x: 0, y: 0 }, hspacing = 0, vspacing = 2, scale = 1, color = "#FF00FF") {
+        const bufferCanvas = document.createElement("canvas");
+        bufferCanvas.width = canvas.width;
+        bufferCanvas.height = canvas.height;
+        const bufferContext = bufferCanvas.getContext("2d");
+        
+        this.drawText(textString, pos, hspacing, vspacing, scale, bufferContext);
+        bufferContext.globalCompositeOperation = "source-atop";
+        bufferContext.fillStyle = color;
+        bufferContext.fillRect(0, 0, bufferCanvas.width, bufferCanvas.height);
+        canvasContext.drawImage(bufferCanvas, 0, 0);
+    }
+
 }
