@@ -1,10 +1,5 @@
 const titleScreen = {
-
-    box: {
-        x: 0,
-        y: 0,
-    },
-
+    clicked: false,
     draw: function () {
 
         //fill background
@@ -24,7 +19,6 @@ const titleScreen = {
         }
         
         //title text
-        
         const gradient = canvasContext.createLinearGradient(0, 60, 0, 100);
         gradient.addColorStop(0, 'red');
         gradient.addColorStop(0.5, 'orange');
@@ -40,23 +34,22 @@ const titleScreen = {
             gameFont.drawText("Diggernaut", { x: 95 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, gradient);
         }
         
+       
+        gameFont.drawText("Hit F to go Fullscreen", { x: 200, y: 240 }, 0, 0, 1, 'yellow');
         gameFont.drawText("Arrows to move, Z to dig, X to throw, SPACE to jump", { x: 125, y: 256 }, 0, 0);
-        gameFont.drawText("Press Z to Start", { x: 225, y: 270 }, 0, 0);
+        if(!titleScreen.clicked){
+            gameFont.drawText("Click for browser focus audio context nonsense", { x: 140, y: 270 }, 0, 0);
+        }else {
+            gameFont.drawText("Awesome! Hit Z to start", { x: 140, y: 270 }, 0, 0, 2);
+
+        }
         
         drawTransition();
     },
 
     update: function () {
-        if(Key.justReleased(Key.a)){
-            audio.playSound(loader.sounds.test1);
-        }
         if(Key.justReleased(Key.z)) { signal.dispatch('startGame'); }
 
-        this.box.x = canvas.width/2 - 5;
-        this.box.y = canvas.height/2 - 5;
-        this.box.x += Math.sin(ticker/10) * 100;
-        this.box.y += Math.cos(ticker/10) * 100;
-        
     }
 }
 

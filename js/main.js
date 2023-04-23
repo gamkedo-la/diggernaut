@@ -98,6 +98,12 @@ function gameLoop() {
     ticker++;    
     screens[gameState].draw();
     screens[gameState].update();
+    if(Key.justReleased(Key.f)) {
+        canvas.requestFullscreen();
+    }
+    if(Key.justReleased(Key.ESCAPE)) {
+        canvas.exitFullscreen();
+    }
     Key.update();
 }
 
@@ -191,6 +197,7 @@ window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false
 window.addEventListener('keydown', function (event) { Key.onKeydown(event); }, false);
 window.addEventListener('blur', function (event) { paused = true; }, false);
 window.addEventListener('focus', function (event) { paused = false; }, false);
+canvas.addEventListener('mouseup', function (event) { audio.context.resume(); audio.playSound(sounds.test1); titleScreen.clicked=true }, false);
 
 /*processURLQuery will check to see if there's a query on window location, which could include pre-setting many
 in-game variables to recreate a state, a saved game, or debugging.

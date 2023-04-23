@@ -24,8 +24,8 @@ const AudioGlobal = function AudioGlobal() {
 		if (this.initialized) return;
 
 		console.log("Initializing Audio...");
-		// note: this causes a browser error if user has not interacted w page yet    
-		audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // FIXME: error in chrome
+		//throws a warning in chrome. is fine. Just be sure to audioCtx.resume() on user interaction with title screen of your game.
+		audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
 		this.context = audioCtx;
 		musicBus = audioCtx.createGain();
 		soundEffectsBus = audioCtx.createGain();
