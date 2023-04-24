@@ -14,6 +14,7 @@ class Ore {
     draw(){
         if(!inView(this)) return;
         this.life--;
+        canvasContext.save();
         canvasContext.fillStyle = this.color;
 
         if(this.life > 100){
@@ -24,6 +25,7 @@ class Ore {
                 strokePolygon(this.x - view.x, this.y - view.y, 4, 4, ticker/10);
             }
         }
+        canvasContext.restore();
        
     }
 

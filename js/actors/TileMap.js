@@ -282,7 +282,7 @@ class TileMap {
         if(!this.damagedTiles[index]){ return; }
         //TODO:  make a damaged tileset strip and just call drawTile() from here
             let damage = this.damagedTiles[index]/100;
-            
+            canvasContext.save();
             canvasContext.fillStyle = `rgba(255, 0, 0, ${damage})`;
             canvasContext.fillRect(
                 x * this.tileWidth - view.x,
@@ -290,6 +290,7 @@ class TileMap {
                 this.tileWidth,
                 this.tileHeight
             );
+            canvasContext.restore();
     }
             
     drawFlashingTiles(index, x, y) {

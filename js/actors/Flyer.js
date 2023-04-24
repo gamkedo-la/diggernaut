@@ -2,47 +2,74 @@ class Flyer {
     constructor(x,y){
         this.x = x;
         this.y = y;
+        this.previousX = this.x;
+        this.previousY = this.y;
         this.width = 16;
         this.height = 16;
-        this.xspeed = Math.random() + 0.05;
-        this.yspeed = Math.random() + 0.05;
+        this.xvel = 0;
+        this.yvel = 0;
+        this.yAccel = 0;
+        this.xAccel = 0;
+        this.limits = {
+            maxXVel: 1,
+            maxYVel: 1,
+            minXVel: -1,
+            minYVel: -1,
+            maxYAccel: 0.1,
+            minYAccel: -0.1,
+            maxXAccel: 0.1,
+            minXAccel: -0.1,
+        }
         this.direction = randChoice([0, 1]);
         this.viewBlocked = false;
-        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "flyer")
+        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 20, right: 20, top: 20, bottom: 20}, "flyer")
     }
+    states = {
+        idle: function(){
+            //random flyabout
+        },
+        attack: function(){
+            //move towards player
+        }
+    }
+
     draw(){
         if(!inView(this)) return;
-        if(this.viewBlocked){
-            canvasContext.fillStyle = 'white';
-            let x = this.viewBlocked.x * tileMap.tileWidth - view.x;
-            let y = this.viewBlocked.y * tileMap.tileHeight - view.y;
-        //the following line is for debugging, helps to see where the raycast is hitting
-            //canvasContext.fillRect(x, y, tileMap.tileWidth, tileMap.tileHeight);
-            //canvasContext.filLRect(this.x-view.x, this.y-view.y, 4, 4)
-        }
-        else{
-            canvasContext.fillStyle = '#f90';
-        //the following line is for debugging, helps to see if the raycast reaches the player
-            //line(this.x-view.x, this.y-view.y, player.x-view.x, player.y-view.y);
-        }
-
-        strokePolygon(this.x - view.x, this.y-view.y, 8, 3, ticker/10);
-        
+        canvasContext.fillStyle = "orange";
+        strokePolygon(this.x - view.x + 8, this.y-view.y + 8, 8, 3, ticker/10);
+        this.collider.draw();
     }
     update(){
+        this.xAccel = mapRNG() * 0.2 - 0.1;
+        this.yAccel = mapRNG() * 0.2 - 0.1;
         this.collider.update(this.x, this.y);
-        this.x += ( Math.cos(ticker/(10*this.xspeed*5)) * this.xspeed ) * this.direction;
-        this.y += ( Math.sin(ticker/(10*this.yspeed*10)) * this.yspeed ) * this.direction;
+        this.applyForces();
+        this.x += this.xvel;
+        this.y += this.yvel;
+        // this.x += ( Math.cos(ticker/(10*this.xspeed*5)) * this.xspeed ) * this.direction;
+        // this.y += ( Math.sin(ticker/(10*this.yspeed*10)) * this.yspeed ) * this.direction;
         if(!inView(this)) return;
         this.viewBlocked = tileMap.tileRaycast(this.x, this.y, player.x, player.y);
        if(rectCollision( this.collider, player.diggerang.collider)){
             this.kill();
        }
        if(rectCollision( this.collider, player.collider)){
-        
         this.collideWithPlayer();
-        ;
        }
+
+    }
+
+    applyForces(){
+        this.previousX = this.x;
+        this.previousY = this.y;
+        this.xvel += this.xAccel;
+        this.yvel += this.yAccel;
+        if (this.xvel > this.limits.maxXVel) { this.xvel = this.limits.maxXVel; }
+        if (this.xvel < this.limits.minXVel) { this.xvel = this.limits.minXVel; }
+        if (this.yvel > this.limits.maxYVel) { this.yvel = this.limits.maxYVel; }
+        if (this.yvel < this.limits.minYVel) { this.yvel = this.limits.minYVel; }
+        if (this.xAccel > this.limits.maxXAccel) { this.xAccel = this.limits.maxXAccel; }
+        if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
     }
 
     kill(){
