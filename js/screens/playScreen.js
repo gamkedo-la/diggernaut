@@ -12,9 +12,9 @@ const playScreen = {
         tileMap.draw();
         //player debug text
         tinyFont.drawText(
-`player:  x: ${player.x} y: ${player.y}
-yvel: ${player.yvel} xvel: ${player.xvel} health: ${player.health}
-diggerang: x: ${player.diggerang.x} y: ${player.diggerang.y}`,
+`player:  x: ${player.x.toFixed(1)} y: ${player.y.toFixed(1)}
+yvel: ${player.yvel.toFixed(1)} xvel: ${player.xvel.toFixed(1)} health: ${player.health}
+diggerang: x: ${player.diggerang.x.toFixed(1)} y: ${player.diggerang.y.toFixed(1)}`,
  { x: 10, y: 12 }, 0, 0);
         player.draw();
         actors.forEach(actor => actor.draw());
