@@ -11,10 +11,10 @@ const mapScreen = {
 
     update: function (){
         stats.domElement.style.display = 'none';
-        if(Key.justReleased(Key.m)){signal.dispatch('gotoPlay')}
-        if(Key.isDown(Key.UP)){this.scrollOffset-=10;}
+        if(Key.justReleased(Key.m)||Joy.yReleased){signal.dispatch('gotoPlay')}
+        if(Key.isDown(Key.UP)||Joy.up){this.scrollOffset-=10;}
        // if(this.scrollOffset < 0){this.scrollOffset = 0;}
-        if(Key.isDown(Key.DOWN)){this.scrollOffset+=10;}
+        if(Key.isDown(Key.DOWN)||Joy.down){this.scrollOffset+=10;}
     },
 
     draw: function () {

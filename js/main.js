@@ -105,6 +105,7 @@ function gameLoop() {
         canvas.exitFullscreen();
     }
     Key.update();
+    Joy.update();
 }
 
 function generateMap(config){

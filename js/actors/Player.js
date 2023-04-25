@@ -134,10 +134,10 @@ class Player {
         this.diggerang.draw();
 
         
-        if(Key.isDown(Key.LEFT)){ this.drawDigTileHighlight("LEFT") };
-        if(Key.isDown(Key.RIGHT)){ this.drawDigTileHighlight("RIGHT") };
-        if(Key.isDown(Key.UP)){ this.drawDigTileHighlight("UP") };
-        if(Key.isDown(Key.DOWN)){ this.drawDigTileHighlight("DOWN") };
+        if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight("LEFT") };
+        if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight("RIGHT") };
+        if(Key.isDown(Key.UP)||Joy.up){ this.drawDigTileHighlight("UP") };
+        if(Key.isDown(Key.DOWN)||Joy.down){ this.drawDigTileHighlight("DOWN") };
     }
 
     update() {
@@ -149,7 +149,7 @@ class Player {
         this.canDig = this.checkDig();
         this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
         if(this.canJump){ this.helicopterCapacity = this.limits.helicopterCapacity; }
-        this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d));
+        this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Joy.left || Joy.right);
         this.canWallJump = this.isOnWall() && !this.isOnFloor();
         if(this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
         if(this.moveRightCooldown > 0) { this.moveRightCooldown--; }
@@ -164,33 +164,33 @@ class Player {
     }
 
     handleInput() {
-        if (Key.isDown(Key.LEFT) || Key.isDown(Key.a)) {
+        if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Joy.left) {
             this.moveLeft();
-            if(Key.isDown(Key.z)){
+            if(Key.isDown(Key.z) || Joy.x){
                 this.dig(LEFT);
             }
         }
-        else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d)) {
+        else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Joy.right) {
             this.moveRight(); 
-            if(Key.isDown(Key.z)){
+            if(Key.isDown(Key.z) || Joy.x){
                 this.dig(RIGHT);
             }
         }
 
-        if (Key.isDown(Key.UP) || Key.isDown(Key.w)) {
-            if(Key.isDown(Key.z)){
+        if (Key.isDown(Key.UP) || Key.isDown(Key.w) || Joy.up) {
+            if(Key.isDown(Key.z) || Joy.x){
                 this.dig(UP);
             }
             
         } 
-        else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s)) {
+        else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s) || Joy.down) {
             //this.moveDown();
-            if(Key.isDown(Key.z)){
+            if(Key.isDown(Key.z) || Joy.x){
                 this.dig(DOWN);
             }
         }
 
-        if (Key.isDown(Key.SPACE)) {
+        if (Key.isDown(Key.SPACE) || Joy.a) {
             if(this.canJump) {
                 this.jump();
             }else if(this.yvel > this.limits.hoveryYVelocity){
@@ -198,16 +198,16 @@ class Player {
             }
         }
 
-        if ( Key.justReleased(Key.SPACE) ) {
+        if ( Key.justReleased(Key.SPACE) || Joy.aReleased ) {
             if(this.canWallJump ) {
                 this.wallJump(tileMap);
             }
         }
 
-        if (Key.justReleased(Key.z)) { this.digCooldown = 0; }
-        if (Key.justReleased(Key.p)) { signal.dispatch('pause'); }
-        if (Key.justReleased(Key.i)) { signal.dispatch('inventory'); }
-        if (Key.justReleased(Key.x)) { this.throw() }
+        if (Key.justReleased(Key.z) || Joy.xReleased) { this.digCooldown = 0; }
+        if (Key.justReleased(Key.p) || Joy.startReleased) { signal.dispatch('pause'); }
+        if (Key.justReleased(Key.i) || Joy.yReleased) { signal.dispatch('inventory'); }
+        if (Key.justReleased(Key.x) || Joy.bReleased) { this.throw() }
     }
 
     updateCollider(x, y) {

@@ -70,7 +70,9 @@ const titleScreen = {
     },
 
     update: function () {
-        if(Key.justReleased(Key.z) && titleScreen.clicked) { signal.dispatch('startGame'); }
+        if(titleScreen.clicked && (Key.justReleased(Key.z) || Joy.aReleased || Joy.startReleased)) { 
+            signal.dispatch('startGame'); 
+        }
 
     }
 }

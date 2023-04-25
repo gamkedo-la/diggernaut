@@ -64,6 +64,44 @@ const Key = {
     }
 };
 
+// TODO refactor into a Key lookalike with isDown() and justReleased() and button index constants
+const Joy = {
+    dz:0.1, // deadzone prevents drift on old gamepads
+    up:false,
+    down:false,
+    left:false,
+    right:false,
+    a:false,
+    b:false,
+    x:false,
+    y:false,
+    start:false,
+    aReleased:false,
+    bReleased:false,
+    xReleased:false,
+    yReleased:false,
+    startReleased:false,
+    update() {
+        if (!navigator.getGamepads) return;
+        let g = navigator.getGamepads()[0];
+        if (!g || !g.axes) return; // can be null for a few frames
+        this.left = g.axes[0] < -this.dz;
+        this.right = g.axes[0] > this.dz;
+        this.up = g.axes[1] < -this.dz;
+        this.down = g.axes[1] > this.dz;
+        this.aReleased = this.a && !(g.buttons[0].value > this.dz);
+        this.bReleased = this.b && !(g.buttons[1].value > this.dz);
+        this.xReleased = this.x && !(g.buttons[2].value > this.dz);
+        this.yReleased = this.y && !(g.buttons[3].value > this.dz);
+        this.startReleased = this.start && !(g.buttons[9].value > this.dz);
+        this.a = g.buttons[0].value > this.dz;
+        this.b = g.buttons[1].value > this.dz;
+        this.x = g.buttons[2].value > this.dz;
+        this.y = g.buttons[3].value > this.dz;
+        this.start = g.buttons[9].value > this.dz;
+    }
+};
+
 /**
  * returns mouse position relative to canvas
  *

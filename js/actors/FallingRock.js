@@ -68,7 +68,7 @@ class FallingRock {
             player.x = player.previousX;
             player.updateCollider(player.x, player.y);
             player.xvel = 0;
-            if(Key.isDown(Key.z)){
+            if(Key.isDown(Key.z) || Joy.x){
                 this.kill();
             }
         }else if (collisionInfo.top){
