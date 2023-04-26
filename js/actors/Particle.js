@@ -5,6 +5,7 @@ class Particle {
         this.xVelocity = options.xVelocity();
         this.yVelocity = options.yVelocity();
         this.color = options.color();
+        this.lifeMax = options.life();
         this.life = options.life();
         this.custom = options.custom || null;
         this.gravity = options.gravity() || 0;
@@ -12,6 +13,7 @@ class Particle {
         this.y = y;
         this.prevX = this.x;
         this.prevY = this.y;
+        this.gradientPalette = options.gradientPalette || null;
        
     }
 
@@ -34,6 +36,12 @@ class Particle {
         }
         if(Math.round(this.xVelocity) == 0 && Math.round(this.yVelocity) == 0){
             this.die();
+        }
+        if(this.gradientPalette){
+            //map gradient palette to life
+            const lifePercent = this.life / this.lifeMax;
+            const colorIndex = Math.max(0, Math.floor(lifePercent * this.gradientPalette.length));
+            this.color = this.gradientPalette[colorIndex];
         }
     }
     
