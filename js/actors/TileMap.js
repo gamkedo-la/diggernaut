@@ -17,6 +17,7 @@ class TileMap {
     this.data = new Uint16Array(widthInTiles * heightInTiles);
     this.damagedTiles = {} // {[tileIndex]: 10, [tileIndex]: 35}
     this.shakingTiles = {} // {[tileIndex]: {timeRemaining: 0, callback: callbackFunction, shake: {x: 0, y: 0}}}
+    this.autoTileData = [];
     this.standardShakeTime = 7;
     this.explosiveShakeTime = 42;
     this.whiteExplosionFrames = [0, 2, 5, 6, 10, 11, 12, 17, 18, 19, 20, 26, 27, 28, 29, 30, 37, 38, 39, 40, 41, 42]
@@ -203,7 +204,7 @@ class TileMap {
                 let dx = 0;
                 let dy = 0;
                 
-                this.drawTile(caveTileset, this.data[index], i, j)
+                this.drawTile(caveTileset, this.autoTileData[index], i, j)
                 this.drawDamagedTiles(index, i, j);
                 this.drawFlashingTiles(index, i, j);
                 
@@ -217,6 +218,7 @@ class TileMap {
         let right = Math.ceil((view.x+view.width)/this.tileWidth);
         let top = Math.floor(view.y/this.tileHeight);
         let bottom = Math.ceil((view.y+view.height)/this.tileHeight);
+        
     
         for(let x = left; x < right; x++){
             for(let y = top; y < bottom; y++){
@@ -228,6 +230,7 @@ class TileMap {
                     let type = TILE_TYPES[this.data[index]];
                     destroyTileWithEffects[type](index);
                     ui.miniMap.dirtyRectUpdate(x, y, 6, 6)
+                    this.updateAutoTiles(left, top, right, bottom);
                 }
 
                 //handle timers on shaking tiles
@@ -244,6 +247,7 @@ class TileMap {
 
             }
         }
+       
     }
 
     drawTile(tileset, tileData, tx, ty){
@@ -292,6 +296,44 @@ class TileMap {
             );
             canvasContext.restore();
     }
+
+    updateAutoTiles(sx, sy, width, height){
+        const dirs = {
+            up: 1,
+            left: 2,
+            down: 8, 
+            right: 4
+        }
+
+        //loop over tilemap.data, check for tiles Up, Down, Left, Right of current tile
+        //generate a bitmask based on which tiles are present
+        //use bitmask to look up tile in autotileset
+        //set tilemap.data to autotile index
+        for(let y = sy; y < height; y++){ 
+            for(let x = sx; x < width; x++){
+                let index = this.getIndexAtPosition(x, y);
+                //bitmask will become the column lookup in the autotileset
+                let bitmask = 0b0;
+
+                if(this.data[this.getIndexAtPosition(x, y-1)] === this.data[index]){ bitmask += dirs.up; }
+                if(this.data[this.getIndexAtPosition(x-1, y)] === this.data[index]){ bitmask += dirs.left; }
+                if(this.data[this.getIndexAtPosition(x, y+1)] === this.data[index]){ bitmask += dirs.down; }
+                if(this.data[this.getIndexAtPosition(x+1, y)] === this.data[index]){ bitmask += dirs.right; }
+                //the original tile type is the row lookup in the autotileset
+                //autotileset is arranged in rows of 16 tiles, each row is a different tile type
+                this.autoTileData[index] = this.data[index] * 16 + bitmask;
+            }
+        }
+    }
+
+    updateAutoTilesOnScreen(){
+        let left = Math.floor(view.x/this.tileWidth);
+        let right = Math.ceil((view.x+view.width)/this.tileWidth);
+        let top = Math.floor(view.y/this.tileHeight);
+        let bottom = Math.ceil((view.y+view.height)/this.tileHeight);
+        this.updateAutoTiles(left, top, right-left, bottom-top);
+    }
+                
             
     drawFlashingTiles(index, x, y) {
         if ( this.data[index] === TILE_EXPLOSIVE &&

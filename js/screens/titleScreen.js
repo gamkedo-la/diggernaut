@@ -15,7 +15,7 @@ const titleScreen = {
             const type = Math.floor(titleRNG() * 8);
             const types = [1,1,1,1,4,7,8,9]
             
-            tileMap.drawTileSprite(caveTileset, types[type], x, y - (ticker*speed) % (canvas.height * 3) )
+            tileMap.drawTileSprite(caveTileset, types[type]*16, x, y - (ticker*speed) % (canvas.height * 3) )
         }
         canvasContext.fillStyle = 'rgba(0,0,0,0.7)';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
@@ -26,7 +26,7 @@ const titleScreen = {
             const type = Math.floor(titleRNG() * 8);
             const types = [1,1,1,1,4,7,8,9]
             
-            tileMap.drawTileSprite(caveTileset, types[type], x, y - (ticker*speed) % (canvas.height * 3) )
+            tileMap.drawTileSprite(caveTileset, types[type]*16, x, y - (ticker*speed) % (canvas.height * 3) )
         }
         canvasContext.fillStyle = 'rgba(0,0,0,0.5)';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
@@ -37,7 +37,7 @@ const titleScreen = {
             const type = Math.floor(titleRNG() * 8);
             const types = [1,1,1,1,4,7,8,9]
             
-            tileMap.drawTileSprite(caveTileset, types[type], x, y - (ticker*speed) % (canvas.height * 3) )
+            tileMap.drawTileSprite(caveTileset, types[type]*16, x, y - (ticker*speed) % (canvas.height * 3) )
         }
         
         //title text

@@ -49,9 +49,9 @@ function loadSounds() {
 
 function loadingComplete() {
     caveTileset = new Tileset(
-        img["basic-tiles"], 
+        img["autoTiles"], 
         {tileWidth: 32, tileHeight: 32,
-        tileCount: 16, tileColumns: 10, tileRows: 1});
+        tileCount: 16, tileColumns: 16, tileRows: 10});
     
     console.log('loading complete, starting game')
     sounds = loader.sounds;
@@ -112,7 +112,7 @@ function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
     ui.miniMap = new uiMinimap(tileMap);
-    let choices = mapConfig.caveGenPools.fallingFun;
+    let choices = mapConfig.caveGenPools.vanilla;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     
@@ -193,6 +193,9 @@ function generateMap(config){
 
     //full update on ui minimap
     ui.miniMap.update();
+
+    //full update on autotiles
+    tileMap.updateAutoTiles(0,0, tileMap.widthInTiles, tileMap.heightInTiles);
 
 }
 

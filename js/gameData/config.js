@@ -377,6 +377,7 @@ const imageList = [
     'earthTiles',
     'placeholder-player',
     'basic-tiles',
+    'autoTiles',
     'minimap',
     'gems'
 ]
