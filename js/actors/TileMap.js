@@ -20,6 +20,7 @@ class TileMap {
     this.autoTileData = [];
     this.standardShakeTime = 7;
     this.explosiveShakeTime = 42;
+    this.screenShakeTime = 0;
     this.whiteExplosionFrames = [0, 2, 5, 6, 10, 11, 12, 17, 18, 19, 20, 26, 27, 28, 29, 30, 37, 38, 39, 40, 41, 42]
     }
 
@@ -193,26 +194,30 @@ class TileMap {
     }
 //-=============================================================================
     draw(){
-        let left = Math.floor(view.x/this.tileWidth);
-        let right = Math.ceil((view.x+view.width)/this.tileWidth);
-        let top = Math.floor(view.y/this.tileHeight);
-        let bottom = Math.ceil((view.y+view.height)/this.tileHeight);
-    
+        const left = Math.floor(view.x/this.tileWidth);
+        const right = Math.ceil((view.x+view.width)/this.tileWidth);
+        const top = Math.floor(view.y/this.tileHeight);
+        const bottom = Math.ceil((view.y+view.height)/this.tileHeight);
+
+        // const dx = this.screenShakeTime > 0 ? screenShake(this.screenShakeTime): 0;
+        // const dy = this.screenShakeTime > 0 ? screenShake(this.screenShakeTime): 0;
+
         for(let i = left; i < right; i++){
             for(let j = top; j < bottom; j++){    
                 const index = this.getIndexAtPosition(i, j)
-                let dx = 0;
-                let dy = 0;
                 
                 this.drawTile(caveTileset, this.autoTileData[index], i, j)
                 this.drawDamagedTiles(index, i, j);
                 this.drawFlashingTiles(index, i, j);
-                
             }
         }
     }
 
     update() {
+        if (this.screenShakeTime > 0) {
+            this.screenShakeTime--;
+            screenShake(this.screenShakeTime)
+        }
         
         let left = Math.floor(view.x/this.tileWidth);
         let right = Math.ceil((view.x+view.width)/this.tileWidth);
@@ -295,6 +300,10 @@ class TileMap {
                 this.tileHeight
             );
             canvasContext.restore();
+    }
+
+    shakeScreen() {
+        this.screenShakeTime = SCREEN_SHAKE_TIME;
     }
 
     updateAutoTiles(sx, sy, width, height){

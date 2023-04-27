@@ -421,6 +421,8 @@ class Player {
         if (this.health <= 0) {
             this.health = 0;
             this.die();
+        } else {
+            tileMap.shakeScreen();
         }
         this.hurtCooldown = this.limits.hurtCooldown;
     }

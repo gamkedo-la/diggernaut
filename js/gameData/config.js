@@ -12,6 +12,7 @@ const RIGHT = 1;
 const UP = 2;
 const DOWN = 3;
 
+const SCREEN_SHAKE_TIME = 20;
 
 //TODO: maybe roll all the tile data into a single object?
 //have to be able to access the tile type by index, but also by name
