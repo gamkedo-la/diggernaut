@@ -5,6 +5,7 @@ class Player {
         this.previousX = this.x;
         this.previousY = this.y;
         this.diggerang = new Diggerang(this.x, this.y);
+        this.digging = false;
         this.drawOffset = {
             x: 7,
             y: 8
@@ -42,6 +43,14 @@ class Player {
                 dig: {
                     frames: [3],
                     frameRate: 1
+                },
+                digLeft: {
+                    frames: [8,9],
+                    frameRate: 8
+                },
+                digRight: {
+                    frames: [6,7],
+                    frameRate: 8
                 }
             }
         })
@@ -144,21 +153,25 @@ class Player {
     }
 
     handleInput() {
+        this.digging = false;
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Joy.left) {
             this.moveLeft();
             if(Key.isDown(Key.z) || Joy.x){
+                this.digging = true;
                 this.dig(LEFT);
             }
         }
         else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Joy.right) {
             this.moveRight(); 
             if(Key.isDown(Key.z) || Joy.x){
+                this.digging = true;
                 this.dig(RIGHT);
             }
         }
 
         if (Key.isDown(Key.UP) || Key.isDown(Key.w) || Joy.up) {
             if(Key.isDown(Key.z) || Joy.x){
+                this.digging = true;
                 this.dig(UP);
             }
             
@@ -166,6 +179,7 @@ class Player {
         else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s) || Joy.down) {
             //this.moveDown();
             if(Key.isDown(Key.z) || Joy.x){
+                this.digging = true;
                 this.dig(DOWN);
             }
         }
@@ -215,6 +229,7 @@ class Player {
     }
 
     handleAnimationState(){
+        //this.digging = false;
         this.currentAnimation.update();
         if(this.xvel > 0) {
             this.currentAnimation = this.spritesheet.animations["walkRight"];
@@ -230,6 +245,13 @@ class Player {
         }
         if(this.yvel > 0) {
             this.currentAnimation = this.spritesheet.animations["falling"];
+        }
+        if(this.digging) {
+            if(this.facing == RIGHT) {
+                this.currentAnimation = this.spritesheet.animations["digRight"];
+            } else {
+                this.currentAnimation = this.spritesheet.animations["digLeft"];
+            }
         }
     }
 
@@ -384,7 +406,7 @@ class Player {
     }
 
     dig(direction) {
-        this.play("dig");
+        this.digging = true;
         if (!this.canDig) return;
         const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
