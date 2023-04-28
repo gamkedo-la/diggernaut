@@ -48,19 +48,19 @@ const titleScreen = {
 
         let titleOffsets = [{x: 0, y: 0}, {x: 4, y: 0}, {x: 0, y: 4}, {x: 4, y: 4}];
         for(let i = 0; i < titleOffsets.length; i++){
-            gameFont.drawText("Diggernaut", { x: 95 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, 'black');
+            gameFont.drawText("Diggernauts", { x: 85 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, 'black');
         }
         
         titleOffsets = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}];
         for(let i = 0; i < titleOffsets.length; i++){
-            gameFont.drawText("Diggernaut", { x: 95 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, gradient);
+            gameFont.drawText("Diggernauts", { x: 85 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 0, 0, 6, gradient);
         }
         
        
-        gameFont.drawText("Hit F to go Fullscreen", { x: 200, y: 240 }, 0, 0, 1, 'yellow');
+        gameFont.drawText("Hit F to go Fullscreen", { x: 215, y: 240 }, 0, 0, 1, 'yellow');
         gameFont.drawText("Arrows to move, Z to dig, X to throw, SPACE to jump", { x: 125, y: 256 }, 0, 0);
         if(!titleScreen.clicked){
-            gameFont.drawText("Click for browser focus audio context nonsense", { x: 140, y: 270 }, 0, 0);
+            gameFont.drawText("Click or tap to play", { x: 220, y: 270 }, 0, 0);
         }else {
             gameFont.drawText("Awesome! Hit Z to start", { x: 140, y: 270 }, 0, 0, 2);
 

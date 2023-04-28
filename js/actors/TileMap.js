@@ -157,10 +157,13 @@ class TileMap {
     }
 
     tileFillRect( tx, ty, width, height, value ){
-        for(let i = ty; i <= ty + height; i++){
-            let start = this.widthInTiles * i + tx;
-            let finish = start + width+1;
-            this.data.fill(value, start, finish);
+        for(let i = tx; i <= tx + width; i++){
+            for(let j = ty; j <= ty + height; j++){
+                if(Array.isArray(value)){
+                    value = randChoice(value);
+                }
+                this.data[j * this.widthInTiles + i] = value;
+            }
         }
     }
 
@@ -182,11 +185,16 @@ class TileMap {
     }
 
     tileFillCircle( tx, ty, radius, value ){
+        
         let rad = Math.floor(radius);
         for(let y = -rad; y <= rad; y++){
             for(let x = -rad; x <=rad; x++){
+                let tile;
+                if(Array.isArray(value)){
+                    tile = randChoice(value);
+                }else {tile = value;}
                 if(x*x+y*y <= rad*rad){
-                    this.data[this.getIndexAtPosition(tx+x, ty+y)] = value;
+                    this.data[this.getIndexAtPosition(tx+x, ty+y)] = tile;
                 }
                 
             }

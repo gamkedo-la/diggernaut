@@ -81,6 +81,15 @@ const Joy = {
     xReleased:false,
     yReleased:false,
     startReleased:false,
+
+    init() {
+        window.addEventListener("gamepadconnected", function(e) {
+            console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+                e.gamepad.index, e.gamepad.id,
+                e.gamepad.buttons.length, e.gamepad.axes.length);
+            g = navigator.getGamepads()[0];
+        });
+    },
     update() {
         if (!navigator.getGamepads) return;
         let g = navigator.getGamepads()[0];

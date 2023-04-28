@@ -26,7 +26,7 @@ let gameState = GAMESTATE_TITLE,
  loader = new AssetLoader(),
  audio = new AudioGlobal(),
  fps = FRAMERATE,
- img, gameFont, tinyFont, tileMap, player, then, startTime, fpsInterval
+ img, gameFont, tinyFont, tileMap, player, then, startTime, fpsInterval, g
 const actors = [];
 
 function init() {
@@ -69,6 +69,7 @@ function begin(fps) {
     fpsInterval = 1000/fps;
     then = Date.now();
     startTime = then;
+    Joy.init();
     mainLoop();
 }
 
@@ -121,15 +122,15 @@ function generateMap(config){
     }
     
     //random tiny holes
-    for(let i = 0; i < 12000; i++){
+    for(let i = 0; i < 1200; i++){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        tileMap.tileFillRect(x, y, 1, 1, 0);
+        tileMap.tileFillRect(x, y, 2, 2, 0);
         //tileMap.data[i] = 0;
     }
 
     //random room sized voids
-    for(let i = 0; i < 200; i++){
+    for(let i = 0; i < 1000; i++){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
         tileMap.tileFillRect(x, y, 10, 10, 0);
@@ -149,43 +150,38 @@ function generateMap(config){
         
     }
 
-    //random round voids, random size
-    for(let i = 0; i < 200; i++){
+    // //random round voids, random size
+    // for(let i = 0; i < 200; i++){
+    //     const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+    //     const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+    //     const radius = Math.floor(mapRNG() * 8 + 2);
+    //     tileMap.tileFillCircle(x, y, radius, 0);
+    // }
+
+    //random round blobs of dense rock and ore, random size
+    for(let i = 0; i < 400; i++){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        const radius = Math.floor(mapRNG() * 8 + 2);
-        tileMap.tileFillCircle(x, y, radius, 0);
+        const radius = 8;
+        tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.fallingFun);
     }
 
-    //random round blobs, random size
-    for(let i = 0; i < 200; i++){
+    for(let i = 0; i < 400; i++){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        const radius = Math.floor(mapRNG() * 8 + 2);
-        tileMap.tileFillCircle(x, y, radius, 1);
-    }
-
-    //random ledges of random length
-    for(let i = 0; i < 300; i++){
-        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        const length = Math.floor(mapRNG() * 8 + 4);
-        tileMap.tileFillRect(x, y, length, 1, 0);
+        const radius = 8;
+        tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.oreGalore);
     }
 
     //test of prefab function
-    for(let i = 0; i < 10; i++){
+    for(let i = 0; i < 100; i++){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
         tileMap.insertPrefab(rooms.room1, x, y)
     }
-
     tileMap.insertPrefab(rooms["c-shelter"], 10, 16)
     //columns prefab to test wall jump
     tileMap.insertPrefab(rooms.columns, 20, 20);
-
-    //fill bottom half of map with exploding blocks
-    //tileMap.tileFillRect(0, tileMap.heightInTiles/2, tileMap.widthInTiles, tileMap.heightInTiles/2, 6);
 
     //fill two columns at left and right edge with unbreakable blocks
     tileMap.tileFillRect(0, 0, 1, tileMap.heightInTiles, 3);
