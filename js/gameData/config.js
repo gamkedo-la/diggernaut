@@ -339,6 +339,55 @@ const inventory = {
                                                                                                                                                   
 **/
 
+const particleGradients = {
+    fire: [
+        COLORS[0],
+        COLORS[1],
+        COLORS[2],
+        COLORS[3],
+        COLORS[4],
+        COLORS[5],
+        COLORS[6],
+        COLORS[7],
+        COLORS[8],
+        COLORS[9],
+    ],
+    ice:  [
+        COLORS[0],
+        COLORS[1],
+        COLORS[17],
+        COLORS[18],
+        COLORS[19],
+        COLORS[20],
+        COLORS[21],
+        COLORS[21],
+        COLORS[22],
+        COLORS[22],
+    ],
+    hurt: [
+        [
+            COLORS[0],
+            COLORS[1],
+            COLORS[2],
+            COLORS[3],
+            COLORS[4],
+            COLORS[5],
+        ]
+    ],
+    ore: [
+        COLORS[0],
+        COLORS[1],
+        COLORS[15],
+        COLORS[14],
+        COLORS[13],
+        COLORS[12],
+        COLORS[11],
+        COLORS[10],
+        COLORS[9],
+        
+    ]
+}
+
 const particleDefinitions = {
 
     sparks: function(){
@@ -349,20 +398,18 @@ const particleDefinitions = {
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(0, 1),
         gravity: () => rand(0, 0.1),
-        gradientPalette: [
-            COLORS[0],
-            COLORS[1],
-            COLORS[2],
-            COLORS[3],
-            COLORS[4],
-            COLORS[5],
-            COLORS[6],
-            COLORS[7],
-            COLORS[8],
-            COLORS[9],
-            COLORS[22],
-        ]
-
+        gradientPalette: particleGradients.fire
+        }
+    },
+    oreSparks: function(){
+        return{
+        quantity: 3,
+        color: () => "yellow",
+        life: () => 10,
+        xVelocity: () => rand(-0.2, .2),
+        yVelocity: () => rand(0, -1),
+        gravity: () => rand(0, 0.1),
+        gradientPalette: particleGradients.ore
         }
     },
 
@@ -374,19 +421,7 @@ const particleDefinitions = {
         xVelocity: () => 0,
         yVelocity: () => rand(-.5, 0.1),
         gravity: () => rand(-0.1, 0.1),
-        gradientPalette: [
-            COLORS[0],
-            COLORS[1],
-            COLORS[2],
-            COLORS[3],
-            COLORS[4],
-            COLORS[5],
-            COLORS[6],
-            COLORS[7],
-            COLORS[8],
-            COLORS[9],
-            COLORS[22],
-        ]
+        gradientPalette: particleGradients.fire
         }
     },
 
@@ -398,18 +433,7 @@ const particleDefinitions = {
         color:  () => "white",
         life: () => rand(19, 20),
         gravity: () => rand(0, 0.1),
-        gradientPalette: [
-            COLORS[0],
-            COLORS[1],
-            COLORS[17],
-            COLORS[18],
-            COLORS[19],
-            COLORS[20],
-            COLORS[21],
-            COLORS[21],
-            COLORS[22],
-            COLORS[22],
-        ]
+        gradientPalette: particleGradients.ice
         }
     },
 
@@ -421,29 +445,19 @@ const particleDefinitions = {
             color:  () => "red",
             life: () => rand(19, 20),
             gravity: () => rand(0, 0.1),
-            
-            gradientPalette: [
-                COLORS[1],
-                COLORS[2],
-                COLORS[3],
-                COLORS[4],
-                COLORS[5],
-                COLORS[6],
-                COLORS[7],
-                COLORS[8],
-                COLORS[9],
-            ]
+            gradientPalette: particleGradients.hurt
      }
     },
 
     explodingTile: function(){
         return{
         quantity: 20,
-        xVelocity: () => rand(-1, 1),
-        yVelocity: () => rand(-.5, -2),
+        xVelocity: () => rand(-2, 2),
+        yVelocity: () => rand(-1, -1),
         color:  () => "red",
         life: () => rand(5, 20),
         gravity: () => rand(0, 0.1),
+        gradientPalette: particleGradients.fire
         }
     },
 
@@ -466,6 +480,19 @@ const particleDefinitions = {
         color: () => ["white", "yellow"][randInt(0, 1)],
         life: () => rand(5, 20),
         gravity: () => rand(0, 0.1),
+        gradientPalette: [
+            COLORS[0],
+            COLORS[1],
+            COLORS[2],
+            COLORS[3],
+            COLORS[4],
+            COLORS[5],
+            COLORS[6],
+            COLORS[7],
+            COLORS[8],
+            COLORS[9],
+            COLORS[22],
+        ]
         }
     },
 
@@ -477,6 +504,19 @@ const particleDefinitions = {
         color: () => ["white", "yellow"][randInt(0, 1)],
         life: () => rand(5, 20),
         gravity: () => rand(0, 0.1),
+        gradientPalette: [
+            COLORS[0],
+            COLORS[1],
+            COLORS[2],
+            COLORS[3],
+            COLORS[4],
+            COLORS[5],
+            COLORS[6],
+            COLORS[7],
+            COLORS[8],
+            COLORS[9],
+            COLORS[22],
+        ]
         }
     }
 }
@@ -579,7 +619,7 @@ const destroyTileWithEffects = {
         audio.playSound(sounds[randChoice(rock_crumbles)])
         audio.playSound(sounds.pickup);
         let i = 10;
-        while(--i){ actors.push(new Ore(x, y))}  
+        while(--i){ actors.push(new Ore(randInt(-16,16) + x, randInt(-16,16)+y))}  
     },
 
     TILE_FALLING_ROCK : function (tileIndex) {
@@ -600,6 +640,8 @@ const destroyTileWithEffects = {
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
         audio.playSound(sounds[randChoice(rock_crumbles)])
+        let i = 30;
+        while(--i){ actors.push(new Ore(randInt(-16,16) + x, randInt(-16,16)+y))}  
     },
 
     TILE_ROCK : function (tileIndex) {
@@ -667,8 +709,6 @@ const damageTileWithEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.jumpPuff);
-        let i = 10;
-        while(--i){ actors.push(new Ore(x, y))}
     },
     TILE_ROCK : function (tileIndex) { 
         

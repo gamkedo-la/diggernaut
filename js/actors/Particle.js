@@ -11,15 +11,15 @@ class Particle {
         this.gravity = options.gravity() || 0;
         this.x = x;
         this.y = y;
-        this.prevX = this.x;
-        this.prevY = this.y;
+        this.previousX = this.x;
+        this.previousY = this.y;
         this.gradientPalette = options.gradientPalette || null;
        
     }
 
     update() {
-        this.prevX = this.x;
-        this.prevY = this.y;
+        this.previousX = this.x;
+        this.previousY = this.y;
         if(!inView(this)){
             this.die();
         }
@@ -37,6 +37,14 @@ class Particle {
         if(Math.round(this.xVelocity) == 0 && Math.round(this.yVelocity) == 0){
             this.die();
         }
+        if(tileMap.collidesWith(this.x, this.y)){
+            
+            this.yVelocity = -this.yVelocity;
+            this.xVelocity = -this.xVelocity;
+            this.x = this.previousX + this.xVelocity;
+            this.y = this.previousY + this.yVelocity;
+
+        }
         if(this.gradientPalette){
             //map gradient palette to life
             const lifePercent = this.life / this.lifeMax;
@@ -46,7 +54,7 @@ class Particle {
     }
     
     draw() {
-     line(this.x-view.x, this.y-view.y, this.prevX-view.x, this.prevY-view.y, this.color);
+     line(this.x-view.x, this.y-view.y, this.previousX-view.x, this.previousY-view.y, this.color);
     }
 
     die() {
