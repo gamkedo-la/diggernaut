@@ -659,6 +659,7 @@ const damageTileWithEffects = {
             if(player.tileOverlapCheck(tileIndex)){
                 player.hurt(10);
             }
+            tileMap.shakeScreen(30);
         }
     },
 

@@ -302,8 +302,8 @@ class TileMap {
             canvasContext.restore();
     }
 
-    shakeScreen() {
-        this.screenShakeTime = SCREEN_SHAKE_TIME;
+    shakeScreen(time=null) {
+        this.screenShakeTime = time || SCREEN_SHAKE_TIME;
     }
 
     updateAutoTiles(sx, sy, width, height){
