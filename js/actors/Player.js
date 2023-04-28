@@ -1,34 +1,14 @@
 class Player {
     constructor(settings = {}) {
         Object.assign(this, settings);
-        // this.x = x;
-        // this.y = y;
-        // this.previousX = x;
-        // this.previousY = y;
-        // this.canJump = false;
-        // this.canDig = true;
-        // this.width = 16;
-        // this.height = 24;
-        // this.speed = 0.9;
-        // this.color = "yellow";
-        // this.xvel = 0;
-        // this.yvel = 0;
-        // this.xAccel = 0;
-        // this.yAccel = 0;
-        // this.digCooldown = 0;
-        // this.hurtCooldown = 0;
-        // this.health = 100;
-        // this.friction = 0.80;
-        // this.moveLeftCooldown = 0;
-        // this.moveRightCooldown = 0;
-        // this.coyoteCooldown = 0;
-        // this.wallSliding = false;
-        // this.helicopterCapacity = 120;
-        // this.facing = LEFT;
-       
+        
         this.previousX = this.x;
         this.previousY = this.y;
         this.diggerang = new Diggerang(this.x, this.y);
+        this.drawOffset = {
+            x: 7,
+            y: 8
+        }
         // this.inventory = {
         //     ore: 1000,
         // }
@@ -36,8 +16,8 @@ class Player {
 
         this.spritesheet = new SpriteSheet({
             image: img['placeholder-player'],
-            frameWidth: 16,
-            frameHeight: 24,
+            frameWidth: 32,
+            frameHeight: 32,
             animations: {
                 idle: {
                     frames: [2],
@@ -123,10 +103,10 @@ class Player {
     }
     draw() {
        this.currentAnimation.render({
-        x: Math.floor(this.x-view.x), 
-        y: Math.floor(this.y-view.y),
-        width: 16,
-        height: 24
+        x: Math.floor(this.x-view.x)-this.drawOffset.x, 
+        y: Math.floor(this.y-view.y)-this.drawOffset.y,
+        width: 32,
+        height: 32
     })
         
         this.collider.draw()

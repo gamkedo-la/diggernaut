@@ -106,11 +106,8 @@ const COLORS = [
     '#423934'
 ]
 
-
-
-
-
-
+//damageValues is how much damage player deals to tile when digging. 
+//damage logic currently destroys tile when damage >= 100
 const damageValues = [
     0, //TILE_EMPTY
     100, //TILE_DIRT
