@@ -399,51 +399,51 @@ const particleDefinitions = {
     },
     boom25px: function(){
         return{
-        tileSprite: splode_25px,
+        tileSprite: tileSets.splode_25px,
         quantity: 5,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
         },
         collides: false,
-        xVelocity: () => rand(-2, 2),
+        xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(0, -5),
         color:  () => "red",
-        life: () => rand(8, 17),
+        life: () => rand(10, 20),
         gravity: () => 0,
         }
     },
 
     boom17px: function(){
         return{
-        tileSprite: splode_17px,
+        tileSprite: tileSets.splode_17px,
         quantity: 5,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
         },
         collides: false,
-        xVelocity: () => rand(-2, 2),
+        xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(0, -5),
         color:  () => "red",
-        life: () => rand(8, 17),
+        life: () => rand(10, 20),
         gravity: () => 0,
         }
     },
 
     boom7px: function(){
         return{
-        tileSprite: splode_7px,
+        tileSprite: tileSets.splode_7px,
         quantity: 20,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
         },
         collides: false,
-        xVelocity: () => rand(-2, 2),
+        xVelocity: () => 0,
         yVelocity: () => rand(0, -5),
         color:  () => "red",
-        life: () => rand(8, 17),
+        life: () => rand(20, 35),
         gravity: () => 0,
         }
     },
