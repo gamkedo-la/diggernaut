@@ -214,7 +214,7 @@ class TileMap {
             for(let j = top; j < bottom; j++){    
                 const index = this.getIndexAtPosition(i, j)
                 
-                this.drawTile(caveTileset, this.autoTileData[index], i, j)
+                this.drawTile(tileSets.caveTileset, this.autoTileData[index], i, j)
                 this.drawDamagedTiles(index, i, j);
                 this.drawFlashingTiles(index, i, j);
             }
@@ -289,7 +289,7 @@ class TileMap {
             let damage = this.damagedTiles[index]/100;
             //damageTileset contains 10 tiles, 0-9, 0 is undamaged, 9 is destroyed
             let tile = Math.floor(damage * 8);
-            this.drawTile(damageTileset, tile, x, y);
+            this.drawTile(tileSets.damageTileset, tile, x, y);
     }
 
     shakeScreen(time=null) {

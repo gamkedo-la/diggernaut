@@ -18,15 +18,14 @@ bufferCanvas.width = canvas.width;
 bufferCanvas.height = canvas.height;
 bufferContext = bufferCanvas.getContext("2d");
 
-
-
-
 let gameState = GAMESTATE_TITLE,
  ticker = 0,
  loader = new AssetLoader(),
  audio = new AudioGlobal(),
  fps = FRAMERATE,
  img, gameFont, tinyFont, tileMap, player, then, startTime, fpsInterval, g
+
+const tileSets = {};
 const actors = [];
 
 function init() {
@@ -48,37 +47,54 @@ function loadSounds() {
 }
 
 function loadingComplete() {
-    caveTileset = new Tileset(
+
+    //create tileset sprites from loaded images
+    tileSets.caveTileset = new Tileset(
         img["autoTiles"], 
-        {tileWidth: 32, tileHeight: 32,
-        tileCount: 16, tileColumns: 16, tileRows: 10});
+        {tileWidth: 32, tileHeight: 32, tileCount: 16, tileColumns: 16, tileRows: 10});
 
-    damageTileset = new Tileset(
+    tileSets.damageTileset = new Tileset(
         img["damage"],
-        {tileWidth: 32, tileHeight: 32,
-        tileCount: 10, tileColumns: 10, tileRows: 1}
+        {tileWidth: 32, tileHeight: 32, tileCount: 10, tileColumns: 10, tileRows: 1}
     )
 
-    splode_7px = new Tileset(
+    tileSets.splode_7px = new Tileset(
         img["splode_7px"],
-        {tileWidth: 7, tileHeight: 7,
-        tileCount: 7, tileColumns: 7, tileRows: 1}
+        {tileWidth: 7, tileHeight: 7, tileCount: 7, tileColumns: 7, tileRows: 1}
     )
 
-    splode_17px = new Tileset(
+    tileSets.splode_17px = new Tileset(
         img["splode_17px"],
-        {tileWidth: 17, tileHeight: 17,
-        tileCount: 7, tileColumns: 7, tileRows: 1}
+        {tileWidth: 17, tileHeight: 17, tileCount: 7, tileColumns: 7, tileRows: 1}
     )
 
-    splode_25px = new Tileset(
+    tileSets.splode_25px = new Tileset(
         img["splode_25px"],
-        {tileWidth: 25, tileHeight: 25,
-        tileCount: 7, tileColumns: 7, tileRows: 1}
+        {tileWidth: 25, tileHeight: 25, tileCount: 7, tileColumns: 7, tileRows: 1}
     )
-    
 
-    
+    tileSets.gems = new Tileset(
+        img["gems"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 16, tileColumns: 4, tileRows: 4}
+    )
+
+    tileSets.bones = new Tileset(
+        img["bones"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 16, tileColumns: 4, tileRows: 4}
+    )
+
+    tileSets.gemSilhouettes = new Tileset(
+        img["gem_silhouettes"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 16, tileColumns: 4, tileRows: 4}
+    )
+
+    tileSets.boneSilhouettes = new Tileset(
+        img["bone_silhouettes"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 28, tileColumns: 7, tileRows: 4}
+    )
+
+    collectibles = createCollectibles(tileSets);
+
     console.log('loading complete, starting game')
     sounds = loader.sounds;
     generateMap(mapConfig);    

@@ -1,10 +1,17 @@
 /*
 https://patorjk.com/software/taag/#p=display&f=Varsity&t=Text%20Banners!
-   ____ _       _           _    ____                _       
-  / ___| | ___ | |__   __ _| |  / ___|___  _ __  ___| |_ ___ 
- | |  _| |/ _ \| '_ \ / _` | | | |   / _ \| '_ \/ __| __/ __|
- | |_| | | (_) | |_) | (_| | | | |__| (_) | | | \__ \ |_\__ \
-  \____|_|\___/|_.__/ \__,_|_|  \____\___/|_| |_|___/\__|___/
+                                                                                        
+ @@@@@@@   @@@@@@   @@@  @@@   @@@@@@   @@@@@@@   @@@@@@   @@@  @@@  @@@@@@@   @@@@@@   
+@@@@@@@@  @@@@@@@@  @@@@ @@@  @@@@@@@   @@@@@@@  @@@@@@@@  @@@@ @@@  @@@@@@@  @@@@@@@   
+!@@       @@!  @@@  @@!@!@@@  !@@         @@!    @@!  @@@  @@!@!@@@    @@!    !@@       
+!@!       !@!  @!@  !@!!@!@!  !@!         !@!    !@!  @!@  !@!!@!@!    !@!    !@!       
+!@!       @!@  !@!  @!@ !!@!  !!@@!!      @!!    @!@!@!@!  @!@ !!@!    @!!    !!@@!!    
+!!!       !@!  !!!  !@!  !!!   !!@!!!     !!!    !!!@!!!!  !@!  !!!    !!!     !!@!!!   
+:!!       !!:  !!!  !!:  !!!       !:!    !!:    !!:  !!!  !!:  !!!    !!:         !:!  
+:!:       :!:  !:!  :!:  !:!      !:!     :!:    :!:  !:!  :!:  !:!    :!:        !:!   
+ ::: :::  ::::: ::   ::   ::  :::: ::      ::    ::   :::   ::   ::     ::    :::: ::   
+ :: :: :   : :  :   ::    :   :: : :       :      :   : :  ::    :      :     :: : :    
+                                                                                        
                                                              
 */
 const LEFT = 0;
@@ -195,7 +202,7 @@ let seed = 88881654;
 const mapRNG = new Math.seedrandom(seed);
 
 var sounds = {};
-var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px = null;
+
 
 
 
@@ -493,11 +500,18 @@ const particleDefinitions = {
 }
 
 /*
-   ____                           _                 _       
-  / ___| __ _ _ __ ___   ___     / \   ___ ___  ___| |_ ___ 
- | |  _ / _` | '_ ` _ \ / _ \   / _ \ / __/ __|/ _ \ __/ __|
- | |_| | (_| | | | | | |  __/  / ___ \\__ \__ \  __/ |_\__ \
-  \____|\__,_|_| |_| |_|\___| /_/   \_\___/___/\___|\__|___/
+                                                                                                          
+ @@@@@@@@   @@@@@@   @@@@@@@@@@   @@@@@@@@      @@@@@@    @@@@@@    @@@@@@   @@@@@@@@  @@@@@@@   @@@@@@   
+@@@@@@@@@  @@@@@@@@  @@@@@@@@@@@  @@@@@@@@     @@@@@@@@  @@@@@@@   @@@@@@@   @@@@@@@@  @@@@@@@  @@@@@@@   
+!@@        @@!  @@@  @@! @@! @@!  @@!          @@!  @@@  !@@       !@@       @@!         @@!    !@@       
+!@!        !@!  @!@  !@! !@! !@!  !@!          !@!  @!@  !@!       !@!       !@!         !@!    !@!       
+!@! @!@!@  @!@!@!@!  @!! !!@ @!@  @!!!:!       @!@!@!@!  !!@@!!    !!@@!!    @!!!:!      @!!    !!@@!!    
+!!! !!@!!  !!!@!!!!  !@!   ! !@!  !!!!!:       !!!@!!!!   !!@!!!    !!@!!!   !!!!!:      !!!     !!@!!!   
+:!!   !!:  !!:  !!!  !!:     !!:  !!:          !!:  !!!       !:!       !:!  !!:         !!:         !:!  
+:!:   !::  :!:  !:!  :!:     :!:  :!:          :!:  !:!      !:!       !:!   :!:         :!:        !:!   
+ ::: ::::  ::   :::  :::     ::    :: ::::     ::   :::  :::: ::   :::: ::    :: ::::     ::    :::: ::   
+ :: :: :    :   : :   :      :    : :: ::       :   : :  :: : :    :: : :    : :: ::      :     :: : :    
+                                                                                                          
                                                             
 */
 
@@ -515,6 +529,9 @@ const imageList = [
     'splode_7px',
     'splode_17px',
     'splode_25px',
+    'gems',
+    'gems_silhouettes',
+    'bones'
 ]
 
 const soundList = [
@@ -543,6 +560,10 @@ const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3", "d
 const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
 const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
 const player_damages = [ "player_damage_1", "player_damage_2", "player_damage_big_1", "player_damage_big_2" ]
+
+var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px, gems, bones
+
+
 
 /*
                                                                                                           
@@ -702,4 +723,110 @@ const damageTileWithEffects = {
     }
 }
 
+/*
+                                                                                                                  
+ @@@@@@@   @@@@@@   @@@       @@@       @@@@@@@@   @@@@@@@  @@@@@@@  @@@  @@@@@@@   @@@       @@@@@@@@   @@@@@@   
+@@@@@@@@  @@@@@@@@  @@@       @@@       @@@@@@@@  @@@@@@@@  @@@@@@@  @@@  @@@@@@@@  @@@       @@@@@@@@  @@@@@@@   
+!@@       @@!  @@@  @@!       @@!       @@!       !@@         @@!    @@!  @@!  @@@  @@!       @@!       !@@       
+!@!       !@!  @!@  !@!       !@!       !@!       !@!         !@!    !@!  !@   @!@  !@!       !@!       !@!       
+!@!       @!@  !@!  @!!       @!!       @!!!:!    !@!         @!!    !!@  @!@!@!@   @!!       @!!!:!    !!@@!!    
+!!!       !@!  !!!  !!!       !!!       !!!!!:    !!!         !!!    !!!  !!!@!!!!  !!!       !!!!!:     !!@!!!   
+:!!       !!:  !!!  !!:       !!:       !!:       :!!         !!:    !!:  !!:  !!!  !!:       !!:            !:!  
+:!:       :!:  !:!   :!:       :!:      :!:       :!:         :!:    :!:  :!:  !:!   :!:      :!:           !:!   
+ ::: :::  ::::: ::   :: ::::   :: ::::   :: ::::   ::: :::     ::     ::   :: ::::   :: ::::   :: ::::  :::: ::   
+ :: :: :   : :  :   : :: : :  : :: : :  : :: ::    :: :: :     :     :    :: : ::   : :: : :  : :: ::   :: : :    
+                                                                                                                  
+ */
 
+//collectibles depends on tileSets being loaded, so its a function that we call from main that returns the
+//collectibles object. This is so that collectibles can be loaded after the tileSets are loaded,
+//instead of just being a preloaded object.
+function createCollectibles() {
+    return {
+    ui: {
+        page: {
+            x: 27, y: 46, width: 490, height: 240
+        },
+        tab: {
+            width: 100, height: 16,
+            textOffset: {x: 10, y: 5},
+            margin: 20,
+        },
+        tabs: [
+            {
+                name: "Treasure",
+            },
+            {
+                name: "Artifacts",
+            },
+            {
+                name: "Map",
+            }
+
+        ]
+    },
+
+    Treasure: [
+        {
+            name: "Ruby of the Deep",
+            description: "A ruby of the deep. It's a ruby. It's deep.",
+            sprite: {
+                sheet: tileSets.gems,
+                tile: 0
+            },
+            position: {x: 39, y: 56},
+            owned: false,
+            draw: function(){
+                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
+
+        {
+            name: "Sapphire of Greater Depth",
+            description: "A sapphire of greater depth. It's a sapphire. It's deeper.",
+            sprite: {
+                sheet: tileSets.gems,
+                tile: 1
+            },
+            owned: false,
+            position: {x: 79, y: 56},
+            owned: false,
+            draw: function(){
+                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
+
+    ],
+
+    Artifacts: [
+        {
+            name: "Femur of The Greater Armadillo",
+            description: "A femur of the greater armadillo. It's a pelvis. It's from an armadillo.",
+            sprite: {
+                sheet: tileSets.bones,
+                tile: 0
+            },
+            owned: false,
+            position: {x: 39, y: 56},
+            draw: function(){
+                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
+
+        {
+            name: "Skull of The Lesser Armadillo",
+            description: "A skull of the lesser armadillo. It's a skull. It's from an armadillo.",
+            sprite: {
+                sheet: tileSets.bones,
+                tile: 1
+            },
+            owned: false,
+            position: {x: 79, y: 56},
+            draw: function(){
+                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+            }
+        }
+
+    ],
+}
+}
