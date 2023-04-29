@@ -6,6 +6,7 @@ class Player {
         this.previousY = this.y;
         this.diggerang = new Diggerang(this.x, this.y);
         this.digging = false;
+        this.hovering = false;
         this.drawOffset = {
             x: 7,
             y: 8
@@ -51,6 +52,10 @@ class Player {
                 digRight: {
                     frames: [6,7],
                     frameRate: 8
+                },
+                helicopter: {
+                    frames: "10..15",
+                    frameRate: 24
                 }
             }
         })
@@ -75,7 +80,7 @@ class Player {
             coyoteCooldown: 10,
             helicopterCapacity: 100,
             hoverMultiplier: 0.9,
-            hoveryYVelocity: -1,
+            hoverYVelocity: -1,
             jumpMultiplier: 8,
             gravity: 0.25,
 
@@ -154,6 +159,7 @@ class Player {
 
     handleInput() {
         this.digging = false;
+        //this.hovering = false;
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Joy.left) {
             this.moveLeft();
             if(Key.isDown(Key.z) || Joy.x){
@@ -187,7 +193,7 @@ class Player {
         if (Key.isDown(Key.SPACE) || Joy.a) {
             if(this.canJump) {
                 this.jump();
-            }else if(this.yvel > this.limits.hoveryYVelocity){
+            }else if(this.yvel > this.limits.hoverYVelocity){
                 this.helicopter();
             }
         }
@@ -242,6 +248,9 @@ class Player {
         }
         if(this.yvel < 0) {
             this.currentAnimation = this.spritesheet.animations["jump"];
+            if(this.hovering){
+                this.currentAnimation = this.spritesheet.animations["helicopter"];
+            }
         }
         if(this.yvel > 0) {
             this.currentAnimation = this.spritesheet.animations["falling"];
@@ -310,6 +319,7 @@ class Player {
         let rc = tileMap.data[tileMap.pixelToTileIndex(this.collider.bottomFeeler.x, this.collider.bottomFeeler.y)];
         if (rc > 0) {
             this.coyoteCooldown = this.limits.coyoteCooldown;
+            this.hovering = false;
             return true;
         } else {
             this.coyoteCooldown--;
@@ -485,15 +495,15 @@ class Player {
       }
 
     helicopter() {
-        if (this.helicopterCapacity <= 0) return;
-        if (this.inventory.ore <= 0) return;
+        if (this.helicopterCapacity <= 0){ this.hovering = false; return };
+        if (this.inventory.ore <= 0){this.hovering = false; return };
 
         this.inventory.ore--;
-
+        this.hovering = true;
         this.yVel -= 0.1;
         this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;
-        this.collider.emit(particleDefinitions.sparks);
+        emitParticles(this.x, this.y, particleDefinitions.helicopter);
     }
 
     jump() {

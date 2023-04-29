@@ -281,6 +281,27 @@ const particleDefinitions = {
         gradientPalette: particleGradients.fire
         }
     },
+    helicopter: function(){
+        return{
+            quantity: 12,
+            offset: {
+                x: () => 8 + rand(-16, 16),
+                y: () => -4 + rand(-8, 8)
+            },
+            collides: true,
+            color: () => "blue",
+            life: () => 10,
+            xVelocity: () => 0,
+            yVelocity: () => rand(0, 1),
+            gravity: () => rand(0, 0.1),
+            custom: (particle) => {
+                particle.xvel += rand(-0.5, 0.5);
+                particle.yvel += rand(0.2, 0.9);
+            },
+            gradientPalette: particleGradients.ice
+            }
+        },
+            
     oreSparks: function(){
         return{
         quantity: 3,
@@ -658,7 +679,7 @@ const damageTileWithEffects = {
 
             tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
             const newProps = player.getDigPropsForIndex(tileIndex);
-            player.digWithProps(newProps.startTileValue, tileIndex, 105);
+            player.digWithProps(newProps.startTileValue, tileIndex, 100);
             if(player.tileOverlapCheck(tileIndex)){
                 player.hurt(10);
             }
