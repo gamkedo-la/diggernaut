@@ -52,6 +52,32 @@ function loadingComplete() {
         img["autoTiles"], 
         {tileWidth: 32, tileHeight: 32,
         tileCount: 16, tileColumns: 16, tileRows: 10});
+
+    damageTileset = new Tileset(
+        img["damage"],
+        {tileWidth: 32, tileHeight: 32,
+        tileCount: 10, tileColumns: 10, tileRows: 1}
+    )
+
+    splode_7px = new Tileset(
+        img["splode_7px"],
+        {tileWidth: 7, tileHeight: 7,
+        tileCount: 7, tileColumns: 7, tileRows: 1}
+    )
+
+    splode_17px = new Tileset(
+        img["splode_17px"],
+        {tileWidth: 17, tileHeight: 17,
+        tileCount: 7, tileColumns: 7, tileRows: 1}
+    )
+
+    splode_25px = new Tileset(
+        img["splode_25px"],
+        {tileWidth: 25, tileHeight: 25,
+        tileCount: 7, tileColumns: 7, tileRows: 1}
+    )
+    
+
     
     console.log('loading complete, starting game')
     sounds = loader.sounds;

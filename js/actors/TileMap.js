@@ -280,34 +280,16 @@ class TileMap {
         );
     }
     //for drawing from the tileset at a non-grid position
-    drawTileSprite(tileset, tileData, x, y){
-        canvasContext.drawImage(
-            tileset.image,
-            (tileData % tileset.tileColumns) * this.tileWidth,
-            Math.floor(tileData / tileset.tileColumns) * this.tileHeight,
-            this.tileWidth,
-            this.tileHeight,
-            x,
-            y,
-            this.tileWidth,
-            this.tileHeight
-        );
-    }
+    
 
     drawDamagedTiles(index, x, y) {
         if(this.data[index] === TILE_EMPTY){ return; }
         if(!this.damagedTiles[index]){ return; }
         //TODO:  make a damaged tileset strip and just call drawTile() from here
             let damage = this.damagedTiles[index]/100;
-            canvasContext.save();
-            canvasContext.fillStyle = `rgba(255, 0, 0, ${damage})`;
-            canvasContext.fillRect(
-                x * this.tileWidth - view.x,
-                y * this.tileHeight - view.y,
-                this.tileWidth,
-                this.tileHeight
-            );
-            canvasContext.restore();
+            //damageTileset contains 10 tiles, 0-9, 0 is undamaged, 9 is destroyed
+            let tile = Math.floor(damage * 8);
+            this.drawTile(damageTileset, tile, x, y);
     }
 
     shakeScreen(time=null) {

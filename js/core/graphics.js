@@ -184,3 +184,18 @@ class spriteFont {
     // }
 
 }
+
+
+function drawTileSprite(tileset, tileData, x, y){
+    canvasContext.drawImage(
+        tileset.image,
+        (tileData % tileset.tileColumns) * tileset.tileWidth,
+        Math.floor(tileData / tileset.tileColumns) * tileset.tileHeight,
+        tileset.tileWidth,
+        tileset.tileHeight,
+        x,
+        y,
+        tileset.tileWidth,
+        tileset.tileHeight
+    );
+}

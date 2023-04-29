@@ -2,13 +2,13 @@ class Ore {
     constructor(x,y){
         this.x = x;
         this.y = y;
-        this.speed = 6;
+        this.speed = 9;
         this.previouxX = this.x;
         this.previousY = this.y;
         this.xvel = (mapRNG() * 2 - 1) * this.speed;
-        this.yvel = (mapRNG() * 2 - 1) * this.speed; 
+        this.yvel = (mapRNG() * -1) * this.speed * 2; 
         this.collider = new Collider(this.x, this.y, 4, 4, {left: 0, right: 0, top: 0, bottom: 0}, "ore");
-        this.friction = 0.75;
+        this.friction = 0.9;
         this.gravity = .9;
         this.color = "green";
         this.life = 300;
@@ -72,8 +72,11 @@ class Ore {
         if(tileMap.collidesWith(this.x, this.y)){
             this.x = this.previousX; 
             this.y = this.previousY;
-            this.xvel = -this.yvel;
+            this.xvel = -this.yvel*1.05;
             this.xvel = -this.xvel;
+            if(tileMap.collidesWith(this.x, this.y)){
+                this.destroy();
+            }
         }
 
         if(this.life <= 0){
@@ -87,8 +90,8 @@ class Ore {
 
     moveTowards(object, speed=1){
         let angle = Math.atan2(object.y - this.y, object.x - this.x);
-        this.xvel += Math.cos(angle)*3;
-        this.yvel += Math.sin(angle)*3;
+        this.xvel += Math.cos(angle)*3+ Math.random()-0.5;
+        this.yvel += Math.sin(angle)*3+ Math.random()-0.5;
     }
 
     destroy(){

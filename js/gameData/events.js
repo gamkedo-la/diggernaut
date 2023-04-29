@@ -67,8 +67,9 @@ function gotoCreditScreen(event){
 }
 
 function emitParticles(x, y, definition){
+    
     for (let i = 0; i < definition().quantity; i++) {
-        let particle = new Particle(x, y, definition());
+        let particle = new Particle(x + definition().offset.x(), y + definition().offset.y(), definition());
         actors.push(particle);
     }
 }

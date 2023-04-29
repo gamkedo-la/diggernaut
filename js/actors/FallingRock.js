@@ -13,7 +13,7 @@ class FallingRock {
         this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: -1}, "fallingBrick")
     }
     draw(){
-        tileMap.drawTileSprite(caveTileset, 5, this.x - view.x, this.y - view.y)
+        drawTileSprite(caveTileset, 5, this.x - view.x, this.y - view.y)
         this.collider.draw();
     }
     update(){

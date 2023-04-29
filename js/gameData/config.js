@@ -195,134 +195,9 @@ let seed = 88881654;
 const mapRNG = new Math.seedrandom(seed);
 
 var sounds = {};
-var caveTileset = {};
+var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px = null;
 
-const inventory = {
-    collections: {
-        gems: {
-            rubies: {
-                one: {
-                    collected: false,
-                    sprite: "gem1"
-                },
-                two: {
-                    collected: false,
-                    sprite: "gem2"
-                },
-                three: {
-                    collected: false,
-                    sprite: "gem3"
-                },
-                four: {
-                    collected: false,
-                    sprite: "gem4"
-                }
-            },
-            sapphires: {
-                one: {
-                    collected: false,
-                    sprite: "gem5"
-                },
-                two: {
-                    collected: false,
-                    sprite: "gem6"
-                },
-                three: {
-                    collected: false,
-                    sprite: "gem7"
-                },
-                four: {
-                    collected: false,
-                    sprite: "gem8"
-                }
-            }
-        },
-        artifacts: {
-            tech: {
-                one: {
-                    collected: false,
-                    sprite: "tech1"
-                },
-                two: {
-                    collected: false,
-                    sprite: "tech2"
-                },
-                three: {
-                    collected: false,
-                    sprite: "tech3"
-                },
-                four: {
-                    collected: false,
-                    sprite: "tech4"
-                }
-            },
-            pottery: {
-                one: {
-                    collected: false,
-                    sprite: "pottery1"
-                },
-                two: {
-                    collected: false,
-                    sprite: "pottery2"
-                },
-                three: {
-                    collected: false,
-                    sprite: "pottery3"
-                },
-                four: {
-                    collected: false,
-                    sprite: "pottery4"
-                }
-            }
-        },
-        bones: {
-            pterosaur: {
-                one: {
-                    collected: false,
-                    sprite: "bone1"
-                },
-                two: {
-                    collected: false,
-                    sprite: "bone2"
-                },
-                three: {
-                    collected: false,
-                    sprite: "bone3"
-                },
-                four: {
-                    collected: false,
-                    sprite: "bone4"
-                },
-                five: {
-                    collected: false,
-                    sprite: "bone5"
-                }   
-            },
-            triceratops: {
-                one: {
-                    collected: false,
-                    sprite: "bone6"
-                },
-                two: {
-                    collected: false,
-                    sprite: "bone7"
-                },
-                three: {
-                    collected: false,
-                    sprite: "bone8"
-                },
-                four: {
-                    collected: false,
-                    sprite: "bone9"
-                },
-                five: {
-                    collected: false,
-                    sprite: "bone10"
-                }
-            }
-        }
-    }
-}
+
 
 /**
                                                                                                                                                   
@@ -393,6 +268,11 @@ const particleDefinitions = {
     sparks: function(){
         return{
         quantity: 3,
+        offset: {
+            x: () => 0,
+            y: () => 0
+        },
+        collides: true,
         color: () => "yellow",
         life: () => 10,
         xVelocity: () => rand(-1, 1),
@@ -404,6 +284,11 @@ const particleDefinitions = {
     oreSparks: function(){
         return{
         quantity: 3,
+        offset: {
+            x: () => 0,
+            y: () => 0
+        },
+        collides: false,
         color: () => "yellow",
         life: () => 10,
         xVelocity: () => rand(-0.2, .2),
@@ -416,6 +301,11 @@ const particleDefinitions = {
     fallSparks: function(){
         return{
         quantity: 50,
+        offset: {
+            x: () => 0,
+            y: () => 0
+        },
+        collides: true,
         color: () => "orange",
         life: () => 30,
         xVelocity: () => 0,
@@ -428,6 +318,11 @@ const particleDefinitions = {
     jumpPuff: function(){
         return{
         quantity: 20,
+        offset: {
+            x: () => 0,
+            y: () => 0
+        },
+        collides: false,
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(-.5, -2),
         color:  () => "white",
@@ -440,6 +335,11 @@ const particleDefinitions = {
     hurt: function(){
         return{
             quantity: 100,
+            offset: {
+                x: () =>  0,
+                y: () => 0
+            },
+            collides: false,
             xVelocity: () => rand(-1, 1),
             yVelocity: () => rand(-.5, -2),
             color:  () => "red",
@@ -452,6 +352,11 @@ const particleDefinitions = {
     explodingTile: function(){
         return{
         quantity: 20,
+        offset: {
+            x: () => 0,
+            y: () => 0
+        },
+        collides: false,
         xVelocity: () => rand(-2, 2),
         yVelocity: () => rand(-1, -1),
         color:  () => "red",
@@ -460,10 +365,65 @@ const particleDefinitions = {
         gradientPalette: particleGradients.fire
         }
     },
+    boom25px: function(){
+        return{
+        tileSprite: splode_25px,
+        quantity: 5,
+        offset: {
+            x: () => rand(-10, 10),
+            y: () => rand(-10, 10),
+        },
+        collides: false,
+        xVelocity: () => rand(-2, 2),
+        yVelocity: () => rand(0, -5),
+        color:  () => "red",
+        life: () => rand(8, 17),
+        gravity: () => 0,
+        }
+    },
+
+    boom17px: function(){
+        return{
+        tileSprite: splode_17px,
+        quantity: 5,
+        offset: {
+            x: () => rand(-10, 10),
+            y: () => rand(-10, 10),
+        },
+        collides: false,
+        xVelocity: () => rand(-2, 2),
+        yVelocity: () => rand(0, -5),
+        color:  () => "red",
+        life: () => rand(8, 17),
+        gravity: () => 0,
+        }
+    },
+
+    boom7px: function(){
+        return{
+        tileSprite: splode_7px,
+        quantity: 20,
+        offset: {
+            x: () => rand(-10, 10),
+            y: () => rand(-10, 10),
+        },
+        collides: false,
+        xVelocity: () => rand(-2, 2),
+        yVelocity: () => rand(0, -5),
+        color:  () => "red",
+        life: () => rand(8, 17),
+        gravity: () => 0,
+        }
+    },
 
     destroyDirt: function(){
         return{
         quantity: 40,
+        offset: {
+            x: () =>0,
+            y: () =>0
+        },
+        collides: false,
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(-.5, -2),
         color:  () => "brown",
@@ -475,48 +435,34 @@ const particleDefinitions = {
     wallJumpLeft: function(){
         return{
         quantity: 100,
+        offset: {
+            x: () =>-10,
+            y: () => 0
+        },
+        collides: false,
         xVelocity: () => rand(0, 2),
         yVelocity: () => rand(-1, 1),
         color: () => ["white", "yellow"][randInt(0, 1)],
         life: () => rand(5, 20),
         gravity: () => rand(0, 0.1),
-        gradientPalette: [
-            COLORS[0],
-            COLORS[1],
-            COLORS[2],
-            COLORS[3],
-            COLORS[4],
-            COLORS[5],
-            COLORS[6],
-            COLORS[7],
-            COLORS[8],
-            COLORS[9],
-            COLORS[22],
-        ]
+        gradientPalette: particleGradients.fire
         }
     },
 
     wallJumpRight: function(){
         return{
         quantity: 100,
+        offset: {
+            x: () => 10,
+            y: () => 0
+        },
+        collides: false,
         xVelocity: () => rand(0, -2),
         yVelocity: () => rand(-1, 1),
         color: () => ["white", "yellow"][randInt(0, 1)],
         life: () => rand(5, 20),
         gravity: () => rand(0, 0.1),
-        gradientPalette: [
-            COLORS[0],
-            COLORS[1],
-            COLORS[2],
-            COLORS[3],
-            COLORS[4],
-            COLORS[5],
-            COLORS[6],
-            COLORS[7],
-            COLORS[8],
-            COLORS[9],
-            COLORS[22],
-        ]
+        gradientPalette: particleGradients.fire
         }
     }
 }
@@ -539,7 +485,11 @@ const imageList = [
     'basic-tiles',
     'autoTiles',
     'minimap',
-    'gems'
+    'gems',
+    'damage',
+    'splode_7px',
+    'splode_17px',
+    'splode_25px',
 ]
 
 const soundList = [
@@ -635,7 +585,8 @@ const destroyTileWithEffects = {
     },
 
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
-        tileMap.replaceTileAt(tileIndex, TILE_UNOBTANIUM);
+        //tileMap.replaceTileAt(tileIndex, TILE_UNOBTANIUM);
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
@@ -664,6 +615,7 @@ const destroyTileWithEffects = {
 const damageTileWithEffects = {
     
     TILE_EMPTY : function (tileIndex) { },
+
     TILE_DIRT : function (tileIndex) {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
@@ -695,9 +647,14 @@ const damageTileWithEffects = {
             const tileIndex = startTileIndex + x - 2 + (y - 2) * tileMap.widthInTiles;
             //emit some particles at the tile location
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.explodingTile);
+            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom25px);
+            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom17px);
+            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom7px);
+
+
             tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
             const newProps = player.getDigPropsForIndex(tileIndex);
-            player.digWithProps(newProps.startTileValue, tileIndex, 100);
+            player.digWithProps(newProps.startTileValue, tileIndex, 105);
             if(player.tileOverlapCheck(tileIndex)){
                 player.hurt(10);
             }
@@ -709,6 +666,8 @@ const damageTileWithEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.jumpPuff);
+        let i = 8;
+        while(--i){ actors.push(new Ore(randInt(-20,20) + x, randInt(-20,20)+y))}  
     },
     TILE_ROCK : function (tileIndex) { 
         
