@@ -285,15 +285,19 @@ const particleDefinitions = {
         return{
         quantity: 3,
         offset: {
-            x: () => 0,
+            x: () => rand(-2.5, 2.5),
             y: () => 0
         },
         collides: false,
         color: () => "yellow",
-        life: () => 10,
+        life: () => 30,
         xVelocity: () => rand(-0.2, .2),
         yVelocity: () => rand(0, -1),
         gravity: () => rand(0, 0.1),
+        custom: (particle) => {
+            particle.xvel += rand(-0.5, 0.5);
+            particle.yvel += rand(-0.2, 0.3);
+        },
         gradientPalette: particleGradients.ore
         }
     },
