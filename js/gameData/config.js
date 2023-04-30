@@ -554,6 +554,7 @@ const soundList = [
     { name: "player_damage_2", url: "snd/player_damage_2.ogg" },
     { name: "player_damage_big_1", url: "snd/player_damage_big_1.ogg" },
     { name: "player_damage_big_2", url: "snd/player_damage_big_2.ogg" },
+    { name: "jump", url: "snd/jump_1.ogg" },
 ]
 
 //TODO:  shorten digging_dirt sound, make dirt it's own tile type
