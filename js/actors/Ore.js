@@ -48,7 +48,7 @@ class Ore {
         this.yvel *= this.friction; 
         this.yvel += this.gravity;
 
-        emitParticles(this.x-8, this.y-8, particleDefinitions.oreSparks);
+        emitParticles(this.x, this.y-2, particleDefinitions.oreSparks);
 
         
         if(this.distanceTo(player) < 50 && this.life < 270){
@@ -56,6 +56,7 @@ class Ore {
         }
         
         if(this.distanceTo(player) < 10 && this.life < 270){
+            audio.playSound(sounds["clink"]);
             player.inventory.ore++;
             this.destroy();
         }
@@ -65,6 +66,7 @@ class Ore {
 
         if(rectCollision(this.collider, player.diggerang.collider)){
             player.inventory.ore++;
+            audio.playSound(sounds["clink"]);
             this.destroy();
         }
 
@@ -72,8 +74,8 @@ class Ore {
         if(tileMap.collidesWith(this.x, this.y)){
             this.x = this.previousX; 
             this.y = this.previousY;
-            this.xvel = -this.yvel*1.05;
             this.xvel = -this.xvel;
+            this.yvel = -this.yvel * 0.2;
             if(tileMap.collidesWith(this.x, this.y)){
                 this.destroy();
             }

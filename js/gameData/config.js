@@ -533,6 +533,7 @@ const imageList = [
     'gems_silhouettes',
     'bones',
     'bone_silhouettes',
+    'bat'
 ]
 
 const soundList = [
@@ -555,10 +556,11 @@ const soundList = [
     { name: "player_damage_big_1", url: "snd/player_damage_big_1.ogg" },
     { name: "player_damage_big_2", url: "snd/player_damage_big_2.ogg" },
     { name: "jump", url: "snd/jump_1.ogg" },
+    { name: "clink", url: "snd/clink1.ogg"}
 ]
 
 //TODO:  shorten digging_dirt sound, make dirt it's own tile type
-const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3", "digging_dirt" ]
+const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3"]
 const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
 const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
 const player_damages = [ "player_damage_1", "player_damage_2", "player_damage_big_1", "player_damage_big_2" ]

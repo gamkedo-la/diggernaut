@@ -238,8 +238,14 @@ function generateMap(config){
 }
 
 function populateMap(){
-    for (let i = 0; i < 100; i++) {
-        actors.push(new Flyer(mapRNG() * tileMap.widthInTiles * tileMap.tileWidth, mapRNG() * mapConfig.tileSize * mapConfig.mapStartY));
+    for (let i = 0; i < 10000; i++) {
+        let x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        let y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+            actors.push(
+                new Flyer(x * tileMap.tileWidth, y * tileMap.tileHeight)
+            )
+        }
     }
     actors.push(
         new Collectible( playerSettings.x + 32*2, playerSettings.y,
