@@ -531,7 +531,8 @@ const imageList = [
     'splode_25px',
     'gems',
     'gems_silhouettes',
-    'bones'
+    'bones',
+    'bone_silhouettes',
 ]
 
 const soundList = [
@@ -739,8 +740,7 @@ const damageTileWithEffects = {
  */
 
 //collectibles depends on tileSets being loaded, so its a function that we call from main that returns the
-//collectibles object. This is so that collectibles can be loaded after the tileSets are loaded,
-//instead of just being a preloaded object.
+//collectibles object. 
 function createCollectibles() {
     return {
     ui: {
@@ -772,12 +772,14 @@ function createCollectibles() {
             description: "A ruby of the deep. It's a ruby. It's deep.",
             sprite: {
                 sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
                 tile: 0
             },
             position: {x: 39, y: 56},
             owned: false,
             draw: function(){
-                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
             }
         },
 
@@ -786,13 +788,15 @@ function createCollectibles() {
             description: "A sapphire of greater depth. It's a sapphire. It's deeper.",
             sprite: {
                 sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
                 tile: 1
             },
             owned: false,
             position: {x: 79, y: 56},
             owned: false,
             draw: function(){
-                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
             }
         },
 
@@ -804,12 +808,14 @@ function createCollectibles() {
             description: "A femur of the greater armadillo. It's a pelvis. It's from an armadillo.",
             sprite: {
                 sheet: tileSets.bones,
+                silhouette: tileSets.boneSilhouettes,
                 tile: 0
             },
             owned: false,
             position: {x: 39, y: 56},
             draw: function(){
-                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
             }
         },
 
@@ -818,12 +824,14 @@ function createCollectibles() {
             description: "A skull of the lesser armadillo. It's a skull. It's from an armadillo.",
             sprite: {
                 sheet: tileSets.bones,
+                silhouette: tileSets.boneSilhouettes,
                 tile: 1
             },
             owned: false,
             position: {x: 79, y: 56},
             draw: function(){
-                drawTileSprite(this.sprite.sheet, this.sprite.tile, this.position.x, this.position.y);
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
             }
         }
 

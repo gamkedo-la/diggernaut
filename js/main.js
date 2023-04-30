@@ -84,7 +84,7 @@ function loadingComplete() {
     )
 
     tileSets.gemSilhouettes = new Tileset(
-        img["gem_silhouettes"],
+        img["gems_silhouettes"],
         {tileWidth: 32, tileHeight: 32, tileCount: 16, tileColumns: 4, tileRows: 4}
     )
 
@@ -241,7 +241,28 @@ function populateMap(){
     for (let i = 0; i < 100; i++) {
         actors.push(new Flyer(mapRNG() * tileMap.widthInTiles * tileMap.tileWidth, mapRNG() * mapConfig.tileSize * mapConfig.mapStartY));
     }
+    actors.push(
+        new Collectible( playerSettings.x + 32*2, playerSettings.y,
+            "Treasure",
+            collectibles.Treasure[0])
+    )
+    actors.push(
+        new Collectible( playerSettings.x + 32*4, playerSettings.y,
+            "Treasure",
+            collectibles.Treasure[1])
+    )
+    actors.push(
+        new Collectible( playerSettings.x + 32*6, playerSettings.y,
+            "Artifacts",
+            collectibles.Artifacts[0])
+    )
+    actors.push(
+        new Collectible( playerSettings.x + 32*8, playerSettings.y,
+            "Artifacts",
+            collectibles.Artifacts[1])
+    )
 }
+
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);
 window.addEventListener('keydown', function (event) { Key.onKeydown(event); }, false);
 window.addEventListener('blur', function (event) { paused = true; }, false);
