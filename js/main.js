@@ -51,7 +51,7 @@ function loadingComplete() {
     //create tileset sprites from loaded images
     tileSets.caveTileset = new Tileset(
         img["autoTiles"], 
-        {tileWidth: 32, tileHeight: 32, tileCount: 16, tileColumns: 16, tileRows: 10});
+        {tileWidth: 32, tileHeight: 32, tileCount: 16*10, tileColumns: 16, tileRows: 10});
 
     tileSets.damageTileset = new Tileset(
         img["damage"],
