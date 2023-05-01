@@ -2,7 +2,7 @@ const inventoryScreen = {
 
     // inventory screen will have 3 tabs: Treasure, Artifacts, and Map.
     activeTab: 0,
-    totalTabs: 3,
+    totalTabs: 4,
 
     draw: function () {
         canvasContext.fillStyle = 'black';
@@ -39,6 +39,11 @@ const inventoryScreen = {
         Artifacts: function () {
             for(item in collectibles.Artifacts){
                 collectibles.Artifacts[item].draw();
+            }
+        },
+        Bones: function () {
+            for(item in collectibles.Bones){
+                collectibles.Bones[item].draw();
             }
         },
         Map: function () {
