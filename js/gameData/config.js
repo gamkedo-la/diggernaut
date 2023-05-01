@@ -763,6 +763,9 @@ function createCollectibles() {
                 name: "Artifacts",
             },
             {
+                name: "Bones",
+            },
+            {
                 name: "Map",
             }
 
@@ -807,6 +810,41 @@ function createCollectibles() {
 
     Artifacts: [
         {
+            name: "Wobblegangy of Draxis 3",
+            description: "Some Gizmo. Supposed to do something. Nobody knows if it still works or not.",
+            sprite: {
+                sheet: tileSets.bones,
+                silhouette: tileSets.boneSilhouettes,
+                tile: 0
+            },
+            owned: false,
+            position: {x: 39, y: 56},
+            draw: function(){
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
+
+        {
+            name: "Statue of Tiagius",
+            description: "Statue of Tiagiaus the three-handed. Supposedly he could wield 3 swords at once.",
+            sprite: {
+                sheet: tileSets.bones,
+                silhouette: tileSets.boneSilhouettes,
+                tile: 1
+            },
+            owned: false,
+            position: {x: 79, y: 56},
+            draw: function(){
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
+            }
+        }
+
+    ],
+
+    Bones: [
+        {
             name: "Femur of The Greater Armadillo",
             description: "A femur of the greater armadillo. It's a pelvis. It's from an armadillo.",
             sprite: {
@@ -837,7 +875,6 @@ function createCollectibles() {
                 drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
             }
         }
-
     ],
 }
 }
