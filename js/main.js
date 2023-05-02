@@ -99,6 +99,16 @@ function loadingComplete() {
         img["64px-glow"],
         {tileWidth: 64, tileHeight: 64, tileCount: 4, tileColumns: 4, tileRows: 1}
     )
+    
+    tileSets.glow_32px = new Tileset(
+        img["32px-glow"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 4, tileColumns: 4, tileRows: 1}
+    )
+
+    tileSets.glow_16px = new Tileset(
+        img["16px-glow"],
+        {tileWidth: 16, tileHeight: 16, tileCount: 4, tileColumns: 4, tileRows: 1}
+    )
 
     collectibles = createCollectibles(tileSets);
 

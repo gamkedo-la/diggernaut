@@ -24,11 +24,13 @@ class Ore {
         if(this.life > 100){
             canvasContext.fillStyle = COLORS[9]
             fillRect(drawX, drawY, 5, 5);
+            this.drawGlow(drawX-16, drawY-16);
         } else {
             let blink = ticker % 8 > 4;
             if(blink){
                 canvasContext.fillStyle = COLORS[9]
                 fillRect(drawX, drawY, 5, 5);
+                this.drawGlow(drawX-16, drawY-16);
             }
         }
         canvasContext.restore();
@@ -84,6 +86,17 @@ class Ore {
         if(this.life <= 0){
             this.destroy();
         }
+    }
+
+    drawGlow(x,y){
+        bufferContext.save();
+        bufferContext.globalCompositeOperation = "screen";
+        drawTileSprite(tileSets.glow_32px,
+            rand(0,1) < .1 ? randInt(0, 3) : 0, 
+             x,
+             y,
+             bufferContext);
+        bufferContext.restore();
     }
 
     distanceTo(object){

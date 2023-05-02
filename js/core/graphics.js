@@ -186,8 +186,9 @@ class spriteFont {
 }
 
 
-function drawTileSprite(tileset, tileData, x, y){
-    canvasContext.drawImage(
+function drawTileSprite(tileset, tileData, x, y, ctx){
+    ctx = ctx || canvasContext;
+    ctx.drawImage(
         tileset.image,
         (tileData % tileset.tileColumns) * tileset.tileWidth,
         Math.floor(tileData / tileset.tileColumns) * tileset.tileHeight,

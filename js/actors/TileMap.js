@@ -295,19 +295,11 @@ class TileMap {
         if(this.data[index] == TILE_DENSE_UNOBTANIUM){
             bufferContext.save();
             bufferContext.globalCompositeOperation = "screen";
-            const tileset = tileSets.glow_64px;
-            const tileData = rand(0,1) < .1 ? randInt(0, tileset.tileCount-1) : 0;
-            bufferContext.drawImage(
-                tileset.image,
-                (tileData % tileset.tileColumns) * tileset.tileWidth,
-                Math.floor(tileData / tileset.tileColumns) * tileset.tileHeight,
-                tileset.tileWidth,
-                tileset.tileHeight,
-                x * this.tileWidth - 16 - view.x,
-                y * this.tileHeight - 16 - view.y,
-                tileset.tileWidth,
-                tileset.tileHeight
-            );
+            drawTileSprite(tileSets.glow_64px,
+                rand(0,1) < .1 ? randInt(0, 3) : 0, 
+                 x * this.tileWidth - 16 - view.x,
+                 y * this.tileHeight - 16 - view.y,
+                 bufferContext);
             bufferContext.restore();
         }
     }

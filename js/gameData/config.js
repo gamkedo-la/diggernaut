@@ -538,6 +538,9 @@ const imageList = [
     'cave-background-2',
     'big_green_glow',
     '64px-glow',
+    '32px-glow',
+    '16px-glow',
+    
 ]
 
 const soundList = [
