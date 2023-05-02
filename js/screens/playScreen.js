@@ -8,7 +8,8 @@ const playScreen = {
     },
 
     draw: function () {
-        clearScreen("black");
+        this.prepareLightingOverlay();
+        
         this.drawParallaxBackground();
 
 
@@ -21,6 +22,7 @@ const playScreen = {
 //  { x: 10, y: 12 }, 0, 0);
         player.draw();
         actors.forEach(actor => actor.draw());
+        this.drawLightingOverlay();
         ui.draw();
         drawTransition();
             
@@ -77,6 +79,28 @@ const playScreen = {
                 }
             }
         });
+    },
+    prepareLightingOverlay: function () {
+        bufferContext.save();
+        bufferContext.fillStyle = COLORS[17];
+        bufferContext.fillRect(0, 0, canvas.width, canvas.height);
+        
+
+        bufferContext.globalCompositeOperation = 'screen';
+        let randX = randChoice([0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,-1]);
+        let randY = randChoice([0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,-1]);
+        bufferContext.drawImage(img['big_green_glow'], player.x-view.x-160 + randX, player.y-view.y-160 + randY, 320, 320 );
+        bufferContext.restore();
+    },
+
+    drawLightingOverlay: function () {
+
+        canvasContext.save();
+        canvasContext.globalCompositeOperation = 'multiply';
+        canvasContext.globalAlpha = 0.9;
+        canvasContext.drawImage(bufferCanvas, 0, 0);
+       
+        canvasContext.restore();
     }
     
 

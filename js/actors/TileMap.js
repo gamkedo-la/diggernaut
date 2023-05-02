@@ -214,6 +214,7 @@ class TileMap {
                 this.drawTile(tileSets.caveTileset, this.autoTileData[index], i, j)
                 this.drawDamagedTiles(index, i, j);
                 this.drawFlashingTiles(index, i, j);
+                this.drawGlowingTiles(index, i, j);
             }
         }
     }
@@ -287,6 +288,28 @@ class TileMap {
             //damageTileset contains 10 tiles, 0-9, 0 is undamaged, 9 is destroyed
             let tile = Math.floor(damage * 8);
             this.drawTile(tileSets.damageTileset, tile, x, y);
+    }
+
+    drawGlowingTiles(index, x, y) {
+        if(this.data[index] === TILE_EMPTY){ return; }
+        if(this.data[index] == TILE_DENSE_UNOBTANIUM){
+            bufferContext.save();
+            bufferContext.globalCompositeOperation = "screen";
+            const tileset = tileSets.glow_64px;
+            const tileData = rand(0,1) < .1 ? randInt(0, tileset.tileCount-1) : 0;
+            bufferContext.drawImage(
+                tileset.image,
+                (tileData % tileset.tileColumns) * tileset.tileWidth,
+                Math.floor(tileData / tileset.tileColumns) * tileset.tileHeight,
+                tileset.tileWidth,
+                tileset.tileHeight,
+                x * this.tileWidth - 16 - view.x,
+                y * this.tileHeight - 16 - view.y,
+                tileset.tileWidth,
+                tileset.tileHeight
+            );
+            bufferContext.restore();
+        }
     }
 
     shakeScreen(time=null) {

@@ -18,6 +18,8 @@ bufferCanvas.width = canvas.width;
 bufferCanvas.height = canvas.height;
 bufferContext = bufferCanvas.getContext("2d");
 
+
+
 let gameState = GAMESTATE_TITLE,
  ticker = 0,
  loader = new AssetLoader(),
@@ -91,6 +93,11 @@ function loadingComplete() {
     tileSets.boneSilhouettes = new Tileset(
         img["bone_silhouettes"],
         {tileWidth: 32, tileHeight: 32, tileCount: 28, tileColumns: 7, tileRows: 4}
+    )
+
+    tileSets.glow_64px = new Tileset(
+        img["64px-glow"],
+        {tileWidth: 64, tileHeight: 64, tileCount: 4, tileColumns: 4, tileRows: 1}
     )
 
     collectibles = createCollectibles(tileSets);

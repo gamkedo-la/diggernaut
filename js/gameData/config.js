@@ -536,6 +536,8 @@ const imageList = [
     'bat',
     'cave-background-1',
     'cave-background-2',
+    'big_green_glow',
+    '64px-glow',
 ]
 
 const soundList = [
