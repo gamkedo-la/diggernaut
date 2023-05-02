@@ -207,13 +207,10 @@ class TileMap {
         const top = Math.floor(view.y/this.tileHeight);
         const bottom = Math.ceil((view.y+view.height)/this.tileHeight);
 
-        // const dx = this.screenShakeTime > 0 ? screenShake(this.screenShakeTime): 0;
-        // const dy = this.screenShakeTime > 0 ? screenShake(this.screenShakeTime): 0;
-
         for(let i = left; i < right; i++){
             for(let j = top; j < bottom; j++){    
                 const index = this.getIndexAtPosition(i, j)
-                
+                if(this.data[index] === 0) continue;
                 this.drawTile(tileSets.caveTileset, this.autoTileData[index], i, j)
                 this.drawDamagedTiles(index, i, j);
                 this.drawFlashingTiles(index, i, j);

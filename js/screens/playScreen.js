@@ -9,13 +9,16 @@ const playScreen = {
 
     draw: function () {
         clearScreen("black");
+        this.drawParallaxBackground();
+
+
         tileMap.draw();
         //player debug text
-        tinyFont.drawText(
-`player:  x: ${player.x.toFixed(1)} y: ${player.y.toFixed(1)}
-yvel: ${player.yvel.toFixed(1)} xvel: ${player.xvel.toFixed(1)} health: ${player.health}
-diggerang: x: ${player.diggerang.x.toFixed(1)} y: ${player.diggerang.y.toFixed(1)}`,
- { x: 10, y: 12 }, 0, 0);
+//         tinyFont.drawText(
+// `player:  x: ${player.x.toFixed(1)} y: ${player.y.toFixed(1)}
+// yvel: ${player.yvel.toFixed(1)} xvel: ${player.xvel.toFixed(1)} health: ${player.health}
+// diggerang: x: ${player.diggerang.x.toFixed(1)} y: ${player.diggerang.y.toFixed(1)}`,
+//  { x: 10, y: 12 }, 0, 0);
         player.draw();
         actors.forEach(actor => actor.draw());
         ui.draw();
@@ -47,6 +50,36 @@ diggerang: x: ${player.diggerang.x.toFixed(1)} y: ${player.diggerang.y.toFixed(1
         // view.y = Math.min(tileMap.height * tileMap.tileSize - canvas.height, view.y);
 
     },
+
+    drawParallaxBackground: function() {
+        const layers = [
+            {
+                image: img['cave-background-2'],
+                speed: 0.2 
+            },
+            {
+                image: img['cave-background-1'],
+                speed: .5
+            }
+        ];
+    
+        layers.forEach(layer => {
+            
+            
+            // Calculate the movement of the layer based on its speed
+            const offsetX = (view.x * layer.speed) % 320;
+            const offsetY = (view.y * layer.speed) % 320;
+    
+            // Draw the layer multiple times to fill the screen
+            for (let x = -offsetX; x < view.width; x += 320) {
+                for (let y = -offsetY; y < view.height; y += 320) {
+                    canvasContext.drawImage(layer.image, x, y, 320, 320);
+                }
+            }
+        });
+    }
+    
+
 }
 
 

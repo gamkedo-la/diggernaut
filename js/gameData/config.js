@@ -533,7 +533,9 @@ const imageList = [
     'gems_silhouettes',
     'bones',
     'bone_silhouettes',
-    'bat'
+    'bat',
+    'cave-background-1',
+    'cave-background-2',
 ]
 
 const soundList = [
