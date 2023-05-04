@@ -421,7 +421,7 @@ const particleDefinitions = {
     boom25px: function(){
         return{
         tileSprite: tileSets.splode_25px,
-        quantity: 5,
+        quantity: 2,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -435,10 +435,28 @@ const particleDefinitions = {
         }
     },
 
+    splode_glow: function(){
+        return{
+        tileSprite: tileSets.splode_glow,
+        glow: true,
+        quantity: 5,
+        offset: {
+            x: () => rand(-10, 10),
+            y: () => rand(-10, 10),
+        },
+        collides: false,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(0, -5),
+        color:  () => "red",
+        life: () => rand(30, 50),
+        gravity: () => 0,
+        }
+    },
+
     boom17px: function(){
         return{
         tileSprite: tileSets.splode_17px,
-        quantity: 5,
+        quantity: 3,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -455,7 +473,8 @@ const particleDefinitions = {
     boom7px: function(){
         return{
         tileSprite: tileSets.splode_7px,
-        quantity: 20,
+        //glow: true,
+        quantity: 10,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -561,6 +580,7 @@ const imageList = [
     '64px-glow',
     '32px-glow',
     '16px-glow',
+    'splode-glow'
     
 ]
 
@@ -728,6 +748,8 @@ const damageTileWithEffects = {
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom25px);
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom17px);
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom7px);
+            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.splode_glow);
+
 
 
             tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);

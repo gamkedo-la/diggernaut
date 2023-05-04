@@ -109,6 +109,11 @@ function loadingComplete() {
         img["16px-glow"],
         {tileWidth: 16, tileHeight: 16, tileCount: 4, tileColumns: 4, tileRows: 1}
     )
+    tileSets.splode_glow = new Tileset(
+        img["splode-glow"],
+        {tileWidth: 64, tileHeight: 64, tileCount: 7, tileColumns: 7, tileRows: 1}
+    )
+
 
     collectibles = createCollectibles(tileSets);
 

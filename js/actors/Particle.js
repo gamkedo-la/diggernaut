@@ -16,6 +16,7 @@ class Particle {
         this.previousX = this.x;
         this.previousY = this.y;
         this.gradientPalette = options.gradientPalette || null;
+        this.glow = options.glow || false;
        
     }
 
@@ -64,11 +65,14 @@ class Particle {
     
     draw() {   
      if(this.tileSprite){
-        //tileSprite is a sprite strip of unknown length
-        //map life to tileSprite frame index
         const lifePercent = this.life / this.lifeMax;
         const frameIndex = Math.max(0, Math.floor(lifePercent * this.tileSprite.tileCount));
-        drawTileSprite(this.tileSprite, frameIndex, this.x-view.x, this.y-view.y);
+        if(this.glow){
+            this.drawToGlowCanvas(frameIndex);
+        }
+        else{
+            drawTileSprite(this.tileSprite, frameIndex, this.x-view.x, this.y-view.y);
+        }
      }
      else {
         line(this.x-view.x, this.y-view.y, this.previousX-view.x, this.previousY-view.y, this.color);
@@ -78,6 +82,13 @@ class Particle {
     die() {
        // console.log('particle died');
         actors.splice(actors.indexOf(this), 1);
+    }
+
+    drawToGlowCanvas(frame) {
+        bufferContext.save();
+        bufferContext.globalCompositeOperation = "screen";
+        drawTileSprite(this.tileSprite, frame, this.x-view.x, this.y-view.y, bufferContext);
+        bufferContext.restore();
     }
 
 }
