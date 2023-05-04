@@ -97,6 +97,7 @@ class Player {
     reset() {
         this.x = this.previousX;
         this.y = this.previousY;
+        this.canHelicopter = false;
         this.canJump = false;
         this.canDig = true;
         this.xvel = 0;
@@ -143,6 +144,7 @@ class Player {
         this.hurtCooldown--;
         this.canDig = this.checkDig();
         this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
+        this.canHelicopter = !this.diggerang.active;
         if(this.canJump){ this.helicopterCapacity = this.limits.helicopterCapacity; }
         this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Joy.left || Joy.right);
         this.canWallJump = this.isOnWall() && !this.isOnFloor();
@@ -200,7 +202,7 @@ class Player {
         if (Key.isDown(Key.SPACE) || Joy.a) {
             if(this.canJump) {
                 this.jump();
-            }else if(this.yvel > this.limits.hoverYVelocity){
+            }else if(this.canHelicopter && this.yvel > this.limits.hoverYVelocity){
                 this.helicopter();
             }
         }
