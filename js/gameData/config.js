@@ -146,7 +146,7 @@ screens[GAMESTATE_INVENTORY] = inventoryScreen;
 screens[GAMESTATE_MAP] = mapScreen;
 
 const TYPE_PARTICLE = 0;
-const DIGGERANG_COST = 50;
+const DIGGERANG_COST = 0;
 
 const view = {
     x: 0,

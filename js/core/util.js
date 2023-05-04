@@ -128,6 +128,10 @@ function calculateMousePos(evt) {
     };
 }
 
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+
 /**
  * returns distance between two objects with x and y properties
  * @date 3/24/2023 - 1:49:39 PM

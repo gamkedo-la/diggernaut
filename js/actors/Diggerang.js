@@ -95,7 +95,7 @@ class Diggerang {
 
   pan() {
     //sets the pan value of the sound based on the position of the diggerang, -1 is left edge of screen, 1 is right edge of screen
-    this.panControl.value = (this.x - view.x) / canvas.width * 2 - 1;
+    this.panControl.value = (clamp(this.x - view.x, 0, canvas.width) / canvas.width * 2 - 1);
   }
 
   checkCollision(tileMap) {
@@ -196,33 +196,41 @@ class Diggerang {
     if (left) {
       const point = this.collider.leftFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
-      tileMap.damageTileAt(tile, 25, ()=>
+      const type = tileMap.data[tile];
+      tileMap.damageTileAt(tile, damageValues[type], ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
+                damageTileWithEffects[TILE_TYPES[type]](tile);
               });
     }
     if (right) {
       const point = this.collider.rightFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
-      tileMap.damageTileAt(tile, 25, ()=>
+      const type = tileMap.data[tile];
+      tileMap.damageTileAt(tile, damageValues[type], ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
+                damageTileWithEffects[TILE_TYPES[type]](tile);
               });
     }
     if (top) {
       const point = this.collider.topFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
-      tileMap.damageTileAt(tile, 25, ()=>
+      const type = tileMap.data[tile];
+      tileMap.damageTileAt(tile, damageValues[type], ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
+                damageTileWithEffects[TILE_TYPES[type]](tile);
               });
     }
     if (bottom) {
       const point = this.collider.bottomFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
-      tileMap.damageTileAt(tile, 25, ()=>
+      const type = tileMap.data[tile];
+      tileMap.damageTileAt(tile, damageValues[type], ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
+                damageTileWithEffects[TILE_TYPES[type]](tile);
               });
     }
 
