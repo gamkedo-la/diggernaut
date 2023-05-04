@@ -105,7 +105,7 @@ class Player {
         this.yAccel = 0;
         this.digCooldown = 0;
         this.hurtCooldown = 0;
-        this.health = 12000;
+        this.health = 40;
         this.moveLeftCooldown = 0;
         this.moveRightCooldown = 0;
         this.coyoteCooldown = 0;
@@ -113,7 +113,7 @@ class Player {
         this.facing = LEFT;
         //this.diggerang = new Diggerang(this.x, this.y);
         this.inventory = {
-            ore: 1000,
+            ore: 5,
         }
     }
     draw() {
