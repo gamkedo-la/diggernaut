@@ -7,6 +7,7 @@ class Player {
         this.diggerang = new Diggerang(this.x, this.y);
         this.digging = false;
         this.hovering = false;
+        this.helicopterCapacity = 0;
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true); 
         this.drawOffset = {
             x: 7,
@@ -507,9 +508,9 @@ class Player {
     helicopter() {
         this.hovering = true;
         if (this.helicopterCapacity <= 0){ this.hovering = false; return };
-        if (this.inventory.ore <= 0){this.hovering = false; return };
+        //if (this.inventory.ore <= 0){this.hovering = false; return };
 
-        this.inventory.ore--;
+        //this.inventory.ore--;
         this.yVel -= 0.1;
         this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;

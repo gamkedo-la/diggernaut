@@ -211,6 +211,7 @@ class Flyer {
             //player.xAccel = -repelX * 2;
             player.yvel = 0;
             player.yAccel = player.limits.minYAccel * 2;
+            player.helicopterCapacity = player.limits.helicopterCapacity;
         }
         
     }
