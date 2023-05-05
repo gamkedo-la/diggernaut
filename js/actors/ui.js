@@ -45,6 +45,7 @@ const ui = {
         const oreCrates = Math.floor(ui.oreBar.value / 500);
         const oreBoxes = Math.floor((ui.oreBar.value % 500) / 100);
         const oreBarWidth = Math.floor((ui.oreBar.value % 500) % 100);
+        
 
         canvasContext.fillStyle = ui.oreBar.crateColor;
         canvasContext.strokeStyle = ui.oreBar.crateStroke;
@@ -64,6 +65,10 @@ const ui = {
         canvasContext.fillRect(ui.oreBar.x + 66, ui.oreBar.y, Math.min(100, oreBarWidth), ui.oreBar.height);
 
         canvasContext.restore();
+
+        gameFont.drawText(String(ui.oreBar.value), 
+            { x: ui.oreBar.x - 25, y: ui.oreBar.y },
+            0, 0, 1, ui.oreBar.boxColor);
 
         if (this.miniMap) this.miniMap.draw();
 
