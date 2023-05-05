@@ -439,7 +439,7 @@ const particleDefinitions = {
         return{
         tileSprite: tileSets.splode_glow,
         glow: true,
-        quantity: 5,
+        quantity: 1,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -448,7 +448,25 @@ const particleDefinitions = {
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(0, -5),
         color:  () => "red",
-        life: () => rand(30, 50),
+        life: () => rand(15, 30),
+        gravity: () => 0,
+        }
+    },
+
+    splode_glow32px: function(){
+        return{
+        tileSprite: tileSets.splode_glow32px,
+        glow: true,
+        quantity: 4,
+        offset: {
+            x: () => rand(-10, 10),
+            y: () => rand(-10, 10),
+        },
+        collides: false,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(0, -5),
+        color:  () => "red",
+        life: () => rand(20, 40),
         gravity: () => 0,
         }
     },
@@ -580,7 +598,8 @@ const imageList = [
     '64px-glow',
     '32px-glow',
     '16px-glow',
-    'splode-glow'
+    'splode-glow',
+    'splode-glow32px',
     
 ]
 
@@ -749,6 +768,8 @@ const damageTileWithEffects = {
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom17px);
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom7px);
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.splode_glow);
+            emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.splode_glow32px);
+
 
 
 

@@ -85,10 +85,10 @@ class Particle {
     }
 
     drawToGlowCanvas(frame) {
-        bufferContext.save();
-        bufferContext.globalCompositeOperation = "screen";
-        drawTileSprite(this.tileSprite, frame, this.x-view.x, this.y-view.y, bufferContext);
-        bufferContext.restore();
+        bloomContext.save();
+        bloomContext.globalCompositeOperation = "screen";
+        drawTileSprite(this.tileSprite, frame, this.x-view.x, this.y-view.y, bloomContext);
+        bloomContext.restore();
     }
 
 }

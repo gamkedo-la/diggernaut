@@ -9,6 +9,7 @@ const playScreen = {
 
     draw: function () {
         this.prepareLightingOverlay();
+        this.prepareBloomOverlay();
         
         this.drawParallaxBackground();
 
@@ -23,6 +24,7 @@ const playScreen = {
         player.draw();
         actors.forEach(actor => actor.draw());
         this.drawLightingOverlay();
+        this.drawBloomOverlay();
         ui.draw();
         drawTransition();
             
@@ -93,6 +95,13 @@ const playScreen = {
         bufferContext.restore();
     },
 
+    prepareBloomOverlay: function () {
+        bloomContext.save();
+        bloomContext.fillStyle = "rgba(128, 128, 128, 1)";
+        bloomContext.fillRect(0, 0, canvas.width, canvas.height);
+        bloomContext.restore();
+    },
+
     drawLightingOverlay: function () {
 
         canvasContext.save();
@@ -100,6 +109,14 @@ const playScreen = {
         canvasContext.globalAlpha = 0.9;
         canvasContext.drawImage(bufferCanvas, 0, 0);
        
+        canvasContext.restore();
+    },
+
+    drawBloomOverlay: function () {
+        canvasContext.save();
+        canvasContext.globalCompositeOperation = 'hard-light';
+        canvasContext.globalAlpha = 1;
+        canvasContext.drawImage(bloomCanvas, 0, 0);
         canvasContext.restore();
     }
     

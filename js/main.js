@@ -18,6 +18,12 @@ bufferCanvas.width = canvas.width;
 bufferCanvas.height = canvas.height;
 bufferContext = bufferCanvas.getContext("2d");
 
+//buffer canvas for colored text, or other effects
+bloomCanvas = document.createElement("canvas");
+bloomCanvas.width = canvas.width;
+bloomCanvas.height = canvas.height;
+bloomContext = bloomCanvas.getContext("2d");
+
 
 
 let gameState = GAMESTATE_TITLE,
@@ -112,6 +118,10 @@ function loadingComplete() {
     tileSets.splode_glow = new Tileset(
         img["splode-glow"],
         {tileWidth: 64, tileHeight: 64, tileCount: 7, tileColumns: 7, tileRows: 1}
+    )
+    tileSets.splode_glow32px = new Tileset(
+        img["splode-glow32px"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 12, tileColumns: 12, tileRows: 1}
     )
 
 
