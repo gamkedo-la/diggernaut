@@ -170,14 +170,14 @@ class Player {
     handleInput() {
         this.digging = false;
         //this.hovering = false;
-        if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Joy.left) {
+        if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.h) || Joy.left) {
             this.moveLeft();
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
                 this.dig(LEFT);
             }
         }
-        else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Joy.right) {
+        else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Key.isDown(Key.l) || Joy.right) {
             this.moveRight(); 
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
@@ -185,14 +185,14 @@ class Player {
             }
         }
 
-        if (Key.isDown(Key.UP) || Key.isDown(Key.w) || Joy.up) {
+        if (Key.isDown(Key.UP) || Key.isDown(Key.w) || Key.isDown(Key.k) || Joy.up) {
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
                 this.dig(UP);
             }
             
         } 
-        else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s) || Joy.down) {
+        else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s) || Key.isDown(Key.j) || Joy.down) {
             //this.moveDown();
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
