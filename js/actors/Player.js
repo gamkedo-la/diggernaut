@@ -13,18 +13,26 @@ class Player {
             x: 7,
             y: 8
         }
+
+        // Start facing left with idleLeft animation
+        this.facing = Direction.LEFT;
+        
         // this.inventory = {
         //     ore: 1000,
         // }
         
 
         this.spritesheet = new SpriteSheet({
-            image: img['placeholder-player'],
+            image: img['movingPlayerSprite'],
             frameWidth: 32,
             frameHeight: 32,
             animations: {
-                idle: {
+                idleLeft: {
                     frames: [2],
+                    frameRate: 1
+                },
+                idleRight: {
+                    frames: [4],
                     frameRate: 1
                 },
                 walkLeft: {
@@ -32,17 +40,37 @@ class Player {
                     frameRate: 8
                 },
                 walkRight: {
-                    frames: [0,2],
+                    frames: [5,7],
                     frameRate: 8
                 },
-                jump: {
-                    frames: [4],
+                jumpLeft: {
+                    frames: [14],
                     frameRate: 1
                 },
-                falling: {
-                    frames: [5],
+                jumpRight: {
+                    frames: [15],
                     frameRate: 1
                 },
+                fallingLeft: {
+                    frames: [12],
+                    frameRate: 1
+                },
+                fallingRight: {
+                    frames: [13],
+                    frameRate: 1
+                },
+                helicopter: {
+                    frames: "8..11",
+                    frameRate: 24
+                }
+            }
+        })
+
+        this.digSpriteSheet = new SpriteSheet({
+            image: img['placeholder-player'],
+            frameWidth: 32,
+            frameHeight: 32,
+            animations: {
                 dig: {
                     frames: [3],
                     frameRate: 1
@@ -55,14 +83,11 @@ class Player {
                     frames: [6,7],
                     frameRate: 8
                 },
-                helicopter: {
-                    frames: "10..15",
-                    frameRate: 24
-                }
             }
         })
 
-        this.currentAnimation = this.spritesheet.animations["idle"];
+        this._updateInternalAnimations();
+        this.currentAnimation = this.spritesheet.animations["idleLeft"];
 
         this.limits = {
             minXVel: -5,
@@ -95,6 +120,18 @@ class Player {
         }, 'player')
     }
 
+    // Object to hold current animation for easy access
+    _updateInternalAnimations(){
+        this.animations = {
+            helicopter: this.spritesheet.animations["helicopter"],
+            idle: this.spritesheet.animations[this.facing === Direction.LEFT ? "idleLeft" : 'idleRight'],
+            walk: this.spritesheet.animations[this.facing === Direction.LEFT ? "walkLeft" : 'walkRight'],
+            jump: this.spritesheet.animations[this.facing === Direction.LEFT ? "jumpLeft" : 'jumpRight'],
+            dig: this.digSpriteSheet.animations[this.facing === Direction.LEFT ? "digLeft" : 'digRight'],
+            falling: this.spritesheet.animations[this.facing === Direction.LEFT ? "fallingLeft" : 'fallingRight'],
+        }
+    }
+
     reset() {
         this.x = this.previousX;
         this.y = this.previousY;
@@ -112,7 +149,7 @@ class Player {
         this.moveRightCooldown = 0;
         this.coyoteCooldown = 0;
         this.wallSliding = false;
-        this.facing = LEFT;
+        this.facing = Direction.LEFT;
         //this.diggerang = new Diggerang(this.x, this.y);
         this.inventory = {
             ore: 5,
@@ -131,10 +168,10 @@ class Player {
         this.diggerang.draw();
 
         
-        if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight("LEFT") };
-        if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight("RIGHT") };
-        if(Key.isDown(Key.UP)||Joy.up){ this.drawDigTileHighlight("UP") };
-        if(Key.isDown(Key.DOWN)||Joy.down){ this.drawDigTileHighlight("DOWN") };
+        if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight(Direction.LEFT) };
+        if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight(Direction.RIGHT) };
+        if(Key.isDown(Key.UP)||Joy.up){ this.drawDigTileHighlight(Direction.UP) };
+        if(Key.isDown(Key.DOWN)||Joy.down){ this.drawDigTileHighlight(Direction.DOWN) };
     }
 
     update() {
@@ -156,6 +193,7 @@ class Player {
         if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
         if(this.wallSliding) this.collider.emit(particleDefinitions.sparks);
          if(this.yvel > this.limits.hurtVelocity-2) emitParticles(this.x + rand(0,12), this.y, particleDefinitions.fallSparks);
+        
         this.handleAnimationState();
 
         this.diggerang.update(this);
@@ -174,29 +212,28 @@ class Player {
             this.moveLeft();
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
-                this.dig(LEFT);
+                this.dig(Direction.LEFT);
             }
         }
         else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Key.isDown(Key.l) || Joy.right) {
             this.moveRight(); 
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
-                this.dig(RIGHT);
+                this.dig(Direction.RIGHT);
             }
         }
 
         if (Key.isDown(Key.UP) || Key.isDown(Key.w) || Key.isDown(Key.k) || Joy.up) {
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
-                this.dig(UP);
+                this.dig(Direction.UP);
             }
             
         } 
         else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s) || Key.isDown(Key.j) || Joy.down) {
-            //this.moveDown();
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
-                this.dig(DOWN);
+                this.dig(Direction.DOWN);
             }
         }
 
@@ -246,32 +283,30 @@ class Player {
     }
 
     handleAnimationState(){
-        //this.digging = false;
+        this._updateInternalAnimations();
         this.currentAnimation.update();
+
         if(this.xvel > 0) {
-            this.currentAnimation = this.spritesheet.animations["walkRight"];
-            this.facing = RIGHT;
+            this.facing = Direction.RIGHT;
+            this.currentAnimation = this.animations.walk;
         } else if(this.xvel < 0) {
-            this.currentAnimation = this.spritesheet.animations["walkLeft"];
-            this.facing = LEFT;
+            this.facing = Direction.LEFT;
+            this.currentAnimation = this.animations.walk;
         } else {
-            this.currentAnimation = this.spritesheet.animations["idle"];
+            this.currentAnimation = this.animations.idle;
         }
+
         if(this.yvel < 0) {
-            this.currentAnimation = this.spritesheet.animations["jump"];
+            this.currentAnimation = this.animations.jump;
             if(this.hovering){
-                this.currentAnimation = this.spritesheet.animations["helicopter"];
+                this.currentAnimation = this.animations.helicopter;
             }
         }
         if(this.yvel > 0) {
-            this.currentAnimation = this.spritesheet.animations["falling"];
+            this.currentAnimation = this.animations.falling;;
         }
         if(this.digging) {
-            if(this.facing == RIGHT) {
-                this.currentAnimation = this.spritesheet.animations["digRight"];
-            } else {
-                this.currentAnimation = this.spritesheet.animations["digLeft"];
-            }
+            this.currentAnimation = this.animations.dig;
         }
     }
 
@@ -376,13 +411,13 @@ class Player {
         this.xVel = 0;
     }
 
-    drawDigTileHighlight(direction="DOWN") {
+    drawDigTileHighlight(direction=Direction.DOWN) {
 
         const directionTiles = {
-            "UP": this.collider.topFeeler,
-            "DOWN": this.collider.bottomFeeler,
-            "LEFT": this.collider.leftFeeler,
-            "RIGHT": this.collider.rightFeeler
+            [Direction.UP]: this.collider.topFeeler,
+            [Direction.DOWN]: this.collider.bottomFeeler,
+            [Direction.LEFT]: this.collider.leftFeeler,
+            [Direction.RIGHT]: this.collider.rightFeeler
         }
         const highlightDirection = directionTiles[direction];
         //if the collider feelers are on a tile and player is pressing an arrow key, draw a highlight
@@ -400,8 +435,8 @@ class Player {
 
     checkForFallingRocks() {
         let feelers = [this.collider.bottomFeeler, this.collider.leftFeeler, this.collider.rightFeeler, this.collider.topFeeler];
-        for (let i = 0; i < feelers.length; i++) {
-            let tileIndex = tileMap.pixelToTileIndex(feelers[i].x, feelers[i].y);
+        for (const feeler of feelers) {
+            let tileIndex = tileMap.pixelToTileIndex(feeler.x, feeler.y);
             let tileValue = tileMap.data[tileIndex];
             if (tileValue == 5) {
                 tileMap.damageTileAt(tileIndex, 25, () => { damageTileWithEffects["TILE_FALLING_ROCK"](tileIndex) });
@@ -483,7 +518,7 @@ class Player {
         this.inventory.ore -= DIGGERANG_COST;
 
         switch(this.facing){
-            case RIGHT: {
+            case Direction.RIGHT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
                 this.diggerang.xvel = 6; // Set the initial horizontal velocity
@@ -492,7 +527,7 @@ class Player {
                 this.diggerang.returning = false;
             }
             break;
-            case LEFT: {
+            case Direction.LEFT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
                 this.diggerang.xvel = -6; // Set the initial horizontal velocity
@@ -526,12 +561,11 @@ class Player {
 
     play(animationName){
    
-        this.currentAnimation = this.spritesheet.animations[animationName];
-  
-   
-    if (!this.currentAnimation.loop){
-        this.currentAnimation.reset();
+        this.currentAnimation = this.animations[animationName];
+    
+        if (!this.currentAnimation.loop){
+            this.currentAnimation.reset();
+        }
     }
-}
 
 }
