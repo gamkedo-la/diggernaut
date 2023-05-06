@@ -63,20 +63,21 @@ class Particle {
         }
     }
     
-    draw() {   
-     if(this.tileSprite){
-        const lifePercent = this.life / this.lifeMax;
-        const frameIndex = Math.max(0, Math.floor(lifePercent * this.tileSprite.tileCount));
-        if(this.glow){
-            this.drawToGlowCanvas(frameIndex);
+    draw() {
+        if(elapsed > 40) { this.die(); return; }
+        if(this.tileSprite){
+            const lifePercent = this.life / this.lifeMax;
+            const frameIndex = Math.max(0, Math.floor(lifePercent * this.tileSprite.tileCount));
+            if(this.glow){
+                this.drawToGlowCanvas(frameIndex);
+            }
+            else{
+                drawTileSprite(this.tileSprite, frameIndex, this.x-view.x, this.y-view.y);
+            }
         }
-        else{
-            drawTileSprite(this.tileSprite, frameIndex, this.x-view.x, this.y-view.y);
+        else {
+            line(this.x-view.x, this.y-view.y, this.previousX-view.x, this.previousY-view.y, this.color);
         }
-     }
-     else {
-        line(this.x-view.x, this.y-view.y, this.previousX-view.x, this.previousY-view.y, this.color);
-     }
     }
 
     die() {
@@ -85,6 +86,7 @@ class Particle {
     }
 
     drawToGlowCanvas(frame) {
+        if(elapsed > 40) { this.die(); return; }
         bloomContext.save();
         bloomContext.globalCompositeOperation = "screen";
         drawTileSprite(this.tileSprite, frame, this.x-view.x, this.y-view.y, bloomContext);
