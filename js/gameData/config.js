@@ -14,10 +14,6 @@ https://patorjk.com/software/taag/#p=display&f=Varsity&t=Text%20Banners!
                                                                                         
                                                              
 */
-const LEFT = 0;
-const RIGHT = 1;
-const UP = 2;
-const DOWN = 3;
 
 const SCREEN_SHAKE_TIME = 20;
 
@@ -191,7 +187,7 @@ const playerSettings = {
     coyoteCooldown: 0,
     wallSliding: false,
     helicopterCapcity: 120,
-    facing: LEFT,
+    facing: Direction.LEFT,
     inventory: {
             ore: 5,
         }
@@ -579,6 +575,7 @@ const imageList = [
     '3x5font',
     'earthTiles',
     'placeholder-player',
+    'movingPlayerSprite',
     'basic-tiles',
     'autoTiles',
     'minimap',

@@ -31,7 +31,6 @@ const Key = {
     d: 68,
     z: 90,
     x: 88,
-    f: 70,
     p: 80,
     r: 82,
     h: 72,
@@ -110,6 +109,15 @@ const Joy = {
         this.y = g.buttons[3].value > this.dz;
         this.start = g.buttons[9].value > this.dz;
     }
+};
+
+
+// Direction
+const Direction = {
+    LEFT: 0,
+    RIGHT: 1,
+    UP: 2,
+    DOWN: 3,
 };
 
 /**

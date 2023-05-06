@@ -99,24 +99,24 @@ getTilesAtCorners(tileCheck) {
 
   getTileIndexAndSpawnPos (direction) {
     switch (direction) {
-      case LEFT: return {
+      case Direction.LEFT: return {
         startTileIndex: tileMap.pixelToTileIndex(this.leftFeeler.x, this.leftFeeler.y),
         spawnX: this.leftFeeler.x,
         spawnY: this.leftFeeler.y
       };
-      case RIGHT:
+      case Direction.RIGHT:
         return {
           startTileIndex: tileMap.pixelToTileIndex(this.rightFeeler.x, this.rightFeeler.y),
           spawnX: this.rightFeeler.x,
           spawnY: this.rightFeeler.y
         };
-      case UP:
+      case Direction.UP:
         return {
           startTileIndex: tileMap.pixelToTileIndex(this.topFeeler.x, this.topFeeler.y),
           spawnX: this.topFeeler.x,
           spawnY: this.topFeeler.y
         };
-      case DOWN:
+      case Direction.DOWN:
         return {
           startTileIndex: tileMap.pixelToTileIndex(this.bottomFeeler.x, this.bottomFeeler.y),
           spawnX: this.bottomFeeler.x,
