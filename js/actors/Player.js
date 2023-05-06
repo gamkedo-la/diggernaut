@@ -168,10 +168,10 @@ class Player {
         this.diggerang.draw();
 
         
-        if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight("LEFT") };
-        if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight("RIGHT") };
-        if(Key.isDown(Key.UP)||Joy.up){ this.drawDigTileHighlight("UP") };
-        if(Key.isDown(Key.DOWN)||Joy.down){ this.drawDigTileHighlight("DOWN") };
+        if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight(Direction.LEFT) };
+        if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight(Direction.RIGHT) };
+        if(Key.isDown(Key.UP)||Joy.up){ this.drawDigTileHighlight(Direction.UP) };
+        if(Key.isDown(Key.DOWN)||Joy.down){ this.drawDigTileHighlight(Direction.DOWN) };
     }
 
     update() {
@@ -411,13 +411,13 @@ class Player {
         this.xVel = 0;
     }
 
-    drawDigTileHighlight(direction="DOWN") {
+    drawDigTileHighlight(direction=Direction.DOWN) {
 
         const directionTiles = {
-            "UP": this.collider.topFeeler,
-            "DOWN": this.collider.bottomFeeler,
-            "LEFT": this.collider.leftFeeler,
-            "RIGHT": this.collider.rightFeeler
+            [Direction.UP]: this.collider.topFeeler,
+            [Direction.DOWN]: this.collider.bottomFeeler,
+            [Direction.LEFT]: this.collider.leftFeeler,
+            [Direction.RIGHT]: this.collider.rightFeeler
         }
         const highlightDirection = directionTiles[direction];
         //if the collider feelers are on a tile and player is pressing an arrow key, draw a highlight
