@@ -4,7 +4,12 @@ const playScreen = {
 
     reset: function () {
         player.reset();
-        
+        if(this.music) this.music.sound.stop();
+        else{
+            this.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
+            //this.music.volume.gain.value = 0.5;
+        }
+
     },
 
     draw: function () {
