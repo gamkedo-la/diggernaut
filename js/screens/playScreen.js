@@ -31,6 +31,7 @@ const playScreen = {
         drawTransition();
             
     },
+
     update: function () {
         this.followPlayer();
         ui.update();
@@ -110,7 +111,7 @@ const playScreen = {
         canvasContext.globalCompositeOperation = 'multiply';
         canvasContext.globalAlpha = 0.9;
         canvasContext.drawImage(bufferCanvas, 0, 0);
-       
+        
         canvasContext.restore();
     },
 

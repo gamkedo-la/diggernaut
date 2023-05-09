@@ -29,6 +29,9 @@ const TILE_EXPLOSIVE = 6;
 const TILE_DENSE_UNOBTANIUM = 7;
 const TILE_ROCK = 8;
 const TILE_DENSE_ROCK = 9;
+const TILE_BONE = 10;
+const TILE_TENTACLE = 11;
+
 
 const TILE_TYPES = [
     "TILE_EMPTY",
@@ -40,7 +43,9 @@ const TILE_TYPES = [
     "TILE_EXPLOSIVE",
     "TILE_DENSE_UNOBTANIUM",
     "TILE_ROCK",
-    "TILE_DENSE_ROCK"
+    "TILE_DENSE_ROCK",
+    "TILE_BONE",
+    "TILE_TENTACLE"
 ]
 const COLORS = [
     '#060608',
@@ -122,6 +127,8 @@ const damageValues = [
     7, //TILE_DENSE_UNOBTANIUM
     10, //TILE_ROCK
     3, //TILE_DENSE_ROCK
+    10, //TILE_BONE
+    10, //TILE_TENTACLE
 ]
 
 
@@ -158,9 +165,9 @@ const mapConfig = {
     tileSize: 32,
     mapStartY: 20, //start generating tiles at this Y position
     caveGenPools:{
-        vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7,8,9],
-        fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,1,1,1,2,3,4,7,8,9],
-        OreGalore: [4,7,8,9.4,7,8,9.4,7,8,9,4,7,8,9,4,7,8,9,5,6,1]
+        vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,3,4,5,6,7,8,9,10,11],
+        fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,1,1,1,2,3,4,7,8,9,10,11],
+        OreGalore: [4,7,8,9.4,7,8,9.4,7,8,9,4,7,8,9,4,7,8,9,5,6,1,10,11]
     }  
 }
 
@@ -621,7 +628,7 @@ const soundList = [
     { name: "player_damage_big_2", url: "snd/player_damage_big_2.ogg" },
     { name: "jump", url: "snd/jump_1.ogg" },
     { name: "clink", url: "snd/clink1.ogg"},
-    { name: "explore-music", url: "snd/BGM-deeper_deeper-draft_1.mp3"},
+    { name: "explore-music", url: "snd/BGM-deeper_deeper-draft_1.mp3"}, 
 
 ]
 
@@ -725,8 +732,17 @@ const destroyTileWithEffects = {
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
         audio.playSound(sounds[randChoice(rock_crumbles)])
+    },
+
+    TILE_BONE : function (tileIndex) {
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
+    },
+
+    TILE_TENTACLE : function (tileIndex) {
+        tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
     }
 }
+
 
 const damageTileWithEffects = {
     
@@ -749,12 +765,15 @@ const damageTileWithEffects = {
         emitParticles(x, y, particleDefinitions.jumpPuff);
         audio.playSound(sounds[randChoice(metal_dings)])
     },
+
     TILE_UNOBTANIUM : function (tileIndex) { 
 
     },
+
     TILE_FALLING_ROCK : function (tileIndex) { 
         
     },
+
     TILE_EXPLOSIVE : function (startTileIndex) { 
         let i = 25;
         while(--i){
@@ -766,9 +785,6 @@ const damageTileWithEffects = {
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.boom7px);
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.splode_glow);
             emitParticles(tileMap.tileIndexToPixelX(tileIndex), tileMap.tileIndexToPixelY(tileIndex), particleDefinitions.splode_glow32px);
-
-
-
 
             tileMap.replaceTileAt(startTileIndex, TILE_EMPTY);
             const newProps = player.getDigPropsForIndex(tileIndex);
@@ -787,12 +803,32 @@ const damageTileWithEffects = {
         let i = 8;
         while(--i){ actors.push(new Ore(randInt(-20,20) + x, randInt(-20,20)+y))}  
     },
+
     TILE_ROCK : function (tileIndex) { 
-        
+        emitParticles(x, y, particleDefinitions.jumpPuff);
     },
+
     TILE_DENSE_ROCK : function (tileIndex) { 
-        
+        emitParticles(x, y, particleDefinitions.jumpPuff);
+    },
+
+
+    TILE_BONES : function (tileIndex) {
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.jumpPuff);
+        let i = 8;
+        while(--i){ actors.push(new Ore(randInt(-20,20) + x, randInt(-20,20)+y))}  
+    },
+
+    TILE_TENTACLE : function (tileIndex) {
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
+        emitParticles(x, y, particleDefinitions.jumpPuff);
+        let i = 8;
+        while(--i){ actors.push(new Ore(randInt(-20,20) + x, randInt(-20,20)+y))}  
     }
+
 }
 
 /*

@@ -59,8 +59,8 @@ function pset(x, y) {
 
 //line uses pset and breseham's line algorithm to draw a pixel line between two points in a single color
 //dynamically drawn objects and effects should use this instead of canvasContext.line, to avoid anti-aliasing.
-function line(x1, y1, x2, y2, color = '#FF00FF') {
-
+function line(x1, y1, x2, y2, color = '#FF00FF', context) {
+    context = context || canvasContext;
     //we take in floats, but we need to round them to integers for the algorithm to work
     x1 = Math.round(x1);
     y1 = Math.round(y1);
@@ -76,7 +76,7 @@ function line(x1, y1, x2, y2, color = '#FF00FF') {
     while (true) {
         tries--;
         if(tries<0) break;
-        pset(x1, y1);
+        pset(x1, y1, context);
         if ((x1 == x2) && (y1 == y2)) break;
         let e2 = 2 * err;
         if (e2 > -dy) { err -= dy; x1 += sx; }
@@ -85,9 +85,6 @@ function line(x1, y1, x2, y2, color = '#FF00FF') {
 }
 class spriteFont {
     /**
-     * Creates an instance of spriteFont.
-     * @date 3/17/2023 - 1:10:36 PM
-     *
      * @constructor
      * @param {*} width
      * @param {*} height
