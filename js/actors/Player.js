@@ -385,7 +385,7 @@ class Player {
         let now = performance.now();
         if (this.footstepLast + this.footstepDelay <= now) {
             //console.log("step! footstepLast="+this.footstepLast.toFixed(2)+" now="+now.toFixed(2));
-            audio.playSound(sounds[randChoice(footsteps)],0,0.2);
+            audio.playSound(sounds[randChoice(footsteps)],0,0.25);
             this.footstepLast = now;
         }
     }
