@@ -42,6 +42,11 @@ class Collectible {
             thisItem.owned = true;
             emitParticles(this.x+16, this.y+16, particleDefinitions.jumpPuff);
             emitParticles(this.x+16, this.y+16, particleDefinitions.boom17px);
+
+            // FIXME: play different sounds depending on treasure type.
+            // currently chooses between two bitcrushed glass shattering sounds
+            audio.playSound(sounds[randChoice(collectibleSounds)],0,0.2);
+
             this.destroy();
         }
     }
