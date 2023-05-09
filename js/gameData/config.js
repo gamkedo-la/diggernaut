@@ -629,6 +629,12 @@ const soundList = [
     { name: "jump", url: "snd/jump_1.ogg" },
     { name: "clink", url: "snd/clink1.ogg"},
     { name: "explore-music", url: "snd/BGM-deeper_deeper-draft_1.mp3"}, 
+    { name: "walljump", url: "snd/walljump-strong.wav"}, 
+    { name: "footstep-a", url: "snd/footstep-a.wav"}, 
+    { name: "footstep-b", url: "snd/footstep-b.wav"}, 
+    { name: "footstep-c", url: "snd/footstep-c.wav"}, 
+    { name: "footstep-d", url: "snd/footstep-d.wav"}, 
+
 
 ]
 
@@ -637,6 +643,7 @@ const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3"]
 const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
 const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
 const player_damages = [ "player_damage_1", "player_damage_2", "player_damage_big_1", "player_damage_big_2" ]
+const footsteps = [ "footstep-a","footstep-b","footstep-c","footstep-d" ]
 
 var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px, gems, bones
 

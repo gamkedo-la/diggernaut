@@ -21,6 +21,8 @@ class Player {
         //     ore: 1000,
         // }
         
+        this.footstepDelay = 250; // ms between sounds
+        this.footstepLast = 0; // a timestamp
 
         this.spritesheet = new SpriteSheet({
             image: img['movingPlayerSprite'],
@@ -373,19 +375,34 @@ class Player {
         }
     }
 
+    footStepSFX() {
+        
+        if (!this.isOnFloor()) {
+            // this.footstepLast = 0; // no delay once we land
+            return;
+        }
+        
+        let now = performance.now();
+        if (this.footstepLast + this.footstepDelay <= now) {
+            //console.log("step! footstepLast="+this.footstepLast.toFixed(2)+" now="+now.toFixed(2));
+            audio.playSound(sounds[randChoice(footsteps)],0,0.2);
+            this.footstepLast = now;
+        }
+    }
+    
     moveLeft() {
         this.moveRightCooldown = 0;
         if(!this.moveLeftCooldown){
             this.xAccel = -this.speed;
+            this.footStepSFX();        
         }
-        
-    
     }
 
     moveRight() {
         this.moveLeftCooldown = 0;
         if(!this.moveRightCooldown){
             this.xAccel = this.speed;
+            this.footStepSFX();        
         }
     }
 
@@ -399,6 +416,7 @@ class Player {
         onleftWall ? this.moveLeftCooldown = this.limits.moveLeftCooldown : this.moveRightCooldown = this.limits.moveRightCooldown; 
         this.xAccel = onleftWall ? this.speed * 5 : -this.speed * 5;
         this.play("jump");
+        // audio.playSound("walljump"); // error - noaudio buffer? but the sound loads?
         let particleDef = onleftWall? particleDefinitions.wallJumpLeft : particleDefinitions.wallJumpRight;
         let emitLocation = onleftWall? this.collider.leftFeeler : this.collider.rightFeeler;
         emitParticles(emitLocation.x, emitLocation.y, particleDef);
