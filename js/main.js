@@ -270,6 +270,22 @@ function generateMap(config){
 }
 
 function populateMap(){
+    let i = 20;
+    while(i--){
+        let x = playerSettings.x + Math.floor(rand(-300, 300));
+        let y = 600 + Math.floor(rand(-50, 10));
+        let arm = new Arm(x, y);
+        arm.addSegment(10);
+        arm.addSegment(10);
+        arm.addSegment(10);
+        arm.addSegment(10);
+        arm.addSegment(10);
+        arm.addSegment(10);
+        arm.addSegment(10);
+        arm.addSegment(10);
+        actors.push(arm);
+    }
+
     for (let i = 0; i < 10000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = Math.floor(mapRNG() * tileMap.heightInTiles);

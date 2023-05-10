@@ -23,7 +23,7 @@ const playScreen = {
         //player debug text
 
         player.draw();
-        actors.forEach(actor => actor.draw());
+        actors.forEach(actor => actor.draw(canvasContext));
         this.drawLightingOverlay();
         this.drawBloomOverlay();
         ui.draw();

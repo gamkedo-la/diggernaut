@@ -294,21 +294,21 @@ function randChoice(arr) {
     return arr[Math.floor(mapRNG() * arr.length)];
 }
 
-function ikSolve(parent, child, targetX, targetY) {
-    const dx = targetX - parent.x;
-    const dy = targetY - parent.y;
-    const distToTarget = Math.sqrt(dx * dx + dy * dy);
+// function ikSolve(parent, child, targetX, targetY) {
+//     const dx = targetX - parent.x;
+//     const dy = targetY - parent.y;
+//     const distToTarget = Math.sqrt(dx * dx + dy * dy);
 
-    const cosAngleA = (child.length * child.length - parent.length * parent.length - distToTarget * distToTarget) / (-2 * parent.length * distToTarget);
-    const angleA = Math.acos(cosAngleA);
+//     const cosAngleA = (child.length * child.length - parent.length * parent.length - distToTarget * distToTarget) / (-2 * parent.length * distToTarget);
+//     const angleA = Math.acos(cosAngleA);
 
-    const angleB = Math.atan2(dy, dx);
+//     const angleB = Math.atan2(dy, dx);
 
-    parent.angle = angleB - angleA;
+//     parent.angle = angleB - angleA;
 
-    child.attachTo(parent);
-    child.pointAt(targetX, targetY);
-}
+//     child.attachTo(parent);
+//     child.pointAt(targetX, targetY);
+// }
 
 function cubicBezierPoint(t, p0, p1, p2, p3) {
     const oneMinusT = 1 - t;
