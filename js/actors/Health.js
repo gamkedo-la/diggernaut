@@ -59,7 +59,7 @@ class Health {
         
         if(this.distanceTo(player) < 10 && this.life < 270){
             audio.playSound(sounds["clink"]);
-            player.health += 1;
+            player.health += 3;
             this.destroy();
         }
        

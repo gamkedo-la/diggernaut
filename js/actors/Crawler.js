@@ -14,8 +14,8 @@ class Crawler {
         this.xAccel = 0;
         this.state = "idle";
         this.limits = {
-            maxXVel: 0.3,
-            minXVel: -0.3,
+            maxXVel: 0.5,
+            minXVel: -0.5,
         }
         this.drawOffset = {
             x: 4,
@@ -133,7 +133,7 @@ class Crawler {
         emitParticles(this.x, this.y, particleDefinitions.hurt)
         let repelX = normalize(this.x - player.x, -player.width/2, player.width/2);
         let repelY = normalize(this.y - player.y, -player.height/2, player.height/2);
-        if(player.y >= this.y ) {
+        if(player.collider.bottomFeeler.y >= this.y ) {
             player.hurt(5)
             player.stop();
             player.xAccel = -repelX * 2;
