@@ -5,45 +5,34 @@ class Crawler {
         this.previousX = this.x;
         this.previousY = this.y;
         this.currentAnimation = "idle";
-        this.width = 16;
-        this.height = 16;
+        this.width = 24;
+        this.height = 20;
         this.xvel = 0;
         this.yvel = 0;
+        this.gravity = 0.2;
         this.yAccel = 0;
         this.xAccel = 0;
         this.state = "idle";
         this.limits = {
-            maxXVel: 1,
-            maxYVel: 3,
-            minXVel: -1,
-            minYVel: -1,
-            maxYAccel: 0.1,
-            minYAccel: -0.1,
-            maxXAccel: 0.1,
-            minXAccel: -0.1,
+            maxXVel: 0.3,
+            minXVel: -0.3,
         }
-        this.targetOffset = {
-            x: 0,
-            y: -100
-        }
-        this.direction = randChoice([0, 1]);
-        this.viewBlocked = false;
         this.drawOffset = {
-            x: 8,
-            y: 8
+            x: 4,
+            y: 10
         }
-        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 20, right: 20, top: 20, bottom: 20}, "crawler")
+        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "crawler")
         this.spritesheet = new SpriteSheet({
-            image: img['bat'],
+            image: img['crawler'],
             frameWidth: 32,
             frameHeight: 32,
             animations: {
                 idle: {
-                    frames: [0,1],
-                    frameRate: 8
+                    frames: [0],
+                    frameRate: 2
                 },
-                attack: {
-                    frames: [2,3],
+                walking: {
+                    frames: [0,1,2,3],
                     frameRate: 12
                 }
             }
@@ -53,41 +42,29 @@ class Crawler {
     states = {
         idle: function(){
             this.play( "idle" );
-            this.xAccel += rand(-0.01, 0.01);
-            this.yAccel += rand(-0.01, 0.01);
         },
-        seekPlayer: function(){
-            this.play( "idle" );
-            const xDist = player.x + this.targetOffset.x - this.x;
-            const yDist = player.y + this.targetOffset.y - this.y;
-            const angle = Math.atan2(yDist, xDist);
-            this.xAccel = Math.cos(angle) * 0.1;
-            this.yAccel = Math.sin(angle) * 0.1;
+        walkingLeft: function(){
+            this.play( "walking" );
+            this.xvel = this.limits.minXVel;
+
         },
-        attack: function(){
-            //dive bomb the player
-            this.play( "attack" );
-            const xDist = player.x - this.x;
-            const yDist = player.y - this.y;
-            const angle = Math.atan2(yDist, xDist);
-            this.xAccel = Math.cos(angle) * 0.2;
-            this.yAccel = Math.sin(angle) * 0.2;
-        },
+        walkingRight: function(){
+            this.play( "walking" );
+            this.xvel = this.limits.maxXVel;
+        }
     }
 
     draw(){
         if(!inView(this)) return;
-        //canvasContext.fillStyle = "orange";
-        //strokePolygon(this.x - view.x + 8, this.y-view.y + 8, 8, 3, ticker/10);
-
+        //console.log(`drawing crawler at ${this.x}, ${this.y}`)
         this.currentAnimation.render({
-            x: Math.floor(this.x-view.x) -this.drawOffset.x, 
-            y: Math.floor(this.y-view.y) -this.drawOffset.y,
+            x: Math.floor(this.x-view.x)-this.drawOffset.x, 
+            y: Math.floor(this.y-view.y)-this.drawOffset.y,
             width: 32,
             height: 32
         })
 
-        //this.collider.draw();
+        this.collider.draw();
     }
     update(){
         if(!inView(this)) return;
@@ -97,26 +74,10 @@ class Crawler {
         this.previousY = this.y;
 
         this.states[this.state].call(this); 
-
-        this.avoidWalls();
+        this.yvel += this.gravity;
+        this.checkFloor();
         this.handleWalls();
-        this.applyForces();
         
-
-        this.viewBlocked = tileMap.tileRaycast(this.x, this.y, player.x, player.y);
-        if(!this.viewBlocked){
-            if(this.distanceToPlayer() < 150){
-                this.state = "seekPlayer";
-            }
-            if(this.distanceToPlayer() < 120) {
-                this.state = "attack";
-            }
-        }
-        
-        else {
-            this.state = "idle";
-        }
-
         if(rectCollision( this.collider, player.diggerang.collider)){
             this.kill();
         }
@@ -124,46 +85,26 @@ class Crawler {
         this.collideWithPlayer();
         }
         
-        
-
         this.x += this.xvel;
         this.y += this.yvel;
     }
 
-    applyForces(){
-        
-        this.xvel += this.xAccel;
-        this.yvel += this.yAccel;
-        if (this.xvel > this.limits.maxXVel) { this.xvel = this.limits.maxXVel; }
-        if (this.xvel < this.limits.minXVel) { this.xvel = this.limits.minXVel; }
-        if (this.yvel > this.limits.maxYVel) { this.yvel = this.limits.maxYVel; }
-        if (this.yvel < this.limits.minYVel) { this.yvel = this.limits.minYVel; }
-        if (this.xAccel > this.limits.maxXAccel) { this.xAccel = this.limits.maxXAccel; }
-        if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
-    }
-
-    avoidWalls(){
+    checkFloor(){
         let left = this.collider.leftFeeler;
         let right = this.collider.rightFeeler;
-        let top = this.collider.topFeeler;
         let bottom = this.collider.bottomFeeler;
+        if(!tileMap.collidesWith(left.x, bottom.y)){
+            this.state = "walkingRight";
+        }
+        if(!tileMap.collidesWith(right.x, bottom.y)){
+            this.state = "walkingLeft";
+        }
         if(tileMap.collidesWith(left.x, left.y)){
-            this.xAccel += 0.01;
-            this.xvel *= .9;
+            this.state = "walkingRight";
         }
         if(tileMap.collidesWith(right.x, right.y)){
-            this.xAccel -= 0.01;
-            this.xvel *= .9;
-
+            this.state = "walkingLeft";
         }
-        // if(tileMap.collidesWith(top.x, top.y)){
-        //     this.yAccel += 0.01;
-        //     this.yvel *= .9;
-        // }
-        // if(tileMap.collidesWith(bottom.x, bottom.y)){
-        //     this.yAccel -= 0.01;
-        //     this.yvel *= .9;
-        // }
     }
 
     handleWalls(){
@@ -171,16 +112,10 @@ class Crawler {
             this.x = this.previousX; 
             this.y = this.previousY;
             this.collider.update(this.x, this.y);
-            this.xAccel = -this.xAccel;
-            this.yAccel = -this.yAccel;
-            this.yvel = -this.yvel;
-            this.xvel = -this.xvel;
+            this.yvel = 0;
+            //this.state = this.state == "walkingLeft" ? "walkingRight" : "walkingLeft";
 
         }
-    }
-
-    distanceToPlayer(){
-        return Math.sqrt(Math.pow(this.x - player.x, 2) + Math.pow(this.y - player.y, 2));
     }
 
     kill(){
@@ -195,11 +130,11 @@ class Crawler {
     }
 
     collideWithPlayer(){
+        emitParticles(this.x, this.y, particleDefinitions.hurt)
         let repelX = normalize(this.x - player.x, -player.width/2, player.width/2);
         let repelY = normalize(this.y - player.y, -player.height/2, player.height/2);
-        
         if(player.y >= this.y ) {
-            player.hurt(1)
+            player.hurt(5)
             player.stop();
             player.xAccel = -repelX * 2;
             player.yAccel = -repelY * 2;
@@ -207,12 +142,10 @@ class Crawler {
         }
         else{ 
             this.kill()
-            //player.stop();
-            //player.xAccel = -repelX * 2;
             player.yvel = 0;
             player.yAccel = player.limits.minYAccel * 2;
+            player.helicopterCapacity = player.limits.helicopterCapacity;
         }
-        
     }
 
     play(animationName){

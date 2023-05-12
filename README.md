@@ -1,6 +1,6 @@
 # Diggernaut
 
-A fast-paced action rogue-like with infinite digging downward, inspired by Super Motherload, Downwell, and Spelunky. Dig endlessly downward, collecting gems, bones, and artifacts, while avoiding falling rocks, stealing valuable artifacts from the dragon's lair, and fighting off the various subterranean cryptids.
+A fast-paced action rogue-like with infinite digging downward, inspired by Super Motherload, Downwell, and Spelunky. Dig endlessly downward, collecting gems, bones, and artifacts, while avoiding falling rocks, stealing valuable artifacts from the squid's lair, and fighting off the various subterranean cryptids.
 
 Game will feature an inventory that's displayed on pause with tabs for each collection.
 
@@ -26,7 +26,7 @@ Player is armed with a double-ended shovel (Diggerang) multi-tool that can dig, 
     - attack player on site, swarm in groups
   - tentacles
     - stationary, but can grab player and drag them down
-  - mini boss monster: cave squid
+  - boss monster: cave squid
     - moves by grabbing the walls
     - attacks with its tentacles
     - many hp, must kill all tentacles to kill squid
@@ -52,10 +52,6 @@ Pre-created sets of items will be procedurally placed throughout the world (lots
     - 1 set hidden in enemy spawner rooms
 
 ### Mechanics and Items
-- Bombs
-  - can be crafted from 100 unobtainium
-  - explodes in a 4x4 area
-  - will destroy unbreakable rock and metal ore
 - Diggerang
   - your trusty double-ended shovel. Can be thrown like a boomerang, twirled like a helicopter, and used to dig.
 - Jetpack (rare)

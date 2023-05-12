@@ -604,6 +604,7 @@ const imageList = [
     '16px-glow',
     'splode-glow',
     'splode-glow32px',
+    'crawler'
     
 ]
 
@@ -806,7 +807,8 @@ const damageTileWithEffects = {
     },
 
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
-      
+        let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
+        let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.jumpPuff);
         let i = 8;
         while(--i){ actors.push(new Ore(randInt(-20,20) + x, randInt(-20,20)+y))}  
@@ -825,7 +827,7 @@ const damageTileWithEffects = {
     },
 
 
-    TILE_BONES : function (tileIndex) {
+    TILE_BONE : function (tileIndex) {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.jumpPuff);
