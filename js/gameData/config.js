@@ -718,7 +718,6 @@ const destroyTileWithEffects = {
     },
 
     TILE_EXPLOSIVE : function (startTileIndex) {
-       
     },
 
     TILE_DENSE_UNOBTANIUM : function (tileIndex) {
@@ -749,11 +748,17 @@ const destroyTileWithEffects = {
     },
 
     TILE_BONE : function (tileIndex) {
+        let x = tileMap.tileIndexToPixelX(tileIndex) ;
+        let y = tileMap.tileIndexToPixelY(tileIndex) ;
         tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
+        emitParticles(x, y, particleDefinitions.destroyDirt);
     },
 
     TILE_TENTACLE : function (tileIndex) {
+        let x = tileMap.tileIndexToPixelX(tileIndex) ;
+        let y = tileMap.tileIndexToPixelY(tileIndex) ;
         tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
+        emitParticles(x, y, particleDefinitions.destroyDirt);
     }
 }
 

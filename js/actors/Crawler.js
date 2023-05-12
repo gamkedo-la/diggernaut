@@ -14,6 +14,7 @@ class Crawler {
         this.xAccel = 0;
         this.state = "idle";
         this.limits = {
+            maxYVel: 4,
             maxXVel: 0.5,
             minXVel: -0.5,
         }
@@ -87,6 +88,9 @@ class Crawler {
         
         this.x += this.xvel;
         this.y += this.yvel;
+        if(this.yvel > this.limits.maxYVel){
+            this.yvel = this.limits.maxYVel;
+        }
     }
 
     checkFloor(){
