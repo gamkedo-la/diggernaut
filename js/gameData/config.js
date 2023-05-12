@@ -511,18 +511,20 @@ const particleDefinitions = {
 
     destroyDirt: function(){
         return{
-        quantity: 40,
-        offset: {
-            x: () =>0,
-            y: () =>0
-        },
-        collides: false,
-        xVelocity: () => rand(-1, 1),
-        yVelocity: () => rand(-.5, -2),
-        color:  () => "brown",
-        life: () => rand(5, 20),
-        gravity: () => rand(0, 0.1),
-        }
+            tileSprite: tileSets.splode_dirt7px,
+            //glow: true,
+            quantity: 60,
+            offset: {
+                x: () => rand(-18, 18),
+                y: () => rand(-18, 18),
+            },
+            collides: false,
+            xVelocity: () => rand(-0.5, 0.5),
+            yVelocity: () => rand(0, -1),
+            color:  () => "brown",
+            life: () => rand(20, 25),
+            gravity: () => 0,
+            }
     },
 
     wallJumpLeft: function(){
@@ -604,7 +606,9 @@ const imageList = [
     '16px-glow',
     'splode-glow',
     'splode-glow32px',
-    'crawler'
+    'crawler',
+    'dirt_splode_7px'
+
     
 ]
 
@@ -709,7 +713,7 @@ const destroyTileWithEffects = {
         tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) ;
         let y = tileMap.tileIndexToPixelY(tileIndex) ;
-        //emitParticles(x, y, particleDefinitions.destroyDirt);
+        emitParticles(x, y, particleDefinitions.destroyDirt);
         actors.push(new FallingRock(x, y));
     },
 

@@ -123,6 +123,10 @@ function loadingComplete() {
         img["splode-glow32px"],
         {tileWidth: 32, tileHeight: 32, tileCount: 12, tileColumns: 12, tileRows: 1}
     )
+    tileSets.splode_dirt7px = new Tileset(
+        img["dirt_splode_7px"],
+        {tileWidth: 7, tileHeight: 7, tileCount: 7, tileColumns: 7, tileRows: 1}
+    )
 
 
     collectibles = createCollectibles(tileSets);
