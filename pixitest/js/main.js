@@ -1,8 +1,9 @@
-let app = new PIXI.Application({width: 640, height: 360});
-document.body.appendChild(app.view);
+const {Application, Sprite, Assets} = PIXI;
+let app = new Application({width: 544, height: 306});
+document.getElementById("gamebox").appendChild(app.view);
 
 
-PIXI.Assets.load([
+Assets.load([
     "./img/atlas/diggernaut-atlas.json",
     "./img/atlas/diggernaut-atlas.png"
 ]).then(() => {
@@ -28,18 +29,15 @@ function doneLoading() {
     app.stage.addChild(gem);
     app.stage.addChild(gem2);
 
-    let player = PIXI.Sprite.from("Player00.png");
+    let player = Sprite.from("Player00.png");
     player.x = 300;
     player.y = 100;
 
     app.stage.addChild(player);
 
-    console.log(PIXI.Assets.cache);
+    console.log(Assets.cache);
 }
 
 function update(delta){
     state.elapsed += delta;
-    // Update the sprite's X position based on the cosine of our elapsed time.  We divide
-    // by 50 to slow the animation down a bit...
-    //console.log(state.elapsed);
 }
