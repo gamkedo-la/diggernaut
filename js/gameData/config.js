@@ -654,7 +654,7 @@ const player_damages = [ "player_damage_1", "player_damage_2", "player_damage_bi
 const FOOTSTEP_VOLUME = 0.7;
 const footsteps = [ "footstep-a","footstep-b","footstep-c","footstep-d" ]
 
-const COLLECTIBLE_SOUND_VOLUME = 1;
+const COLLECTIBLE_SOUND_VOLUME = 3;
 const collectibleSounds = [ "important_pickup" ]; // "gemstone-a","gemstone-b" ]
 
 var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px, gems, bones
