@@ -641,6 +641,7 @@ const soundList = [
     { name: "footstep-d", url: "snd/footstep-d.wav"}, 
     { name: "gemstone-a", url: "snd/gemstone-a.wav"}, 
     { name: "gemstone-b", url: "snd/gemstone-b.wav"}, 
+    { name: "important_pickup", url: "snd/important_pickup.ogg"}, 
 
 ]
 
@@ -649,8 +650,12 @@ const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3"]
 const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
 const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
 const player_damages = [ "player_damage_1", "player_damage_2", "player_damage_big_1", "player_damage_big_2" ]
+
+const FOOTSTEP_VOLUME = 0.7;
 const footsteps = [ "footstep-a","footstep-b","footstep-c","footstep-d" ]
-const collectibleSounds = [ "gemstone-a","gemstone-b" ]
+
+const COLLECTIBLE_SOUND_VOLUME = 3;
+const collectibleSounds = [ "important_pickup" ]; // "gemstone-a","gemstone-b" ]
 
 var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px, gems, bones
 
