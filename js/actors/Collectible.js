@@ -45,7 +45,7 @@ class Collectible {
 
             // FIXME: play different sounds depending on treasure type.
             // currently chooses between two bitcrushed glass shattering sounds
-            audio.playSound(sounds[randChoice(collectibleSounds)],0,0.7);
+            audio.playSound(sounds[randChoice(collectibleSounds)],0,COLLECTIBLE_SOUND_VOLUME);
 
             this.destroy();
         }

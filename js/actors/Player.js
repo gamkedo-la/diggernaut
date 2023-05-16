@@ -1,5 +1,3 @@
-const FOOTSTEP_VOLUME = 0.7;
-
 class Player {
     constructor(settings = {}) {
         Object.assign(this, settings);
