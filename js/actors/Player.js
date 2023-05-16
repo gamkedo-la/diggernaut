@@ -1,3 +1,5 @@
+const FOOTSTEP_VOLUME = 0.7;
+
 class Player {
     constructor(settings = {}) {
         Object.assign(this, settings);
@@ -385,7 +387,7 @@ class Player {
         let now = performance.now();
         if (this.footstepLast + this.footstepDelay <= now) {
             //console.log("step! footstepLast="+this.footstepLast.toFixed(2)+" now="+now.toFixed(2));
-            audio.playSound(sounds[randChoice(footsteps)],0,0.25);
+            audio.playSound(sounds[randChoice(footsteps)],0,FOOTSTEP_VOLUME);
             this.footstepLast = now;
         }
     }
