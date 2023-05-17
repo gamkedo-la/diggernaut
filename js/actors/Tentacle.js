@@ -21,7 +21,6 @@ class Tentacle {
           x: 0,
           y: -100
       }
-      this.direction = randChoice([0, 1]);
       this.viewBlocked = false;
       this.drawOffset = {
           x: 8,
@@ -56,17 +55,13 @@ class Tentacle {
           const xDist = player.x + this.targetOffset.x - this.x;
           const yDist = player.y + this.targetOffset.y - this.y;
           const angle = Math.atan2(yDist, xDist);
-          this.xAccel = Math.cos(angle) * 0.1;
-          this.yAccel = Math.sin(angle) * 0.1;
       },
       attack: function(){
           //dive bomb the player
           this.play( "attack" );
           const xDist = player.x - this.x;
           const yDist = player.y - this.y;
-          const angle = Math.atan2(yDist, xDist);
-          this.xAccel = Math.cos(angle) * 0.2;
-          this.yAccel = Math.sin(angle) * 0.2;
+          const angle = Math.atan2(yDist, xDist); 
       },
   }
 
