@@ -15,48 +15,25 @@ Player is armed with a double-ended shovel (Diggerang) multi-tool that can dig, 
 - explosive ore
   - explodes when dug through
   - adjacent explosive ore will explode
-  - each explosion ore tile destroys a 3x3 area
-- stalagmites
-  - deal heavy damage if fallen on from above at high speed
+  - each explosion ore tile destroys a 5x5 area. 
 - various subterranean cryptids
-  - crawling spiders
-    - patrol terrain or drop from above on thread
+  - crawling spiked slugs
+    - patrol terrain, can only be killed with the Diggerang
     - killing spiders has small chance of health drop
-  - flying cave hornets
-    - attack player on site, swarm in groups
-  - tentacles
+  - flying cave bats
+    - dive bomb player from above. can be jumped on from above to kill
+  - tentacle blocks
     - stationary, but can grab player and drag them down
   - boss monster: cave squid
-    - moves by grabbing the walls
-    - attacks with its tentacles
-    - many hp, must kill all tentacles to kill squid
-  - big boss monster: dragon (if time)
-    - sleeps at the lowest point of the map
-    - 4th artifact collection and 4th gem collection are in its lair
 ### Collectibles
 Pre-created sets of items will be procedurally placed throughout the world (lots of pixel art opportunities here)
-- Gems (target 16, more if time)
-  - 4 sets of 4 gems each
-    - 1 of the sets will be distributed inside the dragon's lair
-    - 1 of the sets hidden within falling rocks
-- Bones 
-  - 3 sets of 7 bones each
-    - each set contains: 1 skull, 1 ribcage/torso, 2 arms, 2 legs, 1 tail
-    - will leave it in the hands of the artists to decide what creature the bones belong to
-- Artifacts
-  - hidden in chests, placed in the dragon's lair and squid rooms, hidden in the walls
-  - 4 sets of 4 artifacts each
-    - 1 set in dragon's lair
-    - 1 set hidden in squid rooms
-    - 1 set hidden in chests
-    - 1 set hidden in enemy spawner rooms
+- Rare Treasures
+  - An eclectic collection of gems, minerals, bones, and nostalgic artifacts. 
+    - currently done: gem stones and 90's stuff collections
 
 ### Mechanics and Items
 - Diggerang
   - your trusty double-ended shovel. Can be thrown like a boomerang, twirled like a helicopter, and used to dig.
-- Jetpack (rare)
-  - allows you to dig upward, and fly upward through empty space
-  - required for stealth achievement, dragons hoard can only be collected from below with jetpack
 - Map (scanning drone deployment);
   - can be crafted from 500 unobtainium
   - reveals the entire map
@@ -70,18 +47,11 @@ Pre-created sets of items will be procedurally placed throughout the world (lots
     - depletes unobtanium stores quickly
   - wall slide
     - can be used to slow fall at edges of open spaces when no energy is left to helicopter
-  - power drill
-    - can quickly bulldoze through blocks downward starting from a jump
-    - depletes unobtanium stores quickly
-    - can be used to destroy explosive ore without taking damage
   - Diggerang Throw
     - kill multiple cryptids at once by throwing your diggerang at them.
     - Diggerang will collect item drops it passes near
     - attempting to hit a dragon with a throw carries the risk of your Diggerang being eaten.
-    - bash the action button to return the Diggerang from a stuck state
-  - Shovel Melee
-    - swing your shovel at enemies to kill them
-  - Player takes damage from hititng the ground at high speed
+    - bash the action button to return the Diggerang from a stuck statem
   - Player takes damage from falling on stalagmites
   - Player takes damage from contact with cryptids
 
@@ -90,28 +60,17 @@ Pre-created sets of items will be procedurally placed throughout the world (lots
 - 1 dirt
 - 2 unbreakable rock
 - 3 unbreakable metal ore
-- 4 unobtainium
+- 4 unobtainium ore
 - 5 falling rocks
 - 6 explosive ore
-- 7 super dense unobtainium
+- 7 super dense unobtainium ore
+- 8 rock
+- 9 dense rock
 - ? subject to additions, this is good starting point
   
-Terrain notes: For visual interest, there can and will be more than one tile graphic for each terrain type.
-Artists can feel free to add as many they want, the game will procedurally / randomly select from the available tiles.
-Tilemap game data will be represented by 0-7, but game will generate a decorative tilemap based on game data using all available tile graphics.
-Stalagmites and stalactites will be sprite objects, not tiles, and will be procedurally placed in the world in empty spaces.
-
-### Winning The Game
-- Collect all 4 sets of 4 gems
-- Collect the "Dragon's Hoard" collections and Kill the dragon
+### "Winning" The Game
+- Collect all of the rare treasures
 
 ### 100% Completion and Achievement ideas
-- Collect all 4 sets of 4 gems
-- Collect all 3 sets of 7 bones
-- Collect all 4 sets of 4 artifacts
-- Stealth Mode: Collect all sets without waking or killing the dragon
-- Pacifist Mode: Collect all sets without killing any cryptids
-- Speed Run: Collect all sets in under X minutes
-- Unpaid Assassin: Kill the dragon with an empty inventory
-- 
+- Speed Run: Collect all treasure in under X minutes
 
