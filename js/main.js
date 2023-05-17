@@ -291,7 +291,7 @@ function populateMap(){
     // }
 
     
-    actors.push(new Crawler(playerSettings.x + 32*2, playerSettings.y ));
+    //actors.push(new Crawler(playerSettings.x + 32*2, playerSettings.y ));
 
     for (let i = 0; i < 10000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
@@ -305,7 +305,7 @@ function populateMap(){
     for (let i = 0; i < 10000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+        if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY && tileMap.getTileAtPosition(x, y+1) != TILE_EMPTY){
             actors.push(
                 new Crawler(x * tileMap.tileWidth, y * tileMap.tileHeight)
             )
