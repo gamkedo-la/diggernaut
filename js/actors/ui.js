@@ -32,14 +32,14 @@ const ui = {
     miniMap: {},
 
     draw: function () {
-        canvasContext.save();
+        UIContext.save();
         // Energy Bar
-        canvasContext.fillStyle = ui.energyBar.color;
-        canvasContext.fillRect(ui.energyBar.x, ui.energyBar.y, ui.energyBar.width, ui.energyBar.height);
+        UIContext.fillStyle = ui.energyBar.color;
+        UIContext.fillRect(ui.energyBar.x, ui.energyBar.y, ui.energyBar.width, ui.energyBar.height);
 
         // Health Bar
-        canvasContext.fillStyle = ui.healthBar.color;
-        canvasContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.value, ui.healthBar.height);
+        UIContext.fillStyle = ui.healthBar.color;
+        UIContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.value, ui.healthBar.height);
 
         // Ore Bar
         const oreCrates = Math.floor(ui.oreBar.value / 500);
@@ -47,28 +47,28 @@ const ui = {
         const oreBarWidth = Math.floor((ui.oreBar.value % 500) % 100);
         
 
-        canvasContext.fillStyle = ui.oreBar.crateColor;
-        canvasContext.strokeStyle = ui.oreBar.crateStroke;
+        UIContext.fillStyle = ui.oreBar.crateColor;
+        UIContext.strokeStyle = ui.oreBar.crateStroke;
         for (let i = 0; i < oreCrates; i++) {
-            canvasContext.fillRect(ui.oreBar.x + i * (ui.oreBar.crateSize + 2), ui.oreBar.y - 3, ui.oreBar.crateSize, ui.oreBar.crateSize);
-            canvasContext.strokeRect(ui.oreBar.x + i * (ui.oreBar.crateSize + 2), ui.oreBar.y - 3, ui.oreBar.crateSize, ui.oreBar.crateSize);
+            UIContext.fillRect(ui.oreBar.x + i * (ui.oreBar.crateSize + 2), ui.oreBar.y - 3, ui.oreBar.crateSize, ui.oreBar.crateSize);
+            UIContext.strokeRect(ui.oreBar.x + i * (ui.oreBar.crateSize + 2), ui.oreBar.y - 3, ui.oreBar.crateSize, ui.oreBar.crateSize);
         }
-        canvasContext.fillStyle = ui.oreBar.boxColor;
-        canvasContext.strokeStyle = ui.oreBar.boxStroke;
+        UIContext.fillStyle = ui.oreBar.boxColor;
+        UIContext.strokeStyle = ui.oreBar.boxStroke;
         for (let i = 0; i < oreBoxes; i++) {
             const xPos = ui.oreBar.x + (oreCrates * (ui.oreBar.crateSize + 2)) + i * (ui.oreBar.boxSize + 2)
-            canvasContext.fillRect(xPos, ui.oreBar.y - 2, ui.oreBar.boxSize, ui.oreBar.boxSize);
-            canvasContext.strokeRect(xPos, ui.oreBar.y - 2, ui.oreBar.boxSize, ui.oreBar.boxSize);
+            UIContext.fillRect(xPos, ui.oreBar.y - 2, ui.oreBar.boxSize, ui.oreBar.boxSize);
+            UIContext.strokeRect(xPos, ui.oreBar.y - 2, ui.oreBar.boxSize, ui.oreBar.boxSize);
         }
 
-        canvasContext.fillStyle = ui.oreBar.color;
-        canvasContext.fillRect(ui.oreBar.x + 66, ui.oreBar.y, Math.min(100, oreBarWidth), ui.oreBar.height);
+        UIContext.fillStyle = ui.oreBar.color;
+        UIContext.fillRect(ui.oreBar.x + 66, ui.oreBar.y, Math.min(100, oreBarWidth), ui.oreBar.height);
 
-        canvasContext.restore();
+        UIContext.restore();
 
         gameFont.drawText(String(ui.oreBar.value), 
             { x: ui.oreBar.x - 25, y: ui.oreBar.y },
-            0, 0, 1, ui.oreBar.boxColor);
+            0, 0, 1, ui.oreBar.boxColor, UIContext);
 
         if (this.miniMap) this.miniMap.draw();
 

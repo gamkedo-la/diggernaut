@@ -24,6 +24,12 @@ bloomCanvas.width = canvas.width;
 bloomCanvas.height = canvas.height;
 bloomContext = bloomCanvas.getContext("2d");
 
+//buffer canvas for colored text, or other effects
+UICanvas = document.createElement("canvas");
+UICanvas.width = canvas.width;
+UICanvas.height = canvas.height;
+UIContext = UICanvas.getContext("2d");
+
 
 
 let gameState = GAMESTATE_TITLE,
@@ -138,6 +144,7 @@ function loadingComplete() {
 
     player = new Player(playerSettings),
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
+    bigFont = new spriteFont(510, 128*4, 12, 36, img["bigFont"])
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
     processURLQuery();
     begin(fps);
@@ -320,16 +327,6 @@ function populateMap(){
         new Collectible( playerSettings.x + 32*4, playerSettings.y,
             "Treasure",
             collectibles.Treasure[1])
-    )
-    actors.push(
-        new Collectible( playerSettings.x + 32*6, playerSettings.y,
-            "Artifacts",
-            collectibles.Artifacts[0])
-    )
-    actors.push(
-        new Collectible( playerSettings.x + 32*8, playerSettings.y,
-            "Artifacts",
-            collectibles.Artifacts[1])
     )
 }
 

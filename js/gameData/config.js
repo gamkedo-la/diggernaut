@@ -29,7 +29,7 @@ const TILE_EXPLOSIVE = 6;
 const TILE_DENSE_UNOBTANIUM = 7;
 const TILE_ROCK = 8;
 const TILE_DENSE_ROCK = 9;
-const TILE_BONE = 10;
+const TILE_TREASURE = 10;
 const TILE_TENTACLE = 11;
 
 
@@ -44,9 +44,43 @@ const TILE_TYPES = [
     "TILE_DENSE_UNOBTANIUM",
     "TILE_ROCK",
     "TILE_DENSE_ROCK",
-    "TILE_BONE",
+    "TILE_TREASURE",
     "TILE_TENTACLE"
 ]
+
+//damageValues is how much damage player deals to tile when digging. 
+//damage logic currently destroys tile when damage >= 100
+const damageValues = [
+    0, //TILE_EMPTY
+    100, //TILE_DIRT
+    0, //TILE_UNBREAKABLE_STONE
+    0, //TILE_UNBREAKABLE_METAL
+    100, //TILE_UNOBTANIUM
+    100, //TILE_FALLING_ROCK
+    5, //TILE_EXPLOSIVE
+    7, //TILE_DENSE_UNOBTANIUM
+    10, //TILE_ROCK
+    3, //TILE_DENSE_ROCK
+    10, //TILE_BONE
+    10, //TILE_TENTACLE
+]
+
+const GAMESTATE_TITLE = 0
+const GAMESTATE_PLAY = 1;
+const GAMESTATE_GAME_OVER = 2;
+const GAMESTATE_CREDITS = 3;
+const GAMESTATE_INVENTORY = 4;
+const GAMESTATE_MAP = 5;
+const FRAMERATE = 60;
+
+const screens = [];
+screens[GAMESTATE_TITLE] = titleScreen;
+screens[GAMESTATE_PLAY] = playScreen;
+screens[GAMESTATE_GAME_OVER] = gameOverScreen;
+screens[GAMESTATE_CREDITS] = creditsScreen;
+screens[GAMESTATE_INVENTORY] = inventoryScreen;
+screens[GAMESTATE_MAP] = mapScreen;
+
 const COLORS = [
     '#060608',
     '#141013',
@@ -114,39 +148,6 @@ const COLORS = [
     '#423934'
 ]
 
-//damageValues is how much damage player deals to tile when digging. 
-//damage logic currently destroys tile when damage >= 100
-const damageValues = [
-    0, //TILE_EMPTY
-    100, //TILE_DIRT
-    0, //TILE_UNBREAKABLE_STONE
-    0, //TILE_UNBREAKABLE_METAL
-    100, //TILE_UNOBTANIUM
-    100, //TILE_FALLING_ROCK
-    5, //TILE_EXPLOSIVE
-    7, //TILE_DENSE_UNOBTANIUM
-    10, //TILE_ROCK
-    3, //TILE_DENSE_ROCK
-    10, //TILE_BONE
-    10, //TILE_TENTACLE
-]
-
-
-const GAMESTATE_TITLE = 0
-const GAMESTATE_PLAY = 1;
-const GAMESTATE_GAME_OVER = 2;
-const GAMESTATE_CREDITS = 3;
-const GAMESTATE_INVENTORY = 4;
-const GAMESTATE_MAP = 5;
-const FRAMERATE = 60;
-
-const screens = [];
-screens[GAMESTATE_TITLE] = titleScreen;
-screens[GAMESTATE_PLAY] = playScreen;
-screens[GAMESTATE_GAME_OVER] = gameOverScreen;
-screens[GAMESTATE_CREDITS] = creditsScreen;
-screens[GAMESTATE_INVENTORY] = inventoryScreen;
-screens[GAMESTATE_MAP] = mapScreen;
 
 const TYPE_PARTICLE = 0;
 const DIGGERANG_COST = 0;
@@ -157,7 +158,6 @@ const view = {
     width: 544,
     height: 306,
 }
-
 
 const mapConfig = {
     widthInTiles: 80,
@@ -205,9 +205,6 @@ let seed = 88881654;
 const mapRNG = new Math.seedrandom(seed);
 
 var sounds = {};
-
-
-
 
 /**
                                                                                                                                                   
@@ -582,6 +579,7 @@ const imageList = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
     'smallFont',
     '3x5font',
+    'bigFont',
     'earthTiles',
     'placeholder-player',
     'movingPlayerSprite',
@@ -767,7 +765,6 @@ const destroyTileWithEffects = {
     }
 }
 
-
 const damageTileWithEffects = {
     
     TILE_EMPTY : function (tileIndex) { },
@@ -892,12 +889,6 @@ function createCollectibles() {
                 name: "Treasure",
             },
             {
-                name: "Artifacts",
-            },
-            {
-                name: "Bones",
-            },
-            {
                 name: "Map",
             }
 
@@ -938,9 +929,6 @@ function createCollectibles() {
             }
         },
 
-    ],
-
-    Artifacts: [
         {
             name: "Wobblegangy of Draxis 3",
             description: "Some Gizmo. Supposed to do something. Nobody knows if it still works or not.",
@@ -973,40 +961,6 @@ function createCollectibles() {
             }
         }
 
-    ],
-
-    Bones: [
-        {
-            name: "Femur of The Greater Armadillo",
-            description: "A femur of the greater armadillo. It's a pelvis. It's from an armadillo.",
-            sprite: {
-                sheet: tileSets.bones,
-                silhouette: tileSets.boneSilhouettes,
-                tile: 0
-            },
-            owned: false,
-            position: {x: 39, y: 56},
-            draw: function(){
-                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
-                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
-            }
-        },
-
-        {
-            name: "Skull of The Lesser Armadillo",
-            description: "A skull of the lesser armadillo. It's a skull. It's from an armadillo.",
-            sprite: {
-                sheet: tileSets.bones,
-                silhouette: tileSets.boneSilhouettes,
-                tile: 1
-            },
-            owned: false,
-            position: {x: 79, y: 56},
-            draw: function(){
-                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
-                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
-            }
-        }
-    ],
+    ]   
 }
 }

@@ -122,21 +122,21 @@ class spriteFont {
      * @param {int} [vspacing=2]
      * @param {int} [scale=1]
      */
-    drawText(textString, pos = { x: 0, y: 0 }, hspacing = 0, vspacing = 2, scale = 1, color=null) {
+    drawText(textString, pos = { x: 0, y: 0 }, hspacing = 0, vspacing = 2, scale = 1, color=null, targetContext=null) {
         if (!textString) return;
         var lines = textString.split("\n");
         var self = this;
         self.pos = pos, self.hspacing = hspacing, self.vspacing = vspacing;
         lines.forEach(function (line, index, arr) {
-            self._textLine({ textString: line, pos: { x: self.pos.x, y: self.pos.y + index * (self.characterHeight + self.vspacing) * scale }, hspacing: self.hspacing }, scale, color)
+            self._textLine({ textString: line, pos: { x: self.pos.x, y: self.pos.y + index * (self.characterHeight + self.vspacing) * scale }, hspacing: self.hspacing }, scale, color, targetContext)
         })
     }
 
-    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1, color=null) {
+    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1, color=null, targetContext=null) {
         var textStringArray = textString.split("");
         var self = this;
-        let ctx = color ? bufferContext : canvasContext;
-        textStringArray.forEach(function (character, index, arr) {
+        let targetCtx = targetContext || canvasContext;
+        let ctx = color ? bufferContext : targetCtx;        textStringArray.forEach(function (character, index, arr) {
             //find index in characterMap
             let keyIndex = self.characterMap.indexOf(character);
             //tranform index into x,y coordinates in spritefont texture

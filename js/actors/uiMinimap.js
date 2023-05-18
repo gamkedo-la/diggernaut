@@ -59,7 +59,7 @@ class uiMinimap {
     draw() {
 
         // draw the entire map using the cached image (very fast)
-        canvasContext.drawImage(this.cachedCanvas,0,0,this.cachedCanvas.width,this.cachedCanvas.height,this.x,this.y,this.width,this.height);
+        UIContext.drawImage(this.cachedCanvas,0,0,this.cachedCanvas.width,this.cachedCanvas.height,this.x,this.y,this.width,this.height);
 
         // and show where the player is
         let pX = -16;
@@ -68,9 +68,9 @@ class uiMinimap {
         let txtY = Math.round(this.y+pY+13);
 
         // arrow icon showing player pos on map
-        canvasContext.drawImage(img['minimap'],0,0,32,16,this.x+pX,this.y+pY,32,16);
+        UIContext.drawImage(img['minimap'],0,0,32,16,this.x+pX,this.y+pY,32,16);
 
         // display depth in meters
-        tinyFont.drawText(Math.round(player.y/8)+"m",{x:txtX,y:txtY},0,0);
+        tinyFont.drawText(Math.round(player.y/8)+"m",{x:txtX,y:txtY},0,0, 1, null, UIContext);
     }
 }
