@@ -71,6 +71,6 @@ class uiMinimap {
         canvasContext.drawImage(img['minimap'],0,0,32,16,this.x+pX,this.y+pY,32,16);
 
         // display depth in meters
-        tinyFont.drawText(Math.round(player.y/8)+"m",{x:txtX,y:txtY},0,0, 1);
+        tinyFont.drawText(player.depth+"m",{x:txtX,y:txtY},0,0, 1);
     }
 }

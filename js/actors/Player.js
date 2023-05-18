@@ -8,6 +8,7 @@ class Player {
         this.digging = false;
         this.hovering = false;
         this.helicopterCapacity = 0;
+        this.depth = 0;
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true); 
         this.drawOffset = {
             x: 7,
@@ -166,10 +167,8 @@ class Player {
     })
         
         this.collider.draw()
-
         this.diggerang.draw();
 
-        
         if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight(Direction.LEFT) };
         if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight(Direction.RIGHT) };
         if(Key.isDown(Key.UP)||Joy.up){ this.drawDigTileHighlight(Direction.UP) };
@@ -182,6 +181,7 @@ class Player {
         this.checkForFallingRocks();
         this.checkBounds();
         this.hurtCooldown--;
+        this.depth = Math.round(this.y/8);
         this.canDig = this.checkDig();
         this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
         this.canHelicopter = !this.diggerang.active;

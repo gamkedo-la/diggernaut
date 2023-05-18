@@ -897,14 +897,14 @@ function createCollectibles() {
 
     Treasure: [
         {
-            name: "Ruby of the Deep",
-            description: "A ruby of the deep. It's a ruby. It's deep.",
+            name: "Royal Emerald Gemstone Of Atlantis",
+            description: "A gemstone of emerald. It's green. It's a gemstone.",
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
                 tile: 0
             },
-            position: {x: 39, y: 56},
+            position: {x: 53, y: 63},
             owned: false,
             draw: function(){
                 sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
@@ -913,15 +913,15 @@ function createCollectibles() {
         },
 
         {
-            name: "Sapphire of Greater Depth",
-            description: "A sapphire of greater depth. It's a sapphire. It's deeper.",
+            name: "Royal Ruby Gemstone Of Atlantis",
+            description: "A gemstone of ruby. It's red. It's a gemstone.",
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
                 tile: 1
             },
             owned: false,
-            position: {x: 79, y: 56},
+            position: {x: 84, y: 63},
             owned: false,
             draw: function(){
                 sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
@@ -930,15 +930,15 @@ function createCollectibles() {
         },
 
         {
-            name: "Wobblegangy of Draxis 3",
-            description: "Some Gizmo. Supposed to do something. Nobody knows if it still works or not.",
+            name: "Blue Gemstone",
+            description: "A gemstone of blue. It's blue. It's a gemstone.",
             sprite: {
-                sheet: tileSets.bones,
-                silhouette: tileSets.boneSilhouettes,
+                sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
                 tile: 0
             },
             owned: false,
-            position: {x: 39, y: 56},
+            position: {x: 70, y: 91},
             draw: function(){
                 sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
                 drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
@@ -946,20 +946,87 @@ function createCollectibles() {
         },
 
         {
-            name: "Statue of Tiagius",
-            description: "Statue of Tiagiaus the three-handed. Supposedly he could wield 3 swords at once.",
+            name: "Golden Gemstone",
+            description: "A gemstone of gold. It's gold. It's a gemstone.",
             sprite: {
-                sheet: tileSets.bones,
-                silhouette: tileSets.boneSilhouettes,
+                sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
                 tile: 1
             },
             owned: false,
-            position: {x: 79, y: 56},
+            position: {x: 102, y: 91},
             draw: function(){
                 sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
                 drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
             }
-        }
+        },
+
+
+
+        {
+            name: "Royal Emerald Square Cut Of Atlantis",
+            description: "A gemstone of emerald. It's green. It's a gemstone.",
+            sprite: {
+                sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
+                tile: 0
+            },
+            position: {x: 129, y: 63},
+            owned: false,
+            draw: function(){
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
+
+        {
+            name: "Royal Ruby Square Cut Of Atlantis",
+            description: "A gemstone of ruby. It's red. It's a gemstone.",
+            sprite: {
+                sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
+                tile: 1
+            },
+            owned: false,
+            position: {x: 156, y: 63},
+            owned: false,
+            draw: function(){
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
+
+        {
+            name: "Blue Square Cut",
+            description: "A gemstone of blue. It's blue. It's a gemstone.",
+            sprite: {
+                sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
+                tile: 0
+            },
+            owned: false,
+            position: {x: 142, y: 93},
+            draw: function(){
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
+
+        {
+            name: "Golden Square Cut",
+            description: "A gemstone of gold. It's gold. It's a gemstone.",
+            sprite: {
+                sheet: tileSets.gems,
+                silhouette: tileSets.gemSilhouettes,
+                tile: 1
+            },
+            owned: false,
+            position: {x: 167, y: 93},
+            draw: function(){
+                sprite = this.owned ? this.sprite.sheet : this.sprite.silhouette;
+                drawTileSprite(sprite, this.sprite.tile, this.position.x, this.position.y);
+            }
+        },
 
     ]   
 }
