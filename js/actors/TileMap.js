@@ -239,7 +239,13 @@ class TileMap {
                 //take care of damaged tiles, destroy if dead
                 if (this.damagedTiles[index] >= 100) {
                     let type = TILE_TYPES[this.data[index]];
-                    destroyTileWithEffects[type](index);
+                    try {
+                        destroyTileWithEffects[type](index);
+                    } catch (error) {
+                        console.log(error);
+                        console.log(`attempting to destroy tile type ${type} at index ${index} with no destroy function`)
+                    }
+                    
                     ui.miniMap.dirtyRectUpdate(x, y, 6, 6)
                     this.updateAutoTiles(left, top, right, bottom);
                 }

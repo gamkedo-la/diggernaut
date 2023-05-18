@@ -24,14 +24,6 @@ bloomCanvas.width = canvas.width;
 bloomCanvas.height = canvas.height;
 bloomContext = bloomCanvas.getContext("2d");
 
-//buffer canvas for colored text, or other effects
-UICanvas = document.createElement("canvas");
-UICanvas.width = canvas.width;
-UICanvas.height = canvas.height;
-UIContext = UICanvas.getContext("2d");
-
-
-
 let gameState = GAMESTATE_TITLE,
  ticker = 0,
  loader = new AssetLoader(),
@@ -187,9 +179,6 @@ function gameLoop() {
     if(Key.justReleased(Key.f)) {
         canvas.requestFullscreen();
     }
-    if(Key.justReleased(Key.ESCAPE)) {
-        canvas.exitFullscreen();
-    }
     Key.update();
     Joy.update();
 }
@@ -232,16 +221,7 @@ function generateMap(config){
             let y = Math.floor(startY + mapRNG() * gapHeight);
             tileMap.tileFillRect(x, y, 10, 10, 0);
         }
-        
     }
-
-    // //random round voids, random size
-    // for(let i = 0; i < 200; i++){
-    //     const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-    //     const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-    //     const radius = Math.floor(mapRNG() * 8 + 2);
-    //     tileMap.tileFillCircle(x, y, radius, 0);
-    // }
 
     //random round blobs of dense rock and ore, random size
     for(let i = 0; i < 400; i++){

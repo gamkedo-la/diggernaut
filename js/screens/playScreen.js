@@ -18,19 +18,13 @@ const playScreen = {
         this.prepareLightingOverlay();
         this.prepareBloomOverlay();
         this.drawParallaxBackground();
-
         tileMap.draw();
         actors.forEach(actor => actor.draw(canvasContext));
         player.draw();
         this.drawLightingOverlay();
         this.drawBloomOverlay();
-        if(ticker %30 == 0) {
-            this.prepareUIOverlay();
-            ui.draw();
-            this.debugDraw();
-        }
-        this.drawUIOverlay();
-        
+        ui.draw();
+        this.debugDraw();
         drawTransition();
             
     },
@@ -108,12 +102,6 @@ const playScreen = {
         bloomContext.restore();
     },
 
-    prepareUIOverlay: function () {
-        UIContext.save();
-        UIContext.clearRect(0, 0, canvas.width, canvas.height);
-        UIContext.restore();
-    },
-
     drawLightingOverlay: function () {
 
         canvasContext.save();
@@ -131,12 +119,6 @@ const playScreen = {
         canvasContext.drawImage(bloomCanvas, 0, 0);
         canvasContext.restore();
     },
-
-    drawUIOverlay: function () {
-        canvasContext.save();
-        canvasContext.drawImage(UICanvas, 0, 0);
-        canvasContext.restore();
-    },
     
     debugDraw: function () {
         tinyFont.drawText(
@@ -144,6 +126,6 @@ const playScreen = {
 yvel: ${player.yvel.toFixed(1)} xvel: ${player.xvel.toFixed(1)} health: ${player.health}
 diggerang: x: ${player.diggerang.x.toFixed(1)} y: ${player.diggerang.y.toFixed(1)}
 elapsed: ${elapsed.toFixed(1)}`,
-    { x: 10, y: 12 }, 0, 0, 1, null, UIContext);
+    { x: 10, y: 12 }, 0, 0, 1);
     }   
 }

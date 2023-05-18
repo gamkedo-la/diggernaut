@@ -166,7 +166,7 @@ const mapConfig = {
     mapStartY: 20, //start generating tiles at this Y position
     caveGenPools:{
         vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,5,6,7,8,9],
-        fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,1,1,1,4,7,8,9,10,11],
+        fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,1,1,1,4,7,8,9],
         OreGalore: [4,7,8,9.4,7,8,9.4,7,8,9,4,7,8,9,4,7,8,9,5,6]
     }  
 }
@@ -675,7 +675,7 @@ var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px, gems, bone
 */
 
 const destroyTileWithEffects = {
-    TILE_EMPTY : function () { return; },
+    TILE_EMPTY : function (tileIndex) { return; },
 
     TILE_DIRT : function (tileIndex) {
         tileMap.replaceTileAt(tileIndex, TILE_EMPTY);

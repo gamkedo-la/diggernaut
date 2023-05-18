@@ -132,23 +132,18 @@ class spriteFont {
         })
     }
 
-    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1, color=null, targetContext=null) {
+    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1 ){
         var textStringArray = textString.split("");
         var self = this;
-        let targetCtx = targetContext || canvasContext;
-        let ctx = color ? bufferContext : targetCtx;        textStringArray.forEach(function (character, index, arr) {
+        let ctx = canvasContext;
+        textStringArray.forEach(function (character, index, arr) {
             //find index in characterMap
             let keyIndex = self.characterMap.indexOf(character);
             //tranform index into x,y coordinates in spritefont texture
             let spriteX = (keyIndex % self.widthInCharacters) * self.characterWidth;
             let spriteY = Math.floor(keyIndex / self.widthInCharacters) * self.characterHeight;
             //draw
-            //console.log(character);
-            if(color){
-                bufferContext.save();
-                bufferContext.clearRect(0, 0, bufferCanvas.width, bufferCanvas.height);
-                
-            }
+           
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(
                 self.image,
@@ -161,14 +156,6 @@ class spriteFont {
                 self.characterWidth * scale,
                 self.characterHeight * scale
             )
-
-            if(color){
-                bufferContext.globalCompositeOperation = "source-atop";
-                bufferContext.fillStyle = color;
-                bufferContext.fillRect(0, 0, bufferCanvas.width, bufferCanvas.height);
-                canvasContext.drawImage(bufferCanvas, 0, 0);
-                bufferContext.restore();
-            }
         })
     }
 
