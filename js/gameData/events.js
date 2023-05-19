@@ -66,11 +66,11 @@ function gotoCreditScreen(event){
     });
 }
 
-function emitParticles(x, y, definition){
+function emitParticles(x, y, definition, pool=actors){
     
     for (let i = 0; i < definition().quantity; i++) {
         let particle = new Particle(x + definition().offset.x(), y + definition().offset.y(), definition());
-        actors.push(particle);
+        pool.push(particle);
     }
 }
 

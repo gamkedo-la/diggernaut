@@ -23,8 +23,11 @@ const playScreen = {
         player.draw();
         this.drawLightingOverlay();
         this.drawBloomOverlay();
+        uiActors.forEach(actor => actor.draw(canvasContext));
         ui.draw();
+       
         this.debugDraw();
+        //bigFontBlue.drawText("PLAYER", {x: player.x - view.x, y: player.y - view.y - 20}, 0, 1);
         drawTransition();
             
     },
@@ -33,10 +36,20 @@ const playScreen = {
         this.followPlayer();
         ui.update();
         actors.forEach(actor => actor.update());
+        uiActors.forEach(actor => actor.update());
         player.handleInput();
         player.update();
         tileMap.update();
         if(Key.justReleased(Key.m)){signal.dispatch('gotoMap')}
+
+       for(let i = 0; i < DEPTH_MILESTONES.length; i++){
+              if(player.depth > DEPTH_MILESTONES[i]){
+                depthAwards[ DEPTH_MILESTONES[i] ]();
+                depthAwards[ DEPTH_MILESTONES[i] ] = function(){};
+              }
+            }
+
+
 
     },
 

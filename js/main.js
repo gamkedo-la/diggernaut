@@ -33,6 +33,7 @@ let gameState = GAMESTATE_TITLE,
 
 const tileSets = {};
 const actors = [];
+const uiActors = [];
 
 function init() {
     loadImages();
@@ -128,6 +129,7 @@ function loadingComplete() {
 
 
     collectibles = createCollectibles(tileSets);
+    depthAwards = createDepthAwards(DEPTH_MILESTONES);
 
     console.log('loading complete, starting game')
     sounds = loader.sounds;
@@ -139,6 +141,8 @@ function loadingComplete() {
     bigFont = new spriteFont(510, 128*4, 12, 36, img["bigFont"])
     bigFontBlack = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72)
     bigFontOrangeGradient = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*2)
+    bigFontBlue = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*3)
+    bigFontGreen = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*4)
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
     processURLQuery();
     begin(fps);

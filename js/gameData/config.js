@@ -81,6 +81,15 @@ screens[GAMESTATE_CREDITS] = creditsScreen;
 screens[GAMESTATE_INVENTORY] = inventoryScreen;
 screens[GAMESTATE_MAP] = mapScreen;
 
+const DEPTH_MILESTONES = [
+    100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+    1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800,
+    1900, 2000, 2100, 2200, 2300, 2400, 2500, 2600,
+    2700, 2800, 2900, 3000, 3100, 3200, 3300, 3400,
+    3500, 3600, 3700, 3800, 3900, 4000, 4100, 4200,
+    4300, 4400, 4500, 4600, 4700, 4800, 4900, 5000
+]
+
 const COLORS = [
     '#060608',
     '#141013',
@@ -267,6 +276,19 @@ const particleGradients = {
         COLORS[10],
         COLORS[9],
         
+    ],
+
+    award: [
+        COLORS[0],
+        COLORS[1],
+        COLORS[15],
+        COLORS[14],
+        COLORS[13],
+        COLORS[12],
+        COLORS[11],
+        COLORS[10],
+        COLORS[9],
+        
     ]
 }
 
@@ -288,6 +310,7 @@ const particleDefinitions = {
         gradientPalette: particleGradients.fire
         }
     },
+
     helicopter: function(){
         return{
             quantity: 12,
@@ -327,6 +350,28 @@ const particleDefinitions = {
             particle.yvel += rand(-0.2, 0.3);
         },
         gradientPalette: particleGradients.ore
+        }
+    },
+
+    awardSparks: function(){
+        return{
+        pool: uiActors,
+        quantity: 5000,
+        offset: {
+            x: () => rand(-400, 400),
+            y: () => rand(-15, 15)
+        },
+        collides: false,
+        color: () => "blue",
+        life: () => 60,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(0.5, -1),
+        gravity: () => 0,
+        custom: (particle) => {
+            particle.xvel += rand(-0.5, 0.5);
+            particle.yvel += rand(-0.2, 0.3);
+        },
+        gradientPalette: particleGradients.ice
         }
     },
 
@@ -1030,4 +1075,15 @@ function createCollectibles() {
 
     ]   
 }
+}
+
+
+function createDepthAwards() {
+    out = [];
+    DEPTH_MILESTONES.forEach(function(depth){
+        out[depth] = function(){
+            actors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontGreen, 2, 250, particleDefinitions.awardSparks))
+            }
+    });
+    return out;
 }

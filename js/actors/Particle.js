@@ -17,6 +17,7 @@ class Particle {
         this.previousY = this.y;
         this.gradientPalette = options.gradientPalette || null;
         this.glow = options.glow || false;
+        this.pool = options.pool || actors;
        
     }
 
@@ -82,7 +83,7 @@ class Particle {
 
     die() {
        // console.log('particle died');
-        actors.splice(actors.indexOf(this), 1);
+        this.pool.splice(actors.indexOf(this), 1);
     }
 
     drawToGlowCanvas(frame) {
