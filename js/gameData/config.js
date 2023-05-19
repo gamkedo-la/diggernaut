@@ -373,6 +373,28 @@ const particleDefinitions = {
         }
     },
 
+    awardSparksMessageDeath: function(){
+        return{
+        pool: uiActors,
+        quantity: 500,
+        offset: {
+            x: () => rand(-75, 75),
+            y: () => rand(18, -18)
+        },
+        collides: false,
+        color: () => "blue",
+        life: () => 35,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(0.5, -1),
+        gravity: () => 0,
+        custom: (particle) => {
+            particle.xvel += rand(-1, 1);
+            particle.yvel += rand(-1, 0.5);
+        },
+        gradientPalette: particleGradients.ice
+        }
+    },
+
     healthSparks: function(){
         return{
         quantity: 3,
@@ -1079,7 +1101,7 @@ function createDepthAwards() {
     out = [];
     DEPTH_MILESTONES.forEach(function(depth){
         out[depth] = function(){
-            uiActors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontBlue, 1, 250, particleDefinitions.awardSparks))
+            uiActors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontBlue, 1, 100, particleDefinitions.awardSparks))
             }
     });
     return out;
