@@ -66,7 +66,8 @@ function line(x1, y1, x2, y2, color = '#FF00FF', context) {
     y1 = Math.round(y1);
     x2 = Math.round(x2);
     y2 = Math.round(y2);
-
+    canvasContext.save();
+    canvasContext.fillStyle = color;
     let dx = Math.abs(x2 - x1);
     let dy = Math.abs(y2 - y1);
     let sx = (x1 < x2) ? 1 : -1;
@@ -76,13 +77,13 @@ function line(x1, y1, x2, y2, color = '#FF00FF', context) {
     while (true) {
         tries--;
         if(tries<0) break;
-        canvasContext.fillStyle = color;
         pset(x1, y1, context);
         if ((x1 == x2) && (y1 == y2)) break;
         let e2 = 2 * err;
         if (e2 > -dy) { err -= dy; x1 += sx; }
         if (e2 < dx) { err += dx; y1 += sy; }
     }
+    canvasContext.restore();
 }
 class spriteFont {
     /**

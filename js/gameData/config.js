@@ -256,14 +256,12 @@ const particleGradients = {
         COLORS[22],
     ],
     hurt: [
-        [
             COLORS[0],
             COLORS[1],
             COLORS[2],
             COLORS[3],
             COLORS[4],
             COLORS[5],
-        ]
     ],
     ore: [
         COLORS[0],
