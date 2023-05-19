@@ -88,6 +88,8 @@ class spriteFont {
      * @constructor
      * @param {*} width
      * @param {*} height
+     * @param {*} originX
+     * @param {*} originY
      * @param {*} characterWidth
      * @param {*} characterHeight
      * @param {*} image
@@ -97,9 +99,12 @@ class spriteFont {
         height,
         characterWidth,
         characterHeight,
-        image) {
+        image,
+        originX = 0,
+        originY = 0) {
         this.width = width;
         this.height = height;
+        this.origin = { x: originX, y: originY };
         this.characterWidth = characterWidth;
         this.characterHeight = characterHeight;
 
@@ -140,8 +145,8 @@ class spriteFont {
             //find index in characterMap
             let keyIndex = self.characterMap.indexOf(character);
             //tranform index into x,y coordinates in spritefont texture
-            let spriteX = (keyIndex % self.widthInCharacters) * self.characterWidth;
-            let spriteY = Math.floor(keyIndex / self.widthInCharacters) * self.characterHeight;
+            let spriteX = self.origin.x + (keyIndex % self.widthInCharacters) * self.characterWidth;
+            let spriteY = self.origin.y + Math.floor(keyIndex / self.widthInCharacters) * self.characterHeight;
             //draw
            
             ctx.imageSmoothingEnabled = false;

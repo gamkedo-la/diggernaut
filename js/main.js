@@ -137,6 +137,8 @@ function loadingComplete() {
     player = new Player(playerSettings),
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
     bigFont = new spriteFont(510, 128*4, 12, 36, img["bigFont"])
+    bigFontBlack = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72)
+    bigFontOrangeGradient = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*2)
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
     processURLQuery();
     begin(fps);

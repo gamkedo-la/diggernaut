@@ -48,12 +48,12 @@ const titleScreen = {
 
         let titleOffsets = [{x: 0, y: 0}, {x: 4, y: 0}, {x: 0, y: 4}, {x: 4, y: 4}];
         for(let i = 0; i < titleOffsets.length; i++){
-            bigFont.drawText("DIGGERNAUTS", { x: 125 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 2);
+            bigFontBlack.drawText("DIGGERNAUTS", { x: 125 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 2);
         }
         
         titleOffsets = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}];
         for(let i = 0; i < titleOffsets.length; i++){
-            bigFont.drawText("DIGGERNAUTS", { x: 125 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 2);
+            bigFontOrangeGradient.drawText("DIGGERNAUTS", { x: 125 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 2);
         }
         
        
