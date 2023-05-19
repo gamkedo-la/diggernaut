@@ -23,10 +23,11 @@ const playScreen = {
         player.draw();
         this.drawLightingOverlay();
         this.drawBloomOverlay();
-        uiActors.forEach(actor => actor.draw(canvasContext));
         ui.draw();
        
         this.debugDraw();
+        uiActors.forEach(actor => actor.draw(canvasContext));
+
         //bigFontBlue.drawText("PLAYER", {x: player.x - view.x, y: player.y - view.y - 20}, 0, 1);
         drawTransition();
             

@@ -42,9 +42,11 @@ class Particle {
         if(this.life <= 0){
             this.die();
         }
-        if(Math.round(this.xVelocity) == 0 && Math.round(this.yVelocity) == 0){
-            this.die();
-        }
+
+        //well this was a dumb idea and a huge bug
+        // if(Math.round(this.xVelocity) == 0 && Math.round(this.yVelocity) == 0){
+        //     this.die();
+        // }
 
         if(this.collides){
             if(tileMap.collidesWith(this.x, this.y)){

@@ -334,12 +334,12 @@ const particleDefinitions = {
             
     oreSparks: function(){
         return{
-        quantity: 3,
+        quantity: 2,
         offset: {
             x: () => rand(-2.5, 2.5),
             y: () => 0
         },
-        collides: false,
+        collides: true,
         color: () => "yellow",
         life: () => 30,
         xVelocity: () => rand(-0.2, .2),
@@ -356,16 +356,16 @@ const particleDefinitions = {
     awardSparks: function(){
         return{
         pool: uiActors,
-        quantity: 5000,
+        quantity: 1000,
         offset: {
-            x: () => rand(-400, 400),
+            x: () => rand(-300, 300),
             y: () => rand(-15, 15)
         },
         collides: false,
         color: () => "blue",
-        life: () => 60,
+        life: () => 50,
         xVelocity: () => rand(-1, 1),
-        yVelocity: () => rand(0.5, -1),
+        yVelocity: () => rand(2, -1),
         gravity: () => 0,
         custom: (particle) => {
             particle.xvel += rand(-0.5, 0.5);
@@ -387,7 +387,7 @@ const particleDefinitions = {
         life: () => 30,
         xVelocity: () => rand(-0.2, .2),
         yVelocity: () => rand(0, -1),
-        gravity: () => rand(0, 0.1),
+        gravity: () => 0,
         custom: (particle) => {
             particle.xvel += rand(-0.5, 0.5);
             particle.yvel += rand(-0.2, 0.3);
@@ -1077,12 +1077,11 @@ function createCollectibles() {
 }
 }
 
-
 function createDepthAwards() {
     out = [];
     DEPTH_MILESTONES.forEach(function(depth){
         out[depth] = function(){
-            actors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontGreen, 2, 250, particleDefinitions.awardSparks))
+            uiActors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontBlue, 1, 250, particleDefinitions.awardSparks))
             }
     });
     return out;
