@@ -60,10 +60,10 @@ Pre-created sets of items will be procedurally placed throughout the world (lots
 - 1 dirt
 - 2 unbreakable rock
 - 3 unbreakable metal ore
-- 4 unobtainium ore
+- 4 Green Ore
 - 5 falling rocks
 - 6 explosive ore
-- 7 super dense unobtainium ore
+- 7 Blue Ore
 - 8 rock
 - 9 dense rock
 - ? subject to additions, this is good starting point

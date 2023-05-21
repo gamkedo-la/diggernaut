@@ -27,21 +27,7 @@ class Tentacle {
           y: 8
       }
       this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 20, right: 20, top: 20, bottom: 20}, "crawler")
-      this.spritesheet = new SpriteSheet({
-          image: img['bat'],
-          frameWidth: 32,
-          frameHeight: 32,
-          animations: {
-              idle: {
-                  frames: [0,1],
-                  frameRate: 8
-              },
-              attack: {
-                  frames: [2,3],
-                  frameRate: 12
-              }
-          }
-      })
+
       this.currentAnimation = this.spritesheet.animations["idle"];
   }
   states = {
