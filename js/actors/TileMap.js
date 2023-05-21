@@ -298,7 +298,7 @@ class TileMap {
 
     drawGlowingTiles(index, x, y) {
         if(this.data[index] === TILE_EMPTY){ return; }
-        if(this.data[index] == TILE_DENSE_UNOBTANIUM){
+        if(this.data[index] == TILE_BLUE_ORE){
             bufferContext.save();
             bufferContext.globalCompositeOperation = "screen";
             drawTileSprite(tileSets.glow_64px,

@@ -10,7 +10,7 @@ class Ore {
         this.collider = new Collider(this.x, this.y, 4, 4, {left: 0, right: 0, top: 0, bottom: 0}, "ore");
         this.friction = 0.9;
         this.gravity = .9;
-        this.color = "green";
+        this.color = COLORS[8];
         this.life = 300;
     }
 
@@ -22,13 +22,13 @@ class Ore {
         let drawX = Math.floor(this.x - view.x);
         let drawY = Math.floor(this.y - view.y);
         if(this.life > 100){
-            canvasContext.fillStyle = COLORS[9]
+            canvasContext.fillStyle = COLORS[8]
             fillRect(drawX, drawY, 5, 5);
             this.drawGlow(drawX-16, drawY-16);
         } else {
             let blink = ticker % 8 > 4;
             if(blink){
-                canvasContext.fillStyle = COLORS[9]
+                canvasContext.fillStyle = COLORS[8]
                 fillRect(drawX, drawY, 5, 5);
                 this.drawGlow(drawX-16, drawY-16);
             }

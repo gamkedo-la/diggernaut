@@ -157,6 +157,7 @@ class Player {
         //this.diggerang = new Diggerang(this.x, this.y);
         this.inventory = {
             ore: 5,
+            blueOre: 5,
         }
     }
     draw() {
@@ -167,7 +168,7 @@ class Player {
         height: 32
     })
         
-        this.collider.draw()
+        //this.collider.draw()
         this.diggerang.draw();
 
         if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight(Direction.LEFT) };
@@ -177,6 +178,9 @@ class Player {
     }
 
     update() {
+
+       
+
         this.applyForces();
         this.handleCollisions();
         this.checkForFallingRocks();
@@ -205,6 +209,10 @@ class Player {
             this.hoverSound.volume.gain.value = 1;
         }else {
             this.hoverSound.volume.gain.value = 0;
+        }
+
+        if (this.health >= this.limits.healthMax) {
+            this.health = this.limits.healthMax;
         }
     }
 
@@ -336,9 +344,6 @@ class Player {
             for (let i = 0; i < resolution; i++) {
                 this.updateCollider(this.x, this.y + increment);
                 if (this.collider.tileCollisionCheck(0)) {
-                    if(this.yvel > this.limits.hurtVelocity){
-                        this.hurt(10);
-                    }
                     this.y = this.previousY;
                     this.updateCollider(this.x, this.y);
                     

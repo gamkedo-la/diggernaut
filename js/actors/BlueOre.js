@@ -7,7 +7,7 @@ class BlueOre {
         this.previousY = this.y;
         this.xvel = (mapRNG() * 2 - 1) * this.speed;
         this.yvel = (mapRNG() * -1) * this.speed * 2; 
-        this.collider = new Collider(this.x, this.y, 4, 4, {left: 0, right: 0, top: 0, bottom: 0}, "ore");
+        this.collider = new Collider(this.x, this.y, 4, 4, {left: 0, right: 0, top: 0, bottom: 0}, "blueOre");
         this.friction = 0.9;
         this.gravity = .9;
         this.color = COLORS[21];
@@ -22,7 +22,7 @@ class BlueOre {
         let drawX = Math.floor(this.x - view.x);
         let drawY = Math.floor(this.y - view.y);
         if(this.life > 100){
-            canvasContext.fillStyle = COLORS[9]
+            canvasContext.fillStyle = this.color;
             fillRect(drawX, drawY, 5, 5);
             this.drawGlow(drawX-16, drawY-16);
         } else {
@@ -50,7 +50,7 @@ class BlueOre {
         this.yvel *= this.friction; 
         this.yvel += this.gravity;
 
-        emitParticles(this.x, this.y-2, particleDefinitions.oreSparks);
+        emitParticles(this.x, this.y-2, particleDefinitions.blueOreSparks);
 
         
         if(this.distanceTo(player) < 50 && this.life < 270){
@@ -59,7 +59,7 @@ class BlueOre {
         
         if(this.distanceTo(player) < 10 && this.life < 270){
             audio.playSound(sounds["clink"]);
-            player.inventory.ore++;
+            player.inventory.blueOre++;
             this.destroy();
         }
         if(this.distanceTo(player.diggerang) < 90 && player.diggerang.active){

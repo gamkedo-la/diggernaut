@@ -23,10 +23,10 @@ const TILE_EMPTY = 0;
 const TILE_DIRT = 1;
 const TILE_UNBREAKABLE_STONE = 2;
 const TILE_UNBREAKABLE_METAL = 3;
-const TILE_UNOBTANIUM = 4;
+const TILE_GOLD_ORE = 4;
 const TILE_FALLING_ROCK = 5;
 const TILE_EXPLOSIVE = 6;
-const TILE_DENSE_UNOBTANIUM = 7;
+const TILE_BLUE_ORE = 7;
 const TILE_ROCK = 8;
 const TILE_DENSE_ROCK = 9;
 const TILE_TREASURE = 10;
@@ -38,10 +38,10 @@ const TILE_TYPES = [
     "TILE_DIRT",
     "TILE_UNBREAKABLE_STONE",
     "TILE_UNBREAKABLE_METAL",
-    "TILE_UNOBTANIUM",
+    "TILE_GOLD_ORE",
     "TILE_FALLING_ROCK",
     "TILE_EXPLOSIVE",
-    "TILE_DENSE_UNOBTANIUM",
+    "TILE_BLUE_ORE",
     "TILE_ROCK",
     "TILE_DENSE_ROCK",
     "TILE_TREASURE",
@@ -55,10 +55,10 @@ const damageValues = [
     100, //TILE_DIRT
     0, //TILE_UNBREAKABLE_STONE
     0, //TILE_UNBREAKABLE_METAL
-    100, //TILE_UNOBTANIUM
+    100, //TILE_GOLD_ORE
     100, //TILE_FALLING_ROCK
     5, //TILE_EXPLOSIVE
-    7, //TILE_DENSE_UNOBTANIUM
+    7, //TILE_BLUE_ORE
     10, //TILE_ROCK
     3, //TILE_DENSE_ROCK
     10, //TILE_BONE
@@ -266,6 +266,16 @@ const particleGradients = {
     ore: [
         COLORS[0],
         COLORS[1],
+        COLORS[6],
+        COLORS[7],
+        COLORS[8],
+        COLORS[9]
+        
+    ],
+
+    green: [
+        COLORS[0],
+        COLORS[1],
         COLORS[15],
         COLORS[14],
         COLORS[13],
@@ -351,6 +361,27 @@ const particleDefinitions = {
         }
     },
 
+    blueOreSparks: function(){
+        return{
+        quantity: 2,
+        offset: {
+            x: () => rand(-2.5, 2.5),
+            y: () => 0
+        },
+        collides: true,
+        color: () => "yellow",
+        life: () => 30,
+        xVelocity: () => rand(-0.2, .2),
+        yVelocity: () => rand(0, -1),
+        gravity: () => rand(0, 0.1),
+        custom: (particle) => {
+            particle.xvel += rand(-0.5, 0.5);
+            particle.yvel += rand(-0.2, 0.3);
+        },
+        gradientPalette: particleGradients.ice
+        }
+    },
+
     awardSparks: function(){
         return{
         pool: uiActors,
@@ -369,7 +400,7 @@ const particleDefinitions = {
             particle.xvel += rand(-0.5, 0.5);
             particle.yvel += rand(-0.2, 0.3);
         },
-        gradientPalette: particleGradients.ice
+        gradientPalette: particleGradients.green
         }
     },
 
@@ -391,7 +422,7 @@ const particleDefinitions = {
             particle.xvel += rand(-1, 1);
             particle.yvel += rand(-1, 0.5);
         },
-        gradientPalette: particleGradients.ice
+        gradientPalette: particleGradients.green
         }
     },
 
@@ -670,7 +701,9 @@ const imageList = [
     'splode-glow',
     'splode-glow32px',
     'crawler',
-    'dirt_splode_7px'
+    'dirt_splode_7px',
+    'ui-icons',
+    'tab-background',
 
     
 ]
@@ -766,7 +799,7 @@ const destroyTileWithEffects = {
         audio.playSound(sounds[randChoice(rock_crumbles)])
     },
 
-    TILE_UNOBTANIUM : function (tileIndex) {
+    TILE_GOLD_ORE : function (tileIndex) {
         tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
@@ -788,7 +821,7 @@ const destroyTileWithEffects = {
     TILE_EXPLOSIVE : function (startTileIndex) {
     },
 
-    TILE_DENSE_UNOBTANIUM : function (tileIndex) {
+    TILE_BLUE_ORE : function (tileIndex) {
         //tileMap.replaceTileAt(tileIndex, TILE_UNOBTANIUM);
         tileMap.replaceTileAt(tileIndex, TILE_EMPTY);
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
@@ -796,7 +829,7 @@ const destroyTileWithEffects = {
         emitParticles(x, y, particleDefinitions.destroyDirt);
         audio.playSound(sounds[randChoice(rock_crumbles)])
         let i = 30;
-        while(--i){ actors.push(new Ore(randInt(-16,16) + x, randInt(-16,16)+y))}  
+        while(--i){ actors.push(new BlueOre(randInt(-16,16) + x, randInt(-16,16)+y))}  
     },
 
     TILE_ROCK : function (tileIndex) {
@@ -852,7 +885,7 @@ const damageTileWithEffects = {
         audio.playSound(sounds[randChoice(metal_dings)])
     },
 
-    TILE_UNOBTANIUM : function (tileIndex) { 
+    TILE_GOLD_ORE : function (tileIndex) { 
 
     },
 
@@ -882,12 +915,12 @@ const damageTileWithEffects = {
         }
     },
 
-    TILE_DENSE_UNOBTANIUM : function (tileIndex) {
+    TILE_BLUE_ORE : function (tileIndex) {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.jumpPuff);
         let i = 8;
-        while(--i){ actors.push(new Ore(randInt(-20,20) + x, randInt(-20,20)+y))}  
+        while(--i){ actors.push(new BlueOre(randInt(-20,20) + x, randInt(-20,20)+y))}  
     },
 
     TILE_ROCK : function (tileIndex) {
@@ -1101,7 +1134,7 @@ function createDepthAwards() {
     out = [];
     DEPTH_MILESTONES.forEach(function(depth){
         out[depth] = function(){
-            uiActors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontBlue, 1, 100, particleDefinitions.awardSparks))
+            uiActors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontGreen, 1, 100, particleDefinitions.awardSparks))
             }
     });
     return out;

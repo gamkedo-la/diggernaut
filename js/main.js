@@ -126,6 +126,10 @@ function loadingComplete() {
         img["dirt_splode_7px"],
         {tileWidth: 7, tileHeight: 7, tileCount: 7, tileColumns: 7, tileRows: 1}
     )
+    tileSets.ui_icons = new Tileset(
+        img["ui-icons"],
+        {tileWidth: 11, tileHeight: 11, tileCount: 3, tileColumns: 3, tileRows: 1}
+    )
 
 
     collectibles = createCollectibles(tileSets);
