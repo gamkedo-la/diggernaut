@@ -18,9 +18,10 @@ class Player {
         // Start facing left with idleLeft animation
         this.facing = Direction.LEFT;
         
-        // this.inventory = {
-        //     ore: 1000,
-        // }
+        this.inventory = {
+            ore: 10,
+            blueOre: 10,
+        }
         
         this.footstepDelay = 250; // ms between sounds
         this.footstepLast = 0; // a timestamp
