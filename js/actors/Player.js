@@ -170,6 +170,7 @@ class Player {
         
         //this.collider.draw()
         this.diggerang.draw();
+        this.drawDamageTextFX();
 
         if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight(Direction.LEFT) };
         if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight(Direction.RIGHT) };
@@ -494,6 +495,23 @@ class Player {
         if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
     }
 
+    damageTextFX(damage) {
+        this.damageTxt = "-"+Math.round(damage);
+        this.damageTxtFrame = 0;
+        this.damageTxtFrameMax = 30;
+    }
+
+    drawDamageTextFX() {
+        if (!this.damageTxt) return;
+        if (this.damageTxtFrame++ < this.damageTxtFrameMax) {
+            canvasContext.globalAlpha = 1 - (this.damageTxtFrame/this.damageTxtFrameMax);
+            let x = Math.floor(this.x-view.x)-this.drawOffset.x + 8;
+            let y = Math.floor(this.y-view.y)-this.drawOffset.y - this.damageTxtFrame;
+            gameFont.drawText(this.damageTxt, {x:x,y:y});
+            canvasContext.globalAlpha = 1;
+        }
+    }
+
     hurt(damage) {
         if(this.hurtCooldown > 0){ return; }
         //TODO: blink player sprite
@@ -504,6 +522,7 @@ class Player {
             this.health = 0;
             this.die();
         } else {
+            this.damageTextFX(damage);
             tileMap.shakeScreen();
         }
         this.hurtCooldown = this.limits.hurtCooldown;
