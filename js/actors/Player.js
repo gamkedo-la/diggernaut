@@ -498,16 +498,16 @@ class Player {
     damageTextFX(damage) {
         this.damageTxt = "-"+Math.round(damage);
         this.damageTxtFrame = 0;
-        this.damageTxtFrameMax = 30;
+        this.damageTxtFrameMax = 20;
     }
 
     drawDamageTextFX() {
         if (!this.damageTxt) return;
         if (this.damageTxtFrame++ < this.damageTxtFrameMax) {
             canvasContext.globalAlpha = 1 - (this.damageTxtFrame/this.damageTxtFrameMax);
-            let x = Math.floor(this.x-view.x)-this.drawOffset.x + 8;
+            let x = Math.floor(this.x-view.x)-this.drawOffset.x + 12;
             let y = Math.floor(this.y-view.y)-this.drawOffset.y - this.damageTxtFrame;
-            gameFont.drawText(this.damageTxt, {x:x,y:y});
+            tinyFont.drawText(this.damageTxt, {x:x,y:y});
             canvasContext.globalAlpha = 1;
         }
     }
