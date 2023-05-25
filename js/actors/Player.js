@@ -163,7 +163,7 @@ class Player {
         this.yvel = 0;
         this.xAccel = 0;
         this.yAccel = 0;
-        this.digCooldown = 0;
+        this.digCooldown = 12;
         this.hurtCooldown = 0;
         this.health = 40;
         this.moveLeftCooldown = 0;

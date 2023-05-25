@@ -90,6 +90,37 @@ const DEPTH_MILESTONES = [
     4300, 4400, 4500, 4600, 4700, 4800, 4900, 5000
 ]
 
+const BLUE_UPGRADES = [
+    //dig speed +
+    {
+        name: "Dig Speed +",
+        description: "DIG FASTER",
+        cost: 100,
+        effect: function () {
+            player.limits.digCooldown = 10;
+        }
+    },
+
+    {
+        name: "Dig Speed ++",
+        description: "SUPER DIG SPEED",
+        cost: 200,
+        effect: function () {
+            player.limits.digCooldown = 5;
+        }
+    },
+
+    {
+        name: "Dig Speed +++",
+        description: "DIG SPEED OVERLOAD",
+        cost: 200,
+        effect: function () {
+            player.limits.digCooldown = 0;
+        }
+    },
+
+]
+
 const COLORS = [
     '#060608',
     '#141013',
@@ -1137,6 +1168,18 @@ function createDepthAwards() {
     DEPTH_MILESTONES.forEach(function(depth){
         out[depth] = function(){
             uiActors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontGreen, 1, 100, particleDefinitions.awardSparks))
+            }
+    });
+    return out;
+}
+
+function createBlueUpgrades() {
+    out = [];
+    BLUE_UPGRADES.forEach(function(upgrade){
+        out[upgrade] = function(){
+            uiActors.push(new AwardMessage(player.x, player.y, `${upgrade.description}`, gameFont, 1, 100, particleDefinitions.awardSparks))
+            upgrade.effect();
+            player.inventory.blueOre -= upgrade.cost;
             }
     });
     return out;

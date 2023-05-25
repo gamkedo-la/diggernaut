@@ -134,6 +134,7 @@ function loadingComplete() {
 
     collectibles = createCollectibles(tileSets);
     depthAwards = createDepthAwards(DEPTH_MILESTONES);
+    blueUpgrades = createBlueUpgrades(BLUE_UPGRADES);
 
     console.log('loading complete, starting game')
     sounds = loader.sounds;
