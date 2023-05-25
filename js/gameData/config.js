@@ -705,6 +705,7 @@ const imageList = [
     'ui-icons',
     'tab-background',
     'diggerang-spin',
+    'diggerang-spin-vertical'
 
     
 ]

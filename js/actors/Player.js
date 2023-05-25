@@ -40,12 +40,12 @@ class Player {
                     frameRate: 1
                 },
                 walkLeft: {
-                    frames: [1,3],
-                    frameRate: 8
+                    frames: [0,1,2,3],
+                    frameRate: 10
                 },
                 walkRight: {
-                    frames: [5,7],
-                    frameRate: 8
+                    frames: [4,5,6,7],
+                    frameRate: 10
                 },
                 jumpLeft: {
                     frames: [14],
@@ -66,29 +66,43 @@ class Player {
                 helicopter: {
                     frames: "8..11",
                     frameRate: 24
-                }
-            }
-        })
-
-        this.digSpriteSheet = new SpriteSheet({
-            image: img['placeholder-player'],
-            frameWidth: 32,
-            frameHeight: 32,
-            animations: {
-                dig: {
-                    frames: [3],
+                },
+                lookUpLeft: {
+                    frames: [16],
+                    frameRate: 1
+                },
+                lookUpRight: {
+                    frames: [17],
+                    frameRate: 1
+                },
+                digUpRight: {
+                    frames: [18],
+                    frameRate: 1
+                },
+                digUpLeft: {
+                    frames: [19],
                     frameRate: 1
                 },
                 digLeft: {
-                    frames: [8,9],
-                    frameRate: 8
+                    frames: [20],
+                    frameRate: 1
                 },
                 digRight: {
-                    frames: [6,7],
-                    frameRate: 8
+                    frames: [21],
+                    frameRate: 1
                 },
+                digDown: {
+                    frames: [22],
+                    frameRate: 1
+                }
+
+
+
             }
         })
+
+       
+
 
         this._updateInternalAnimations();
         this.currentAnimation = this.spritesheet.animations["idleLeft"];
@@ -131,7 +145,10 @@ class Player {
             idle: this.spritesheet.animations[this.facing === Direction.LEFT ? "idleLeft" : 'idleRight'],
             walk: this.spritesheet.animations[this.facing === Direction.LEFT ? "walkLeft" : 'walkRight'],
             jump: this.spritesheet.animations[this.facing === Direction.LEFT ? "jumpLeft" : 'jumpRight'],
-            dig: this.digSpriteSheet.animations[this.facing === Direction.LEFT ? "digLeft" : 'digRight'],
+            dig: this.spritesheet.animations[this.facing === Direction.LEFT ? "digLeft" : 'digRight'],
+            digUp: this.spritesheet.animations[this.facing === Direction.LEFT ? "digUpLeft" : 'digUpRight'],
+            digDown: this.spritesheet.animations["digDown"],
+            lookUp: this.spritesheet.animations[this.facing === Direction.LEFT ? "lookUpLeft" : 'lookUpRight'],
             falling: this.spritesheet.animations[this.facing === Direction.LEFT ? "fallingLeft" : 'fallingRight'],
         }
     }
@@ -175,6 +192,42 @@ class Player {
             width: 32,
             height: 32
         })
+    }
+
+    if(this.digging){
+        if(Key.isDown(Key.UP)||Joy.up){
+            this.diggerang.currentAnimation.update();
+            this.diggerang.currentAnimation.render({
+                x: Math.floor(this.x-view.x-8),
+                y: Math.floor(this.y-view.y)-22,
+                width: 32,
+                height: 32
+            })
+        } else if(Key.isDown(Key.DOWN)||Joy.down){
+            this.diggerang.currentAnimation.update();
+            this.diggerang.currentAnimation.render({
+                x: Math.floor(this.x-view.x-8),
+                y: Math.floor(this.y-view.y)+8,
+                width: 32,
+                height: 32
+            })
+        } else if(Key.isDown(Key.LEFT)||Joy.left){
+            this.diggerang.verticalSpin.update();
+            this.diggerang.verticalSpin.render({
+                x: Math.floor(this.x-view.x-14),
+                y: Math.floor(this.y-view.y-4),
+                width: 32,
+                height: 32
+            })
+        } else if(Key.isDown(Key.RIGHT)||Joy.right){
+            this.diggerang.verticalSpin.update();
+            this.diggerang.verticalSpin.render({
+                x: Math.floor(this.x-view.x+6),
+                y: Math.floor(this.y-view.y-4),
+                width: 32,
+                height: 32
+            })
+        }
     }
         
         this.collider.draw()
@@ -246,6 +299,7 @@ class Player {
         }
 
         if (Key.isDown(Key.UP) || Key.isDown(Key.w) || Key.isDown(Key.k) || Joy.up) {
+            this.currentAnimation = this.animations.lookUp;
             if(Key.isDown(Key.z) || Joy.x){
                 this.digging = true;
                 this.dig(Direction.UP);
@@ -328,7 +382,11 @@ class Player {
             this.currentAnimation = this.animations.falling;;
         }
         if(this.digging) {
-            this.currentAnimation = this.animations.dig;
+            if(Key.isDown(Key.UP)){
+                this.currentAnimation = this.animations.digUp;
+            } else if(Key.isDown(Key.DOWN)){
+                this.currentAnimation = this.animations.digDown;
+            } else this.currentAnimation = this.animations.dig;
         }
     }
 

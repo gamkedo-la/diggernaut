@@ -23,7 +23,7 @@ class Diggerang {
       maxYVel: 7,
       minXVel: -7,
       minYVel: -7,
-      timeBeforeReturn: 100,
+      timeBeforeReturn: 200,
       airTimeBeforeTeleport: 300, 
     }
     this.spritesheet = new SpriteSheet ({
@@ -38,6 +38,19 @@ class Diggerang {
       }
     });
     this.currentAnimation = this.spritesheet.animations["spin"];
+
+    this.spritesheetVertical = new SpriteSheet ({
+      image: img['diggerang-spin-vertical'],
+      frameWidth: 32,
+      frameHeight: 32,
+      animations: {
+        spin: {
+          frames: [0, 1, 2, 3, 4, 5,6,7,8,9,10],
+          frameRate: 40
+        }
+      }
+    });
+    this.verticalSpin = this.spritesheetVertical.animations["spin"];
     
   }
 
