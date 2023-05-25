@@ -97,8 +97,8 @@ class Diggerang {
       const returnXVel = 10 * Math.cos(angleToPlayer);
       const returnYVel = 10 * Math.sin(angleToPlayer);
 
-      this.xvel = this.xvel + 0.1 * returnXVel;
-      this.yvel = this.yvel + 0.1 * returnYVel;
+      this.xvel = this.xvel + 0.3 * returnXVel;
+      this.yvel = this.yvel + 0.3 * returnYVel;
     } else {
       //this.yvel += 0.2; // Apply gravity
     }

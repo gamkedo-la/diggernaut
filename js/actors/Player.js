@@ -167,6 +167,15 @@ class Player {
         width: 32,
         height: 32
     })
+
+    if(this.hovering){
+        this.diggerang.currentAnimation.render({
+            x: Math.floor(this.x-view.x),
+            y: Math.floor(this.y-view.y)-22,
+            width: 32,
+            height: 32
+        })
+    }
         
         this.collider.draw()
         this.diggerang.draw();
@@ -208,6 +217,7 @@ class Player {
 
         if(this.hovering){
             this.hoverSound.volume.gain.value = 1;
+            this.diggerang.currentAnimation.update();
         }else {
             this.hoverSound.volume.gain.value = 0;
         }
@@ -555,10 +565,11 @@ class Player {
     }
 
     throw() {
-        if (this.diggerang.active) return;
+        if (this.diggerang.active){ this.diggerang.returning = true; return;}
         if (this.inventory.ore < DIGGERANG_COST) return;
 
         this.inventory.ore -= DIGGERANG_COST;
+        this.hovering = false;
 
         switch(this.facing){
             case Direction.RIGHT: {
@@ -592,7 +603,7 @@ class Player {
         this.yVel -= 0.1;
         this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;
-        emitParticles(this.x, this.y, particleDefinitions.helicopter);
+        emitParticles(this.x+7, this.y, particleDefinitions.helicopter);
     }
 
     jump() {
