@@ -26,10 +26,34 @@ class Diggerang {
       timeBeforeReturn: 100,
       airTimeBeforeTeleport: 300, 
     }
+    this.spritesheet = new SpriteSheet ({
+      image: img['diggerang-spin'],
+      frameWidth: 32,
+      frameHeight: 32,
+      animations: {
+        spin: {
+          frames: [0, 1, 2, 3, 4, 5,6,7,8,9,10],
+          frameRate: 40
+        }
+      }
+    });
+    this.currentAnimation = this.spritesheet.animations["spin"];
+    
   }
 
   update (player) {
     if (!this.active) { this.stop(); return; }
+    this.currentAnimation.update();
+
+    let end1X = this.x + 16 + Math.cos ((ticker / 2) + Math.PI) * 16;
+    let end1Y = this.y + 8 + Math.sin ((ticker / 2) + Math.PI) * 8;
+    let end2X = this.x  + 16 + Math.cos (ticker / 2) * 16;
+    let end2Y = this.y  + 8 + Math.sin (ticker / 2) * 8;
+    emitParticles(end1X, end1Y, particleDefinitions.blueOreSparks);
+    emitParticles(end2X, end2Y, particleDefinitions.blueOreSparks);
+    emitParticles(end1X, end1Y, particleDefinitions.blueOreSparks);
+    emitParticles(end2X, end2Y, particleDefinitions.blueOreSparks);
+
     this.previousX = this.x;
     this.previousY = this.y;
 
@@ -83,14 +107,23 @@ class Diggerang {
   draw () {
     if (!this.active) return;
 
-    line (
-      this.x + 16 - view.x + Math.cos ((ticker / 3) + Math.PI) * 10,
-      this.y + 16  - view.y + Math.sin ((ticker / 3) + Math.PI) * 10,
-      this.x  + 16 - view.x + Math.cos (ticker / 3) * 10,
-      this.y  + 16 - view.y + Math.sin (ticker / 3) * 10,
-      'white'
-    );
-    this.collider.draw();
+   
+    this.currentAnimation.render({
+      x: Math.floor(this.x-view.x),
+      y: Math.floor(this.y-view.y),
+      width: 32,
+      height: 32
+    })
+
+    bufferContext.save();
+            bufferContext.globalCompositeOperation = "screen";
+            drawTileSprite(tileSets.glow_64px,
+                rand(0,1) < .1 ? randInt(0, 3) : 0, 
+                 this.x - view.x - 16,
+                 this.y - view.y - 16,
+                 bufferContext);
+            bufferContext.restore();
+    //this.collider.draw();
   }
 
   pan() {
@@ -245,5 +278,15 @@ class Diggerang {
     if(this.yvel < -this.limits.maxYVel) { this.yvel = -this.limits.maxYVel; }
 
   }
+
+  play(animationName){
+   
+    this.currentAnimation = this.spritesheet.animations[animationName];
+
+
+    if (!this.currentAnimation.loop){
+        this.currentAnimation.reset();
+    }
+}
 
 }

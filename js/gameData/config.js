@@ -704,6 +704,7 @@ const imageList = [
     'dirt_splode_7px',
     'ui-icons',
     'tab-background',
+    'diggerang-spin',
 
     
 ]
