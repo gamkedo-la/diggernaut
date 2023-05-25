@@ -25,7 +25,7 @@ const playScreen = {
         this.drawBloomOverlay();
         ui.draw();
        
-        this.debugDraw();
+        //this.debugDraw();
         uiActors.forEach(actor => actor.draw(canvasContext));
 
         //bigFontBlue.drawText("PLAYER", {x: player.x - view.x, y: player.y - view.y - 20}, 0, 1);

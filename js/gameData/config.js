@@ -169,8 +169,8 @@ const view = {
 }
 
 const mapConfig = {
-    widthInTiles: 80,
-    heightInTiles: 7000,
+    widthInTiles: 70,
+    heightInTiles: 10000,
     tileSize: 32,
     mapStartY: 20, //start generating tiles at this Y position
     caveGenPools:{

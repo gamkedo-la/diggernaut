@@ -103,7 +103,7 @@ class Player {
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
-            digCooldown: 1,
+            digCooldown: 12,
             hurtCooldown: 20,
             healthMax: 100,
             moveLeftCooldown: 20,
@@ -168,7 +168,7 @@ class Player {
         height: 32
     })
         
-        //this.collider.draw()
+        this.collider.draw()
         this.diggerang.draw();
         this.drawDamageTextFX();
 
@@ -563,18 +563,18 @@ class Player {
         switch(this.facing){
             case Direction.RIGHT: {
                 this.diggerang.x = this.x;
-                this.diggerang.y = this.y;
+                this.diggerang.y = this.y-16;
                 this.diggerang.xvel = 6; // Set the initial horizontal velocity
-                this.diggerang.yvel = -3; // Set the initial vertical velocity
+                this.diggerang.yvel = -0.5; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
             break;
             case Direction.LEFT: {
                 this.diggerang.x = this.x;
-                this.diggerang.y = this.y;
+                this.diggerang.y = this.y-16;
                 this.diggerang.xvel = -6; // Set the initial horizontal velocity
-                this.diggerang.yvel = -3; // Set the initial vertical velocity
+                this.diggerang.yvel = -0.5; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }

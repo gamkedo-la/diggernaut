@@ -87,7 +87,7 @@ class Flyer {
             height: 32
         })
 
-        //this.collider.draw();
+        this.collider.draw();
     }
     update(){
         if(!inView(this)) return;
@@ -198,7 +198,7 @@ class Flyer {
         let repelX = normalize(this.x - player.x, -player.width/2, player.width/2);
         let repelY = normalize(this.y - player.y, -player.height/2, player.height/2);
         
-        if(player.y >= this.collider.topFeeler.y ) {
+        if(player.y + player.height > this.y + this.height/2) {
             player.hurt(1)
             player.stop();
             player.xAccel = -repelX * 2;
