@@ -198,38 +198,41 @@ class Player {
     }
 
     if(this.digging){
-        if(Key.isDown(Key.UP)||Joy.up){
-            this.diggerang.currentAnimation.update();
-            this.diggerang.currentAnimation.render({
-                x: Math.floor(this.x-view.x-8),
-                y: Math.floor(this.y-view.y)-22,
-                width: 32,
-                height: 32
-            })
-        } else if(Key.isDown(Key.DOWN)||Joy.down){
-            this.diggerang.currentAnimation.update();
-            this.diggerang.currentAnimation.render({
-                x: Math.floor(this.x-view.x-8),
-                y: Math.floor(this.y-view.y)+8,
-                width: 32,
-                height: 32
-            })
-        } else if(Key.isDown(Key.LEFT)||Joy.left){
-            this.diggerang.verticalSpin.update();
-            this.diggerang.verticalSpin.render({
-                x: Math.floor(this.x-view.x-14),
-                y: Math.floor(this.y-view.y-4),
-                width: 32,
-                height: 32
-            })
-        } else if(Key.isDown(Key.RIGHT)||Joy.right){
-            this.diggerang.verticalSpin.update();
-            this.diggerang.verticalSpin.render({
-                x: Math.floor(this.x-view.x+6),
-                y: Math.floor(this.y-view.y-4),
-                width: 32,
-                height: 32
-            })
+        if (!this.diggerang.active){ 
+
+            if(Key.isDown(Key.UP)||Joy.up){
+                this.diggerang.currentAnimation.update();
+                this.diggerang.currentAnimation.render({
+                    x: Math.floor(this.x-view.x-8),
+                    y: Math.floor(this.y-view.y)-22,
+                    width: 32,
+                    height: 32
+                })
+            } else if(Key.isDown(Key.DOWN)||Joy.down){
+                this.diggerang.currentAnimation.update();
+                this.diggerang.currentAnimation.render({
+                    x: Math.floor(this.x-view.x-8),
+                    y: Math.floor(this.y-view.y)+8,
+                    width: 32,
+                    height: 32
+                })
+            } else if(Key.isDown(Key.LEFT)||Joy.left){
+                this.diggerang.verticalSpin.update();
+                this.diggerang.verticalSpin.render({
+                    x: Math.floor(this.x-view.x-14),
+                    y: Math.floor(this.y-view.y-4),
+                    width: 32,
+                    height: 32
+                })
+            } else if(Key.isDown(Key.RIGHT)||Joy.right){
+                this.diggerang.verticalSpin.update();
+                this.diggerang.verticalSpin.render({
+                    x: Math.floor(this.x-view.x+6),
+                    y: Math.floor(this.y-view.y-4),
+                    width: 32,
+                    height: 32
+                })
+            }
         }
     }
         
@@ -558,8 +561,10 @@ class Player {
     }
 
     dig(direction) {
-        this.digging = true;
         if (!this.canDig) return;
+        if (this.diggerang.active){ this.diggerang.returning = true; return;}
+        this.digging = true;
+        
         const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
         
@@ -608,6 +613,7 @@ class Player {
         this.digCooldown--
         if (this.digCooldown <= 0) {
             this.digCooldown = this.limits.digCooldown;
+            
             return true;
         }
         return false;
