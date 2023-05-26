@@ -17,6 +17,7 @@ class Diggerang {
     this.sound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1, true)
     this.volumeControl = this.sound.volume.gain;
     this.panControl = this.sound.pan.pan;
+    this.damageMultiplier = 1;
     this.collider = new Collider (this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "diggerang");
     this.limits = {
       maxXVel: 7,
@@ -243,7 +244,7 @@ class Diggerang {
       const point = this.collider.leftFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
       const type = tileMap.data[tile];
-      tileMap.damageTileAt(tile, damageValues[type], ()=>
+      tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);
@@ -253,7 +254,7 @@ class Diggerang {
       const point = this.collider.rightFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
       const type = tileMap.data[tile];
-      tileMap.damageTileAt(tile, damageValues[type], ()=>
+      tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);
@@ -263,7 +264,7 @@ class Diggerang {
       const point = this.collider.topFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
       const type = tileMap.data[tile];
-      tileMap.damageTileAt(tile, damageValues[type], ()=>
+      tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);
@@ -273,7 +274,7 @@ class Diggerang {
       const point = this.collider.bottomFeeler;
       const tile = tileMap.pixelToTileIndex(point.x, point.y);
       const type = tileMap.data[tile];
-      tileMap.damageTileAt(tile, damageValues[type], ()=>
+      tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);

@@ -51,9 +51,11 @@ const playScreen = {
             }
 
         for(let i = 0; i < BLUE_UPGRADES.length; i++){
-            if(player.inventory.blueOre >= BLUE_UPGRADES[i].cost){
-                blueUpgrades[ BLUE_UPGRADES[i] ]();
-                blueUpgrades[ i ] = function(){};
+            if(player.inventory.blueOre == BLUE_UPGRADES[i].cost){
+                if(blueUpgrades[i].won) return;
+                blueUpgrades[ i ].effect();
+                blueUpgrades[ i ].won = true;
+                return;
             }
         }
 

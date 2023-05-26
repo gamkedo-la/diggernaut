@@ -106,19 +106,44 @@ const BLUE_UPGRADES = [
         description: "SUPER DIG SPEED",
         cost: 200,
         effect: function () {
-            player.limits.digCooldown = 5;
+            player.limits.digCooldown = 6;
         }
     },
 
     {
         name: "Dig Speed +++",
+        description: "MEGA DIG",
+        cost: 400,
+        effect: function () {
+            player.limits.digCooldown = 3;
+        }
+    },
+
+    {
+        name: "Dig Speed ++++",
         description: "DIG SPEED OVERLOAD",
-        cost: 200,
+        cost: 600,
         effect: function () {
             player.limits.digCooldown = 0;
         }
     },
 
+    {
+        name: "Diggerang Damage +",
+        description: "DIGGERANG DAMAGE",
+        cost: 700,
+        effect: function () {
+            player.diggerang.damageMultiplier = 2;
+        }
+    },
+
+]
+
+
+const GOLD_UPGRADES = [
+    {
+        name: "Armor class"
+    }
 ]
 
 const COLORS = [
@@ -1175,12 +1200,18 @@ function createDepthAwards() {
 
 function createBlueUpgrades() {
     out = [];
-    BLUE_UPGRADES.forEach(function(upgrade){
-        out[upgrade] = function(){
-            uiActors.push(new AwardMessage(player.x, player.y, `${upgrade.description}`, gameFont, 1, 100, particleDefinitions.awardSparks))
+    BLUE_UPGRADES.forEach(function(upgrade, index, arr){
+        out[index] = {};
+        out[index].won = false;
+        out[index].description = upgrade.description;
+        out[index].effect = function(){
+            
+            uiActors.push(new AwardMessage(player.x, player.y, `${this.description}`, bigFontGreen, 1, 100, particleDefinitions.awardSparks))
             upgrade.effect();
             player.inventory.blueOre -= upgrade.cost;
+            
             }
+
     });
     return out;
 }
