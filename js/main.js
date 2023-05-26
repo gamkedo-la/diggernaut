@@ -148,6 +148,7 @@ function loadingComplete() {
     bigFontOrangeGradient = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*2)
     bigFontBlue = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*3)
     bigFontGreen = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*4)
+    bigFontRed = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*5)
     tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
     processURLQuery();
     begin(fps);
