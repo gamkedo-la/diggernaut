@@ -207,6 +207,7 @@ class Flyer {
         }
         else{ 
             this.kill()
+            player.score += 500;
             //player.stop();
             //player.xAccel = -repelX * 2;
             player.yvel = 0;

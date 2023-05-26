@@ -246,6 +246,7 @@ class Diggerang {
       const type = tileMap.data[tile];
       tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
+                player.score += 100;
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);
               });
@@ -256,6 +257,7 @@ class Diggerang {
       const type = tileMap.data[tile];
       tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
+                player.score += 100;
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);
               });
@@ -266,6 +268,7 @@ class Diggerang {
       const type = tileMap.data[tile];
       tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
+                player.score += 100;
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);
               });
@@ -276,6 +279,7 @@ class Diggerang {
       const type = tileMap.data[tile];
       tileMap.damageTileAt(tile, damageValues[type] * this.damageMultiplier, ()=>
               {
+                player.score += 100;
                 emitParticles(point.x, point.y, particleDefinitions.hurt)
                 damageTileWithEffects[TILE_TYPES[type]](tile);
               });

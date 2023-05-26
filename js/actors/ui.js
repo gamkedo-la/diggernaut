@@ -98,9 +98,8 @@ const ui = {
         drawTileSprite(tileSets.ui_icons, 1, ui.oreBar.x - 16, ui.oreBar.y);
 
 
-        // gameFont.drawText(String(ui.oreBar.value), 
-        //     { x: ui.oreBar.x - 25, y: ui.oreBar.y },
-        //     0, 0, 1, ui.oreBar.boxColor, canvasContext);
+        // gameFont.drawText(`${player.score.toString().padStart(14, '0')}`, 
+        //     { x: 180, y:8 }, 0, 0, 2);
 
         if (this.miniMap) this.miniMap.draw();
 

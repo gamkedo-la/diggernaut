@@ -9,6 +9,7 @@ class Player {
         this.hovering = false;
         this.helicopterCapacity = 0;
         this.depth = 0;
+        this.score = 0;
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true); 
         this.drawOffset = {
             x: 7,
@@ -171,11 +172,13 @@ class Player {
         this.coyoteCooldown = 0;
         this.wallSliding = false;
         this.facing = Direction.LEFT;
+        this.score = 0;
         //this.diggerang = new Diggerang(this.x, this.y);
         this.inventory = {
             ore: 5,
             blueOre: 5,
         }
+        blueUpgrades = createBlueUpgrades();
     }
     draw() {
        this.currentAnimation.render({
