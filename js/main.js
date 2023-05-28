@@ -304,9 +304,27 @@ function populateMap(){
     for (let i = 0; i < 10000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY && tileMap.getTileAtPosition(x, y+1) != TILE_EMPTY){
+        if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+            //check downward until we find a solid tile
+            while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+                y++;
+            }
             actors.push(
-                new Crawler(x * tileMap.tileWidth, y * tileMap.tileHeight)
+                new Crawler(x * tileMap.tileWidth, (y-1) * tileMap.tileHeight)
+            )
+        }
+    }
+
+    for (let i = 0; i < 10000; i++) {
+        let x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        let y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+            //check downward until we find a solid tile
+            while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+                y++;
+            }
+            actors.push(
+                new Stalagmite(x * tileMap.tileWidth, (y-1) * tileMap.tileHeight)
             )
         }
     }
