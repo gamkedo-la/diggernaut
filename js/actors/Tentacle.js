@@ -39,30 +39,51 @@ class Tentacle {
       this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 1, right: 1, top: 1, bottom: 1}, "tentacle")
   }
   states = {
-      asleep: function(){
-        this.targetArmLength = 1;
+      asleep: {
+        enter: function(){
+            this.targetArmLength = 1;
+        },
+
+        draw: function(){
+
+        }
       },
-      idle: function(){
-          
+      idle: {
+            enter: function(){
+            },
+            draw: function(){}
       },
-      seekPlayer: function(){
-          this.targetArmLength = 10;
+      seekPlayer: {
+            enter: function(){
+                this.targetArmLength = 10;
+            },
+            draw: function(){
+                this.drawEye();
+            }
       },
-      attack: function(){
-        this.targetArmLength = 15;
+      attack: {
+        enter: function(){
+            this.targetArmLength = 15;
+        },
+        draw : function(){
+            this.drawEye();
+        }
       },
   }
 
   draw(){
-      if(!inView(this)) return;
+        if(!inView(this)) return;
 
-      tinyFont.drawText(this.state, {x: this.x - view.x, y: this.y - view.y - 10}, 0, 1);
-      this.arm.draw();
-    
-      canvasContext.save();
-      canvasContext.fillStyle = "#ff00ff";
-      canvasContext.fillRect(this.x - view.x + this.drawOffset.x, this.y - view.y + this.drawOffset.y, this.width, this.height);
-      canvasContext.restore();
+        tinyFont.drawText(this.state, {x: this.x - view.x, y: this.y - view.y - 10}, 0, 1);
+        //this.arm.draw();
+        this.drawArm();
+        
+        canvasContext.save();
+        canvasContext.fillStyle = "#ff00ff";
+        canvasContext.fillRect(this.x - view.x + this.drawOffset.x, this.y - view.y + this.drawOffset.y, this.width, this.height);
+        canvasContext.restore();
+
+        this.states[this.state].draw.call(this);
 
       this.collider.draw();
       
@@ -77,7 +98,8 @@ class Tentacle {
         this.previousX = this.x;
         this.previousY = this.y;
 
-      this.states[this.state].call(this); 
+      this.states[this.state].enter.call(this);
+
 
       for(let i = 0; i < this.arm.segments.length; i++){
             let segment = this.arm.segments[i];
@@ -194,6 +216,36 @@ class Tentacle {
           player.yAccel = player.limits.minYAccel * 2;
       }
       
+  }
+  drawEye(){
+    //draw a white circle for the tentacle block eye
+    canvasContext.save();
+    canvasContext.fillStyle = "#ffffff";
+    canvasContext.beginPath();
+    canvasContext.arc(this.x - view.x + 16, this.y - view.y + 16, 10, 0, Math.PI * 2);
+    canvasContext.fill();
+    canvasContext.restore();
+
+    //draw a black circle for the tentacle block pupil, which follows the player
+    canvasContext.save();
+    canvasContext.fillStyle = "#000000";
+    canvasContext.beginPath();
+    canvasContext.arc(this.x - view.x + 16 + (player.x - this.x) / 20, this.y - view.y + 16 + (player.y - this.y) / 20, 5, 0, Math.PI * 2);
+    canvasContext.fill();
+    canvasContext.restore();
+  }
+
+  drawArm(){
+    //draw a purple circle at each segment of the tentacle arm
+    for (let i = 0; i < this.arm.segments.length; i++) {
+        let segment = this.arm.segments[i];
+        canvasContext.save();
+        canvasContext.fillStyle = "#ff00ff";
+        canvasContext.beginPath();
+        canvasContext.arc(segment.x - view.x, segment.y - view.y, 5, 0, Math.PI * 2);
+        canvasContext.fill();
+        canvasContext.restore();
+        }   
   }
 
   play(animationName){
