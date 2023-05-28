@@ -32,6 +32,11 @@ class TileMap {
         return this.data[this.widthInTiles*ty + tx] = value;
     }
 
+    setTileAtPixelPosition(x, y, value=1){
+        return this.data[this.pixelToTileIndex(x, y)] = value;
+    }
+
+
     getIndexAtPosition(tx, ty){
         return this.widthInTiles*ty + tx;
     }
