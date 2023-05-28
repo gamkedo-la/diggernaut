@@ -7,78 +7,84 @@ class Tentacle {
       this.currentAnimation = "idle";
       this.width = 32;
       this.height = 32;
-      this.segments = [];
-      this.arm = new Arm(this.x, this.y);
+
+      this.arm = new Arm(this.x+16, this.y);
+      this.arm.addSegment(1);
+      this.arm.addSegment(1);
+      this.arm.addSegment(1);
+      this.arm.addSegment(1);
+      this.arm.addSegment(1);
+      this.arm.addSegment(1);
+      this.arm.addSegment(1);
+      this.arm.addSegment(1);
+
       this.xvel = 0;
       this.yvel = 0;
       this.yAccel = 0;
       this.xAccel = 0;
       this.state = "idle";
+      this.viewBlocked = false;
       this.limits = {
           
       }
+      this.targetArmLength = 1;
       this.targetOffset = {
           x: 0,
           y: -100
       }
-      this.viewBlocked = false;
       this.drawOffset = {
-          x: 8,
-          y: 8
+          x: 0,
+          y: 0
       }
-      this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 20, right: 20, top: 20, bottom: 20}, "crawler")
-
-      this.currentAnimation = this.spritesheet.animations["idle"];
+      this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 1, right: 1, top: 1, bottom: 1}, "tentacle")
   }
   states = {
+      asleep: function(){
+        this.targetArmLength = 1;
+      },
       idle: function(){
-          this.play( "idle" );
-          this.xAccel += rand(-0.01, 0.01);
-          this.yAccel += rand(-0.01, 0.01);
+          
       },
       seekPlayer: function(){
-          this.play( "idle" );
-          const xDist = player.x + this.targetOffset.x - this.x;
-          const yDist = player.y + this.targetOffset.y - this.y;
-          const angle = Math.atan2(yDist, xDist);
+          this.targetArmLength = 10;
       },
       attack: function(){
-          //dive bomb the player
-          this.play( "attack" );
-          const xDist = player.x - this.x;
-          const yDist = player.y - this.y;
-          const angle = Math.atan2(yDist, xDist); 
+        this.targetArmLength = 15;
       },
   }
 
   draw(){
       if(!inView(this)) return;
-      //canvasContext.fillStyle = "orange";
-      //strokePolygon(this.x - view.x + 8, this.y-view.y + 8, 8, 3, ticker/10);
 
-      this.currentAnimation.render({
-          x: Math.floor(this.x-view.x) -this.drawOffset.x, 
-          y: Math.floor(this.y-view.y) -this.drawOffset.y,
-          width: 32,
-          height: 32
-      })
+      tinyFont.drawText(this.state, {x: this.x - view.x, y: this.y - view.y - 10}, 0, 1);
+      this.arm.draw();
+    
+      canvasContext.save();
+      canvasContext.fillStyle = "#ff00ff";
+      canvasContext.fillRect(this.x - view.x + this.drawOffset.x, this.y - view.y + this.drawOffset.y, this.width, this.height);
+      canvasContext.restore();
 
-      //this.collider.draw();
+      this.collider.draw();
+      
   }
   update(){
       if(!inView(this)) return;
-      this.currentAnimation.update();
-      this.collider.update(this.x, this.y);
-      this.previousX = this.x;
-      this.previousY = this.y;
+        this.arm.target.x = player.x + Math.sin(ticker/10) * 10;
+        this.arm.target.y = player.y + Math.cos(ticker/10) * 10;
+        //this.arm.target.y = lerp(this.y, player.y, 0.1);      
+        this.arm.update();
+        this.collider.update(this.x, this.y);
+        this.previousX = this.x;
+        this.previousY = this.y;
 
       this.states[this.state].call(this); 
 
-      this.avoidWalls();
-      this.handleWalls();
-      this.applyForces();
-      
+      for(let i = 0; i < this.arm.segments.length; i++){
+            let segment = this.arm.segments[i];
+            segment.length = lerp(segment.length, this.targetArmLength, 0.1);
+      }
 
+      
       this.viewBlocked = tileMap.tileRaycast(this.x, this.y, player.x, player.y);
       if(!this.viewBlocked){
           if(this.distanceToPlayer() < 150){
@@ -90,7 +96,7 @@ class Tentacle {
       }
       
       else {
-          this.state = "idle";
+          this.state = "asleep";
       }
 
       if(rectCollision( this.collider, player.diggerang.collider)){
@@ -182,9 +188,8 @@ class Tentacle {
       
       }
       else{ 
-          this.kill()
-          //player.stop();
-          //player.xAccel = -repelX * 2;
+          //this.kill()
+          player.hurt(1)
           player.yvel = 0;
           player.yAccel = player.limits.minYAccel * 2;
       }

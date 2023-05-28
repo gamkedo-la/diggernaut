@@ -139,7 +139,7 @@ function loadingComplete() {
     console.log('loading complete, starting game')
     sounds = loader.sounds;
     generateMap(mapConfig);    
-    populateMap();
+    populateMap(mapConfig);
 
     player = new Player(playerSettings),
     gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
@@ -272,7 +272,7 @@ function generateMap(config){
 
 }
 
-function populateMap(){
+function populateMap(config){
     // let i = 20;
     // while(i--){
     //     let x = playerSettings.x + Math.floor(rand(-300, 300));
@@ -290,7 +290,7 @@ function populateMap(){
     // }
 
     
-    //actors.push(new Crawler(playerSettings.x + 32*2, playerSettings.y ));
+    actors.push(new Tentacle(playerSettings.x + 32*2, playerSettings.y ));
 
     for (let i = 0; i < 10000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
@@ -301,7 +301,7 @@ function populateMap(){
             )
         }
     }
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 5000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = Math.floor(mapRNG() * tileMap.heightInTiles);
         if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
@@ -315,7 +315,7 @@ function populateMap(){
         }
     }
 
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 5000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = Math.floor(mapRNG() * tileMap.heightInTiles);
         if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
@@ -328,16 +328,33 @@ function populateMap(){
             )
         }
     }
-    actors.push(
-        new Collectible( playerSettings.x + 32*2, playerSettings.y,
-            "Treasure",
-            collectibles.Treasure[0])
-    )
-    actors.push(
-        new Collectible( playerSettings.x + 32*4, playerSettings.y,
-            "Treasure",
-            collectibles.Treasure[1])
-    )
+
+    for(let i = 0; i < collectibles.Treasure.length; i++){
+        let x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        let y = Math.floor(mapRNG() * 10) + config.mapStartY;
+        if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+            //check downward until we find a solid tile
+            while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
+                y++;
+            }
+            
+            actors.push(
+                new Collectible( x * tileMap.tileWidth, y * tileMap.tileHeight,
+                    "Treasure",
+                    collectibles.Treasure[i])
+            )
+            console.log(`spawned treasure at ${x}, ${y}`)
+        }else{
+            tileMap.setTileAtPosition(x, y, TILE_EMPTY);
+            actors.push(
+                new Collectible( x * tileMap.tileWidth, y * tileMap.tileHeight,
+                    "Treasure",
+                    collectibles.Treasure[i])
+            )
+            console.log(`spawned treasure at ${x}, ${y}`)
+        }
+    }
+   
 }
 
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); }, false);

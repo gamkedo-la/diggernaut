@@ -4,6 +4,7 @@ class Arm {
     this.y = y;
     this.segments = [];
     this.lastSegment = null;
+    this.target = {x: 0, y: 0};
   }
 
   addSegment(length){
@@ -42,7 +43,7 @@ class Arm {
   }
 
   update(){
-    this.reach(player.x, player.y);
+    this.reach(this.target.x, this.target.y);
   }
 
 }

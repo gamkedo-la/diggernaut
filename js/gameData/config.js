@@ -266,7 +266,7 @@ const playerSettings = {
 }
 
 // Setting seed to a specific value causes mapRNG to run the same sequence of numbers each time it restarts
-let seed = 88881654;
+let seed = 3141592653589793;
 const mapRNG = new Math.seedrandom(seed);
 
 var sounds = {};
@@ -1091,7 +1091,7 @@ function createCollectibles() {
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
-                tile: 0
+                tile: 2
             },
             owned: false,
             position: {x: 70, y: 91},
@@ -1107,7 +1107,7 @@ function createCollectibles() {
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
-                tile: 1
+                tile: 3
             },
             owned: false,
             position: {x: 102, y: 91},
@@ -1125,7 +1125,7 @@ function createCollectibles() {
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
-                tile: 0
+                tile: 4
             },
             position: {x: 129, y: 63},
             owned: false,
@@ -1141,7 +1141,7 @@ function createCollectibles() {
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
-                tile: 1
+                tile: 5
             },
             owned: false,
             position: {x: 156, y: 63},
@@ -1158,7 +1158,7 @@ function createCollectibles() {
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
-                tile: 0
+                tile: 6
             },
             owned: false,
             position: {x: 142, y: 93},
@@ -1174,7 +1174,7 @@ function createCollectibles() {
             sprite: {
                 sheet: tileSets.gems,
                 silhouette: tileSets.gemSilhouettes,
-                tile: 1
+                tile: 7
             },
             owned: false,
             position: {x: 167, y: 93},

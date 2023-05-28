@@ -36,16 +36,6 @@ const inventoryScreen = {
                 collectibles.Treasure[item].draw();
             }
         },
-        Artifacts: function () {
-            for(item in collectibles.Artifacts){
-                collectibles.Artifacts[item].draw();
-            }
-        },
-        Bones: function () {
-            for(item in collectibles.Bones){
-                collectibles.Bones[item].draw();
-            }
-        },
         Map: function () {
             return;
         }

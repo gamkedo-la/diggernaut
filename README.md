@@ -50,7 +50,6 @@ Pre-created sets of items will be procedurally placed throughout the world (lots
   - Diggerang Throw
     - kill multiple cryptids at once by throwing your diggerang at them.
     - Diggerang will collect item drops it passes near
-    - attempting to hit a dragon with a throw carries the risk of your Diggerang being eaten.
     - bash the action button to return the Diggerang from a stuck statem
   - Player takes damage from falling on stalagmites
   - Player takes damage from contact with cryptids
