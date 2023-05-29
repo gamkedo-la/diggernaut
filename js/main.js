@@ -290,21 +290,21 @@ function populateMap(config){
     // }
 
     
-    // actors.push(new Tentacle(playerSettings.x + 32*2, playerSettings.y ));
-    // tileMap.setTileAtPixelPosition(playerSettings.x + 32*2, playerSettings.y, TILE_EMPTY);
+    actors.push(new Tentacle(playerSettings.x + 32*2, playerSettings.y ));
+    tileMap.setTileAtPixelPosition(playerSettings.x + 32*2, playerSettings.y, TILE_EMPTY);
     
-    // actors.push(new Tentacle(playerSettings.x - 32*5, playerSettings.y + 32*2));
-    // tileMap.setTileAtPixelPosition(playerSettings.x + 32*5, playerSettings.y + 32*2, TILE_EMPTY);
+    actors.push(new Tentacle(playerSettings.x - 32*5, playerSettings.y + 32*2));
+    tileMap.setTileAtPixelPosition(playerSettings.x + 32*5, playerSettings.y + 32*2, TILE_EMPTY);
 
-    // actors.push(new Tentacle(playerSettings.x + 32*7, playerSettings.y + 32*3));
-    // tileMap.setTileAtPixelPosition(playerSettings.x + 32*7, playerSettings.y + 32*3, TILE_EMPTY);
+    actors.push(new Tentacle(playerSettings.x + 32*7, playerSettings.y + 32*3));
+    tileMap.setTileAtPixelPosition(playerSettings.x + 32*7, playerSettings.y + 32*3, TILE_EMPTY);
 
-    // actors.push(new Tentacle(playerSettings.x + 32*11, playerSettings.y + 32*6));
-    // tileMap.setTileAtPixelPosition(playerSettings.x + 32*11, playerSettings.y + 32*6, TILE_EMPTY);
+    actors.push(new Tentacle(playerSettings.x + 32*11, playerSettings.y + 32*6));
+    tileMap.setTileAtPixelPosition(playerSettings.x + 32*11, playerSettings.y + 32*6, TILE_EMPTY);
 
     //create several tentacles  within 20 tiles of player
-    for(let i = 0; i < 20; i++){
-        let x = playerSettings.x + Math.floor(rand(-640, 640));
+    for(let i = 0; i < 10; i++){
+        let x = playerSettings.x + Math.floor(rand(-320, 320));
         let y = playerSettings.y + Math.floor(rand(0, 1000));
         //make x and y multiples of 32
         x = Math.floor(x / 32) * 32;

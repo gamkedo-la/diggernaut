@@ -95,7 +95,7 @@ const BLUE_UPGRADES = [
     {
         name: "Dig Speed +",
         description: "DIG FASTER",
-        cost: 100,
+        cost: 50,
         effect: function () {
             player.limits.digCooldown = 10;
         }
@@ -104,7 +104,7 @@ const BLUE_UPGRADES = [
     {
         name: "Dig Speed ++",
         description: "SUPER DIG SPEED",
-        cost: 200,
+        cost: 60,
         effect: function () {
             player.limits.digCooldown = 6;
         }
@@ -113,7 +113,7 @@ const BLUE_UPGRADES = [
     {
         name: "Dig Speed +++",
         description: "MEGA DIG",
-        cost: 400,
+        cost: 70,
         effect: function () {
             player.limits.digCooldown = 3;
         }
@@ -122,7 +122,7 @@ const BLUE_UPGRADES = [
     {
         name: "Dig Speed ++++",
         description: "DIG SPEED OVERLOAD",
-        cost: 600,
+        cost: 80,
         effect: function () {
             player.limits.digCooldown = 0;
         }
@@ -131,7 +131,7 @@ const BLUE_UPGRADES = [
     {
         name: "Diggerang Damage +",
         description: "DIGGERANG DAMAGE",
-        cost: 700,
+        cost: 90,
         effect: function () {
             player.diggerang.damageMultiplier = 2;
         }

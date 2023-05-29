@@ -22,12 +22,13 @@ class Tentacle {
       this.yvel = 0;
       this.yAccel = 0;
       this.xAccel = 0;
-      this.state = "idle";
+      this.state = "asleep";
       this.viewBlocked = false;
       this.limits = {
           
       }
-      this.targetArmLength = 1;
+      this.baseSegmentLength = 7;
+      this.targetSegmentLength = 7;
       this.targetOffset = {
           x: 0,
           y: -100
@@ -41,7 +42,14 @@ class Tentacle {
   states = {
       asleep: {
         enter: function(){
-            this.targetArmLength = 1;
+            this.targetSegmentLength = 0.5;
+            const totalSegments = this.arm.segments.length 
+                for(let i = 0; i < totalSegments; i++){
+                    let targetLength = this.baseSegmentLength - this.baseSegmentLength * (i / totalSegments)
+                    this.arm.segments[i].length = lerp(this.arm.segments[i].length, targetLength, 0.5);
+                }
+            this.arm.target.x = lerp(this.arm.target.x, this.x + 16, 0.01);
+            this.arm.target.y = lerp(this.arm.target.y, this.y + 16, 0.01); 
         },
 
         draw: function(){
@@ -55,7 +63,14 @@ class Tentacle {
       },
       seekPlayer: {
             enter: function(){
-                this.targetArmLength = 10;
+                this.targetSegmentLength = 12;
+                const totalSegments = this.arm.segments.length 
+                for(let i = 0; i < totalSegments; i++){
+                    let targetLength = this.baseSegmentLength - this.baseSegmentLength * (i / totalSegments)
+                    this.arm.segments[i].length = lerp(this.arm.segments[i].length, targetLength, 0.5);
+                }
+                this.arm.target.x = lerp(this.arm.target.x, player.x, 0.05);
+                this.arm.target.y = lerp(this.arm.target.y, player.y, 0.05); 
             },
             draw: function(){
                 this.drawEye();
@@ -63,7 +78,14 @@ class Tentacle {
       },
       attack: {
         enter: function(){
-            this.targetArmLength = 15;
+            this.baseSegmentLength = 16;
+            const totalSegments = this.arm.segments.length 
+            for(let i = 0; i < totalSegments; i++){
+                let targetLength = this.baseSegmentLength - this.baseSegmentLength * (i / totalSegments)
+                this.arm.segments[i].length = lerp(this.arm.segments[i].length, targetLength, 0.1);
+            }
+            this.arm.target.x = lerp(this.arm.target.x, player.x, 0.05);
+            this.arm.target.y = lerp(this.arm.target.y, player.y, 0.05); 
         },
         draw : function(){
             this.drawEye();
@@ -89,37 +111,26 @@ class Tentacle {
       
   }
   update(){
-      if(!inView(this)) return;
-        this.arm.target.x = player.x + Math.sin(ticker/10) * 10;
-        this.arm.target.y = player.y + Math.cos(ticker/10) * 10;
-        //this.arm.target.y = lerp(this.y, player.y, 0.1);      
+      if(!inView(this)){ return; }
+        this.baseSegmentLength = lerp(this.baseSegmentLength, this.targetSegmentLength, 0.01);
         this.arm.update();
         this.collider.update(this.x, this.y);
         this.previousX = this.x;
         this.previousY = this.y;
-
-      this.states[this.state].enter.call(this);
-
-
-      for(let i = 0; i < this.arm.segments.length; i++){
-            let segment = this.arm.segments[i];
-            segment.length = lerp(segment.length, this.targetArmLength, 0.1);
-      }
-
       
       this.viewBlocked = tileMap.tileRaycast(this.x, this.y, player.x, player.y);
       if(!this.viewBlocked){
-          if(this.distanceToPlayer() < 150){
+          if(this.distanceToPlayer() < 300){
               this.state = "seekPlayer";
           }
-          if(this.distanceToPlayer() < 120) {
+          if(this.distanceToPlayer() < 150) {
               this.state = "attack";
           }
-      }
-      
-      else {
+      } else {
           this.state = "asleep";
       }
+
+      this.states[this.state].enter.call(this);
 
       if(rectCollision( this.collider, player.diggerang.collider)){
           this.kill();
@@ -128,8 +139,6 @@ class Tentacle {
       this.collideWithPlayer();
       }
       
-      
-
       this.x += this.xvel;
       this.y += this.yvel;
   }
@@ -160,14 +169,6 @@ class Tentacle {
           this.xvel *= .9;
 
       }
-      // if(tileMap.collidesWith(top.x, top.y)){
-      //     this.yAccel += 0.01;
-      //     this.yvel *= .9;
-      // }
-      // if(tileMap.collidesWith(bottom.x, bottom.y)){
-      //     this.yAccel -= 0.01;
-      //     this.yvel *= .9;
-      // }
   }
 
   handleWalls(){
@@ -236,13 +237,18 @@ class Tentacle {
   }
 
   drawArm(){
+    if(this.arm.segments[0].length < 2){return;}
     //draw a purple circle at each segment of the tentacle arm
-    for (let i = 0; i < this.arm.segments.length; i++) {
+    const totalSegments = this.arm.segments.length
+    for (let i = 0; i < totalSegments; i++) {
         let segment = this.arm.segments[i];
+        let xWiggle = Math.sin(ticker/17+i) * (3 )
+        let yWiggle = Math.cos(ticker/23+i) * (3 )
         canvasContext.save();
         canvasContext.fillStyle = "#ff00ff";
         canvasContext.beginPath();
-        canvasContext.arc(segment.x - view.x, segment.y - view.y, 5, 0, Math.PI * 2);
+        let rad = this.targetSegmentLength-2;
+        canvasContext.arc(segment.x - view.x + xWiggle, segment.y - view.y + yWiggle, rad+2 - rad * (i / totalSegments), 0, Math.PI * 2);
         canvasContext.fill();
         canvasContext.restore();
         }   
