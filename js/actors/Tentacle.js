@@ -8,7 +8,7 @@ class Tentacle {
       this.width = 32;
       this.height = 32;
 
-      this.arm = new Arm(this.x+16, this.y);
+      this.arm = new Arm(this.x+16, this.y + 16);
       this.segments = options.segments || 16;
       //create arm segments
         for(let i = 0; i < this.segments; i++){
