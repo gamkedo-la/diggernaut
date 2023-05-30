@@ -25,6 +25,8 @@ class Tentacle {
     //   this.arm.addSegment(1);
 
       this.xvel = 0;
+      this.tentacleEnd = this.arm.segments[this.arm.segments.length - 1];
+      this.tipCollider = new Collider(this.tentacleEnd.x, this.tentacleEnd.y, 8, 8, {left: 1, right: 1, top: 1, bottom: 1}, "tentacleTip")
       this.yvel = 0;
       this.yAccel = 0;
       this.xAccel = 0;
@@ -114,6 +116,7 @@ class Tentacle {
         this.states[this.state].draw.call(this);
 
       this.collider.draw();
+      this.tipCollider.draw();
       
   }
   update(){
@@ -121,6 +124,7 @@ class Tentacle {
         this.baseSegmentLength = lerp(this.baseSegmentLength, this.targetSegmentLength, 0.01);
         this.arm.update();
         this.collider.update(this.x, this.y);
+        this.tipCollider.update(this.tentacleEnd.x, this.tentacleEnd.y);
         this.previousX = this.x;
         this.previousY = this.y;
       //offset y by 17 to put start of raycast in tile above the enemy
@@ -140,6 +144,15 @@ class Tentacle {
 
       if(rectCollision( this.collider, player.diggerang.collider)){
           this.kill();
+      }
+      //diggerang bounces off tentacle
+        if(rectCollision( this.tipCollider, player.diggerang.collider)){
+            player.diggerang.xvel = -player.diggerang.xvel;
+            player.diggerang.yvel = -player.diggerang.yvel;
+        }
+
+      if(rectCollision( this.tipCollider, player.collider)){
+        player.hurt(10);
       }
       if(rectCollision( this.collider, player.collider)){
       this.collideWithPlayer();
