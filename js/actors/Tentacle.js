@@ -1,5 +1,5 @@
 class Tentacle {
-  constructor(x,y){
+  constructor(x,y, options={}){
       this.x = x;
       this.y = y;
       this.previousX = this.x;
@@ -9,14 +9,20 @@ class Tentacle {
       this.height = 32;
 
       this.arm = new Arm(this.x+16, this.y);
-      this.arm.addSegment(1);
-      this.arm.addSegment(1);
-      this.arm.addSegment(1);
-      this.arm.addSegment(1);
-      this.arm.addSegment(1);
-      this.arm.addSegment(1);
-      this.arm.addSegment(1);
-      this.arm.addSegment(1);
+      this.segments = options.segments || 16;
+      //create arm segments
+        for(let i = 0; i < this.segments; i++){
+            this.arm.addSegment(1);
+        }
+
+    //   this.arm.addSegment(1);
+    //   this.arm.addSegment(1);
+    //   this.arm.addSegment(1);
+    //   this.arm.addSegment(1);
+    //   this.arm.addSegment(1);
+    //   this.arm.addSegment(1);
+    //   this.arm.addSegment(1);
+    //   this.arm.addSegment(1);
 
       this.xvel = 0;
       this.yvel = 0;
@@ -27,8 +33,8 @@ class Tentacle {
       this.limits = {
           
       }
-      this.baseSegmentLength = 7;
-      this.targetSegmentLength = 7;
+      this.baseSegmentLength = options.segmentLength || 7;
+      this.targetSegmentLength = options.segmentLength || 7;
       this.targetOffset = {
           x: 0,
           y: -100
@@ -78,7 +84,7 @@ class Tentacle {
       },
       attack: {
         enter: function(){
-            this.baseSegmentLength = 16;
+            this.targetSegmentLength = 16;
             const totalSegments = this.arm.segments.length 
             for(let i = 0; i < totalSegments; i++){
                 let targetLength = this.baseSegmentLength - this.baseSegmentLength * (i / totalSegments)
@@ -117,8 +123,8 @@ class Tentacle {
         this.collider.update(this.x, this.y);
         this.previousX = this.x;
         this.previousY = this.y;
-      
-      this.viewBlocked = tileMap.tileRaycast(this.x, this.y, player.x, player.y);
+      //offset y by 17 to put start of raycast in tile above the enemy
+      this.viewBlocked = tileMap.tileRaycast(this.x, this.y-17, player.x, player.y) && tileMap.tileRaycast(this.x, this.y, player.x, player.y) 
       if(!this.viewBlocked){
           if(this.distanceToPlayer() < 300){
               this.state = "seekPlayer";
@@ -231,13 +237,12 @@ class Tentacle {
     canvasContext.save();
     canvasContext.fillStyle = "#000000";
     canvasContext.beginPath();
-    canvasContext.arc(this.x - view.x + 16 + (player.x - this.x) / 20, this.y - view.y + 16 + (player.y - this.y) / 20, 5, 0, Math.PI * 2);
+    canvasContext.arc(this.x - view.x + 16 + (player.x - this.x) / 25, this.y - view.y + 16 + (player.y - this.y) / 25, 3, 0, Math.PI * 2);
     canvasContext.fill();
     canvasContext.restore();
   }
 
   drawArm(){
-    if(this.arm.segments[0].length < 2){return;}
     //draw a purple circle at each segment of the tentacle arm
     const totalSegments = this.arm.segments.length
     for (let i = 0; i < totalSegments; i++) {
@@ -247,7 +252,7 @@ class Tentacle {
         canvasContext.save();
         canvasContext.fillStyle = "#ff00ff";
         canvasContext.beginPath();
-        let rad = this.targetSegmentLength-2;
+        let rad = this.baseSegmentLength-2;
         canvasContext.arc(segment.x - view.x + xWiggle, segment.y - view.y + yWiggle, rad+2 - rad * (i / totalSegments), 0, Math.PI * 2);
         canvasContext.fill();
         canvasContext.restore();
