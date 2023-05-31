@@ -61,7 +61,7 @@ class Tentacle {
         },
 
         draw: function(){
-
+            this.drawEye(); // draws a half-closed eye
         }
       },
       idle: {
@@ -242,6 +242,7 @@ class Tentacle {
       
   }
   drawEye(){
+    
     //draw a white circle for the tentacle block eye
     canvasContext.save();
     canvasContext.fillStyle = "#ffffff";
@@ -257,6 +258,16 @@ class Tentacle {
     canvasContext.arc(this.x - view.x + 16 + (player.x - this.x) / 25, this.y - view.y + 16 + (player.y - this.y) / 25, 3, 0, Math.PI * 2);
     canvasContext.fill();
     canvasContext.restore();
+
+    if (this.state == "asleep") {
+        // draw a drooping eyelid
+        canvasContext.save();
+        canvasContext.fillStyle = "#ff00ff";
+        canvasContext.beginPath();
+        canvasContext.arc(this.x - view.x + 16, this.y - view.y + 16, 10, Math.PI, 0);
+        canvasContext.fill();
+        canvasContext.restore();
+    }
   }
 
   drawArm(){
