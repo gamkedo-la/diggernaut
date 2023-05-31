@@ -266,13 +266,15 @@ class Tentacle {
         let segment = this.arm.segments[i];
         let xWiggle = Math.sin(ticker/17+i) * (3 )
         let yWiggle = Math.cos(ticker/23+i) * (3 )
-        canvasContext.save();
-        canvasContext.fillStyle = "#ff00ff";
-        canvasContext.beginPath();
+        
         let rad = this.baseSegmentLength-2;
-        canvasContext.arc(segment.x - view.x + xWiggle, segment.y - view.y + yWiggle, rad+2 - rad * (i / totalSegments), 0, Math.PI * 2);
-        canvasContext.fill();
-        canvasContext.restore();
+        let x = Math.floor(segment.x - view.x + xWiggle - rad/2)
+        let y = Math.floor(segment.y - view.y + yWiggle - rad/2)
+        let segmentSize = Math.floor( rad+2 - rad * (i / totalSegments) / 2)
+        drawTileSprite(tileSets.tentacle_arm, segmentSize, x, y );
+        //canvasContext.arc(segment.x - view.x + xWiggle, segment.y - view.y + yWiggle, rad+2 - rad * (i / totalSegments), 0, Math.PI * 2);
+        // canvasContext.fill();
+        // canvasContext.restore();
         }   
   }
 

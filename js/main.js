@@ -130,6 +130,10 @@ function loadingComplete() {
         img["ui-icons"],
         {tileWidth: 11, tileHeight: 11, tileCount: 3, tileColumns: 3, tileRows: 1}
     )
+    tileSets.tentacle_arm = new Tileset(
+        img["tentacle-arm"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 19, tileColumns: 19, tileRows: 1}
+    )
 
 
     collectibles = createCollectibles(tileSets);

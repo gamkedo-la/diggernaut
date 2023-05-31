@@ -761,7 +761,8 @@ const imageList = [
     'ui-icons',
     'tab-background',
     'diggerang-spin',
-    'diggerang-spin-vertical'
+    'diggerang-spin-vertical',
+    'tentacle-arm'
 
     
 ]
