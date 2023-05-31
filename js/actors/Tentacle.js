@@ -71,7 +71,11 @@ class Tentacle {
       },
       seekPlayer: {
             enter: function(){
-                this.targetSegmentLength = 12;
+                
+                this.targetSegmentLength = 12 + 
+                    // a little wobble of two sine waves interfering:
+                    (Math.sin(performance.now()/888)*24)*Math.sin(performance.now()/157);
+
                 const totalSegments = this.arm.segments.length 
                 for(let i = 0; i < totalSegments; i++){
                     let targetLength = this.baseSegmentLength - this.baseSegmentLength * (i / totalSegments)
