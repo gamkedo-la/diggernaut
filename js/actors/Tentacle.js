@@ -156,7 +156,7 @@ class Tentacle {
         }
 
       if(rectCollision( this.tipCollider, player.collider)){
-        player.hurt(10);
+        //player.hurt(10);
       }
       if(rectCollision( this.collider, player.collider)){
       this.collideWithPlayer();
