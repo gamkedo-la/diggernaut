@@ -9,6 +9,7 @@ class Tentacle {
       this.height = 32;
       this.eyelidState = 0;
       this.eyelidStateTarget = 0;
+      this.eyelidStateSpeed = 0.1;
 
       this.arm = new Arm(this.x+16, this.y + 16);
       this.segments = options.segments || 16;
@@ -16,15 +17,6 @@ class Tentacle {
         for(let i = 0; i < this.segments; i++){
             this.arm.addSegment(1);
         }
-
-    //   this.arm.addSegment(1);
-    //   this.arm.addSegment(1);
-    //   this.arm.addSegment(1);
-    //   this.arm.addSegment(1);
-    //   this.arm.addSegment(1);
-    //   this.arm.addSegment(1);
-    //   this.arm.addSegment(1);
-    //   this.arm.addSegment(1);
 
       this.xvel = 0;
       this.tentacleEnd = this.arm.segments[this.arm.segments.length - 1];
@@ -131,7 +123,8 @@ class Tentacle {
   update(){
       if(!inView(this)){ return; }
         this.baseSegmentLength = lerp(this.baseSegmentLength, this.targetSegmentLength, 0.01);
-        this.eyelidState = lerp(this.eyelidState, this.eyelidStateTarget, 0.05);
+        this.eyelidStateSpeed = this.blinkFrames? 0.7 : 0.1;
+        this.eyelidState = lerp(this.eyelidState, this.eyelidStateTarget, this.eyelidStateSpeed);
         this.arm.update();
         this.collider.update(this.x, this.y);
         this.tipCollider.update(this.tentacleEnd.x, this.tentacleEnd.y);
@@ -256,16 +249,22 @@ class Tentacle {
     
 
     //draw a black circle for the tentacle block pupil, which follows the player
-    canvasContext.save();
     canvasContext.fillStyle = "#000000";
     canvasContext.beginPath();
     canvasContext.arc(this.x - view.x + 16 + (player.x - this.x) / 25, this.y - view.y + 16 + (player.y - this.y) / 25, 3, 0, Math.PI * 2);
     canvasContext.fill();
-    canvasContext.restore();
 
     //draw eyelid graphic (tilesets.tentacle_block)
-    if (this.blinkFrames) this.blinkFrames--; else if (Math.random()<0.015) this.blinkFrames=10;
-    drawTileSprite(tileSets.tentacle_block, Math.round(this.blinkFrames?0:this.eyelidState), this.x - view.x, this.y - view.y);
+    if (this.blinkFrames){ 
+        this.blinkFrames--;
+        this.eyelidStateTarget = 0;
+    }else if (Math.random()<0.009){
+         this.blinkFrames=10;
+    }
+
+    drawTileSprite(tileSets.tentacle_block, Math.round(this.eyelidState), this.x - view.x, this.y - view.y);
+    canvasContext.restore();
+
   }
 
   drawArm(){
