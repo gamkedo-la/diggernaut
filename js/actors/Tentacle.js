@@ -264,7 +264,8 @@ class Tentacle {
     canvasContext.restore();
 
     //draw eyelid graphic (tilesets.tentacle_block)
-    drawTileSprite(tileSets.tentacle_block, Math.round(this.eyelidState), this.x - view.x, this.y - view.y);
+    if (this.blinkFrames) this.blinkFrames--; else if (Math.random()<0.015) this.blinkFrames=10;
+    drawTileSprite(tileSets.tentacle_block, Math.round(this.blinkFrames?0:this.eyelidState), this.x - view.x, this.y - view.y);
   }
 
   drawArm(){
