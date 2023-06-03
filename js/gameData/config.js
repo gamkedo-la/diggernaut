@@ -762,7 +762,8 @@ const imageList = [
     'tab-background',
     'diggerang-spin',
     'diggerang-spin-vertical',
-    'tentacle-arm'
+    'tentacle-arm',
+    'tentacle-block'
 
     
 ]

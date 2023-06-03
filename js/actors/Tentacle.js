@@ -7,6 +7,8 @@ class Tentacle {
       this.currentAnimation = "idle";
       this.width = 32;
       this.height = 32;
+      this.eyelidState = 0;
+      this.eyelidStateTarget = 0;
 
       this.arm = new Arm(this.x+16, this.y + 16);
       this.segments = options.segments || 16;
@@ -58,6 +60,7 @@ class Tentacle {
                 }
             this.arm.target.x = lerp(this.arm.target.x, this.x + 16, 0.01);
             this.arm.target.y = lerp(this.arm.target.y, this.y + 16, 0.01); 
+            this.eyelidStateTarget = 0;
         },
 
         draw: function(){
@@ -72,17 +75,18 @@ class Tentacle {
       seekPlayer: {
             enter: function(){
                 
-                this.targetSegmentLength = 12 + 
-                    // a little wobble of two sine waves interfering:
-                    (Math.sin(performance.now()/888)*24)*Math.sin(performance.now()/157);
+                this.targetSegmentLength = 12 
+               
 
                 const totalSegments = this.arm.segments.length 
                 for(let i = 0; i < totalSegments; i++){
                     let targetLength = this.baseSegmentLength - this.baseSegmentLength * (i / totalSegments)
                     this.arm.segments[i].length = lerp(this.arm.segments[i].length, targetLength, 0.5);
                 }
-                this.arm.target.x = lerp(this.arm.target.x, player.x, 0.05);
-                this.arm.target.y = lerp(this.arm.target.y, player.y, 0.05); 
+                let targetWobble = Math.sin(performance.now()/888)*7 * Math.sin(performance.now()/157);
+                this.arm.target.x = lerp(this.arm.target.x + targetWobble, player.x, 0.05);
+                this.arm.target.y = lerp(this.arm.target.y + targetWobble, player.y, 0.05);
+                this.eyelidStateTarget = 2;
             },
             draw: function(){
                 this.drawEye();
@@ -98,6 +102,7 @@ class Tentacle {
             }
             this.arm.target.x = lerp(this.arm.target.x, player.x, 0.05);
             this.arm.target.y = lerp(this.arm.target.y, player.y, 0.05); 
+            this.eyelidStateTarget = 4;
         },
         draw : function(){
             this.drawEye();
@@ -126,6 +131,7 @@ class Tentacle {
   update(){
       if(!inView(this)){ return; }
         this.baseSegmentLength = lerp(this.baseSegmentLength, this.targetSegmentLength, 0.01);
+        this.eyelidState = lerp(this.eyelidState, this.eyelidStateTarget, 0.05);
         this.arm.update();
         this.collider.update(this.x, this.y);
         this.tipCollider.update(this.tentacleEnd.x, this.tentacleEnd.y);
@@ -243,13 +249,11 @@ class Tentacle {
   }
   drawEye(){
     
-    //draw a white circle for the tentacle block eye
+    //draw a white square for base of eye
     canvasContext.save();
     canvasContext.fillStyle = "#ffffff";
-    canvasContext.beginPath();
-    canvasContext.arc(this.x - view.x + 16, this.y - view.y + 16, 10, 0, Math.PI * 2);
-    canvasContext.fill();
-    canvasContext.restore();
+    canvasContext.fillRect(this.x - view.x, this.y - view.y, 32, 32);
+    
 
     //draw a black circle for the tentacle block pupil, which follows the player
     canvasContext.save();
@@ -259,15 +263,8 @@ class Tentacle {
     canvasContext.fill();
     canvasContext.restore();
 
-    if (this.state == "asleep") {
-        // draw a drooping eyelid
-        canvasContext.save();
-        canvasContext.fillStyle = "#ff00ff";
-        canvasContext.beginPath();
-        canvasContext.arc(this.x - view.x + 16, this.y - view.y + 16, 10, Math.PI, 0);
-        canvasContext.fill();
-        canvasContext.restore();
-    }
+    //draw eyelid graphic (tilesets.tentacle_block)
+    drawTileSprite(tileSets.tentacle_block, Math.round(this.eyelidState), this.x - view.x, this.y - view.y);
   }
 
   drawArm(){
@@ -283,9 +280,6 @@ class Tentacle {
         let y = Math.floor(segment.y - view.y + yWiggle - rad/2)
         let segmentSize = Math.floor( rad+2 - rad * (i / totalSegments) / 2)
         drawTileSprite(tileSets.tentacle_arm, segmentSize, x, y );
-        //canvasContext.arc(segment.x - view.x + xWiggle, segment.y - view.y + yWiggle, rad+2 - rad * (i / totalSegments), 0, Math.PI * 2);
-        // canvasContext.fill();
-        // canvasContext.restore();
         }   
   }
 

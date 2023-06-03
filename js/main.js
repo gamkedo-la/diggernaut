@@ -134,6 +134,10 @@ function loadingComplete() {
         img["tentacle-arm"],
         {tileWidth: 32, tileHeight: 32, tileCount: 19, tileColumns: 19, tileRows: 1}
     )
+    tileSets.tentacle_block = new Tileset(
+        img["tentacle-block"],
+        {tileWidth: 32, tileHeight: 32, tileCount: 5, tileColumns: 5, tileRows: 1}
+    )
 
 
     collectibles = createCollectibles(tileSets);
