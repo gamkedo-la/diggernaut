@@ -13,6 +13,7 @@ class Stalagmite {
         this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: -1}, "Stalagmite")
     }
     draw(){
+        if(!inView(this)) return;
         drawTileSprite(tileSets.caveTileset, 16*10, this.x - view.x, this.y - view.y)
         this.collider.draw();
     }
