@@ -35,7 +35,7 @@ class AwardMessage {
   }
 
   kill() {
-    uiActors.splice(actors.indexOf(this), 1);
+    uiActors.splice(uiActors.indexOf(this), 1);
     console.log('killing award message')
   }
 

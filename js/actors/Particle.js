@@ -1,12 +1,12 @@
 class Particle {
-    constructor(x,y, options={}) {
+    constructor(x,y, options={}, pool=actors) {
 
         this.type = TYPE_PARTICLE;
         this.xVelocity = options.xVelocity();
         this.yVelocity = options.yVelocity();
         this.color = options.color();
         this.lifeMax = options.life();
-        this.life = options.life();
+        this.life = options.life() || 100;
         this.custom = options.custom || null;
         this.tileSprite = options.tileSprite || null;
         this.gravity = options.gravity() || 0;
@@ -17,16 +17,18 @@ class Particle {
         this.previousY = this.y;
         this.gradientPalette = options.gradientPalette || null;
         this.glow = options.glow || false;
-        this.pool = options.pool || actors;
+        this.pool = pool;
        
     }
 
     update() {
         this.previousX = this.x;
         this.previousY = this.y;
+
         if(!inView(this)){
             this.die();
         }
+
         this.yVelocity += this.gravity;
         this.x += this.xVelocity;
         this.y += this.yVelocity;
@@ -42,11 +44,6 @@ class Particle {
         if(this.life <= 0){
             this.die();
         }
-
-        //well this was a dumb idea and a huge bug
-        // if(Math.round(this.xVelocity) == 0 && Math.round(this.yVelocity) == 0){
-        //     this.die();
-        // }
 
         if(this.collides){
             if(tileMap.collidesWith(this.x, this.y)){
@@ -85,7 +82,7 @@ class Particle {
 
     die() {
        // console.log('particle died');
-        this.pool.splice(actors.indexOf(this), 1);
+        this.pool.splice(this.pool.indexOf(this), 1);
     }
 
     drawToGlowCanvas(frame) {

@@ -258,7 +258,7 @@ class Tentacle {
     if (this.blinkFrames){ 
         this.blinkFrames--;
         this.eyelidStateTarget = 0;
-    }else if (Math.random()<0.009){
+    }else if (Math.random()<0.009) {
          this.blinkFrames=10;
     }
 

@@ -460,6 +460,28 @@ const particleDefinitions = {
         }
     },
 
+    awardSparksBlue: function(){
+        return{
+        pool: uiActors,
+        quantity: 1000,
+        offset: {
+            x: () => rand(-300, 300),
+            y: () => rand(-15, 15)
+        },
+        collides: false,
+        color: () => "blue",
+        life: () => 50,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(2, -1),
+        gravity: () => 0,
+        custom: (particle) => {
+            particle.xvel += rand(-0.5, 0.5);
+            particle.yvel += rand(-0.2, 0.3);
+        },
+        gradientPalette: particleGradients.ice
+        }
+    },
+
     awardSparksMessageDeath: function(){
         return{
         pool: uiActors,
@@ -1208,7 +1230,7 @@ function createBlueUpgrades() {
         out[index].description = upgrade.description;
         out[index].effect = function(){
             
-            uiActors.push(new AwardMessage(player.x, player.y, `${this.description}`, bigFontGreen, 1, 100, particleDefinitions.awardSparks))
+            uiActors.push(new AwardMessage(player.x, player.y, `${this.description}`, bigFontBlue, 1, 100, particleDefinitions.awardSparksBlue))
             upgrade.effect();
             player.inventory.blueOre -= upgrade.cost;
             
