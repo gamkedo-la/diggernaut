@@ -28,15 +28,16 @@ class Particle {
         if(!inView(this)){
             this.die();
         }
+        if(this.custom){
+            this.custom(this);
+        }
 
         this.yVelocity += this.gravity;
         this.x += this.xVelocity;
         this.y += this.yVelocity;
         this.life--
 
-        if(this.custom){
-            this.custom(this);
-        }
+       
       
         if(!inView(this)){
             this.die();

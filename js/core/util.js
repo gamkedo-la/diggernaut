@@ -283,7 +283,7 @@ function screenShake (intensity) {
 }
 
 function rand(min, max) {
-    return mapRNG() * (max - min) + min;
+    return Math.random() * (max - min) + min;
 }
 
 function randInt(min, max) {

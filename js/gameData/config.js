@@ -152,21 +152,31 @@ const BLUE_UPGRADES = [
 const GOLD_UPGRADES = [
     {
         name: "Shield +",
-        description: "MINOR SHIELD",
+        description: "MAX SHIELD 20",
         cost: 50,
         effect: function () {
-            player.limits.shieldMax = 10;
-            player.shield = 10;
+            player.limits.shieldMax = 20;
+            player.shield = 20;
         }
     },
 
     {
         name: "Shield ++",
-        description: "BLAST SHIELD",
-        cost: 60,
+        description: "MAX SHIELD 30",
+        cost: 70,
         effect: function () {
-            player.limits.shieldMax = 20;
-            player.shield = 20;
+            player.limits.shieldMax = 30;
+            player.shield = 30;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "MAX SHIELD 40",
+        cost: 100,
+        effect: function () {
+            player.limits.shieldMax = 40;
+            player.shield = 40;
         }
     },
 ]
@@ -524,8 +534,34 @@ const particleDefinitions = {
         yVelocity: () => rand(2, -1),
         gravity: () => 0,
         custom: (particle) => {
-            particle.xvel += rand(-0.5, 0.5);
-            particle.yvel += rand(-0.2, 0.3);
+            particle.xVelocity += rand(-0.5, 0.5);
+            particle.yVelocity += rand(-0.2, 0.3);
+        },
+        gradientPalette: particleGradients.ore
+        }
+    },
+
+    shieldHit: function(){
+        return{
+        pool: uiActors,
+        quantity: 500,
+        offset: {
+            x: () => 0,
+            y: () => 0,
+        },
+        collides: false,
+        color: () => "gold",
+        life: () => 20,
+        xVelocity: () => rand(-0.4, 0.4),
+        yVelocity: () => rand(-0.6, 0.4),
+        gravity: () => 0,
+        custom: (particle) => {
+            if(particle.life >= 20){
+                let angle = Math.random() * 2 * Math.PI;
+                particle.x += Math.sin(angle) * 21;
+                particle.y += Math.cos(angle) * 21;
+            }
+            
         },
         gradientPalette: particleGradients.ore
         }
@@ -938,7 +974,7 @@ const destroyTileWithEffects = {
         emitParticles(x, y, particleDefinitions.destroyDirt);
         audio.playSound(sounds[randChoice(rock_crumbles)])
         audio.playSound(sounds.pickup);
-        let i = 10;
+        let i = 20;
         while(--i){ actors.push(new Ore(randInt(-16,16) + x, randInt(-16,16)+y))}  
     },
 
@@ -1300,7 +1336,7 @@ function createGoldUpgrades() {
             
             uiActors.push(new AwardMessage(player.x, player.y, `${this.description}`, bigFontOrangeGradient, 1, 100, particleDefinitions.awardSparksGold))
             upgrade.effect();
-            player.inventory.blueOre -= upgrade.cost;
+            player.inventory.goldOre -= upgrade.cost;
             
             }
 

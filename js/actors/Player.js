@@ -8,7 +8,7 @@ class Player {
         this.digging = false;
         this.hovering = false;
         this.helicopterCapacity = 0;
-        this.shield = 0;
+        this.shield = 10;
         this.showShieldCooldown = 0;
         this.depth = 0;
         this.score = 0;
@@ -22,7 +22,7 @@ class Player {
         this.facing = Direction.LEFT;
         
         this.inventory = {
-            ore: 0,
+            ore: 50,
             blueOre: 0,
         }
         
@@ -623,20 +623,20 @@ class Player {
         //draw a dot for each point of shield, in a circle around player
         this.showShieldCooldown = this.limits.showShieldCooldown;
         
-        //this.collider.emit(particleDefinitions.shieldHit);
+        emitParticles(this.x + 8, this.y + 10, particleDefinitions.shieldHit);
     }
 
     drawShield() {
         if (this.showShieldCooldown-- <= 0) return;
-        let shieldRadius = 16;
+        let shieldRadius = 25;
         let shieldAngle = 0;
         let shieldAngleIncrement = Math.PI*2/this.limits.shieldMax;
         for (let i = 0; i < this.shield; i++) {
-            let x = this.x + Math.cos(shieldAngle) * shieldRadius;
-            let y = this.y + Math.sin(shieldAngle) * shieldRadius;
+            let x = Math.floor( this.x + Math.cos(shieldAngle) * shieldRadius ) + 8;
+            let y = Math.floor( this.y + Math.sin(shieldAngle) * shieldRadius ) + 9;
             shieldAngle += shieldAngleIncrement;
             canvasContext.fillStyle = "yellow";
-            canvasContext.fillRect(x+4-view.x, y+6-view.y, 4, 4);
+            canvasContext.fillRect(x-view.x, y-view.y, 3, 3);
         }
     }
 
