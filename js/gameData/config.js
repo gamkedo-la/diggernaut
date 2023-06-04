@@ -137,13 +137,38 @@ const BLUE_UPGRADES = [
         }
     },
 
+    {
+        name: "Diggerang Damage +",
+        description: "DIGGERANG UBERDAMAGE",
+        cost: 90,
+        effect: function () {
+            player.diggerang.damageMultiplier = 4;
+        }
+    },
+
 ]
 
 
 const GOLD_UPGRADES = [
     {
-        name: "Armor class"
-    }
+        name: "Shield +",
+        description: "MINOR SHIELD",
+        cost: 50,
+        effect: function () {
+            player.limits.shieldMax = 10;
+            player.shield = 10;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "BLAST SHIELD",
+        cost: 60,
+        effect: function () {
+            player.limits.shieldMax = 20;
+            player.shield = 20;
+        }
+    },
 ]
 
 const COLORS = [
@@ -212,8 +237,10 @@ const COLORS = [
     '#5a4e44',
     '#423934'
 ]
-
-
+// const COLORS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
+//                 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,
+//                 33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,
+//                 48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63 ]
 const TYPE_PARTICLE = 0;
 const DIGGERANG_COST = 0;
 
@@ -479,6 +506,28 @@ const particleDefinitions = {
             particle.yvel += rand(-0.2, 0.3);
         },
         gradientPalette: particleGradients.ice
+        }
+    },
+
+    awardSparksGold: function(){
+        return{
+        pool: uiActors,
+        quantity: 1000,
+        offset: {
+            x: () => rand(-300, 300),
+            y: () => rand(-15, 15)
+        },
+        collides: false,
+        color: () => "blue",
+        life: () => 50,
+        xVelocity: () => rand(-1, 1),
+        yVelocity: () => rand(2, -1),
+        gravity: () => 0,
+        custom: (particle) => {
+            particle.xvel += rand(-0.5, 0.5);
+            particle.yvel += rand(-0.2, 0.3);
+        },
+        gradientPalette: particleGradients.ore
         }
     },
 
@@ -785,7 +834,8 @@ const imageList = [
     'diggerang-spin',
     'diggerang-spin-vertical',
     'tentacle-arm',
-    'tentacle-block'
+    'tentacle-block',
+    'aap64palette1x64'
 
     
 ]
@@ -1231,6 +1281,24 @@ function createBlueUpgrades() {
         out[index].effect = function(){
             
             uiActors.push(new AwardMessage(player.x, player.y, `${this.description}`, bigFontBlue, 1, 100, particleDefinitions.awardSparksBlue))
+            upgrade.effect();
+            player.inventory.blueOre -= upgrade.cost;
+            
+            }
+
+    });
+    return out;
+}
+
+function createGoldUpgrades() {
+    out = [];
+    GOLD_UPGRADES.forEach(function(upgrade, index, arr){
+        out[index] = {};
+        out[index].won = false;
+        out[index].description = upgrade.description;
+        out[index].effect = function(){
+            
+            uiActors.push(new AwardMessage(player.x, player.y, `${this.description}`, bigFontOrangeGradient, 1, 100, particleDefinitions.awardSparksGold))
             upgrade.effect();
             player.inventory.blueOre -= upgrade.cost;
             

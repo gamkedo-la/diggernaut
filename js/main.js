@@ -6,7 +6,7 @@ document.body.appendChild( stats.dom );
 
 //canvas setup
 canvas = document.getElementById("canvas");
-canvasContext = canvas.getContext("2d");
+canvasContext = canvas.getContext("2d", { alpha: false });
 canvas.imageSmoothingEnabled = false;
 canvas.style.imageRendering = "pixelated";
 canvas.width = 544;
@@ -16,13 +16,13 @@ canvas.height = 306;
 bufferCanvas = document.createElement("canvas");
 bufferCanvas.width = canvas.width;
 bufferCanvas.height = canvas.height;
-bufferContext = bufferCanvas.getContext("2d");
+bufferContext = bufferCanvas.getContext("2d", { alpha: false });
 
 //buffer canvas for colored text, or other effects
 bloomCanvas = document.createElement("canvas");
 bloomCanvas.width = canvas.width;
 bloomCanvas.height = canvas.height;
-bloomContext = bloomCanvas.getContext("2d");
+bloomContext = bloomCanvas.getContext("2d", { alpha: false });
 
 let gameState = GAMESTATE_TITLE,
  ticker = 0,
@@ -143,6 +143,7 @@ function loadingComplete() {
     collectibles = createCollectibles(tileSets);
     depthAwards = createDepthAwards(DEPTH_MILESTONES);
     blueUpgrades = createBlueUpgrades(BLUE_UPGRADES);
+    goldUpgrades = createGoldUpgrades(GOLD_UPGRADES);
 
     console.log('loading complete, starting game')
     sounds = loader.sounds;

@@ -59,6 +59,15 @@ const playScreen = {
             }
         }
 
+        for(let i = 0; i < GOLD_UPGRADES.length; i++){
+            if(player.inventory.ore == GOLD_UPGRADES[i].cost){
+                if(goldUpgrades[i].won) return;
+                goldUpgrades[ i ].effect();
+                goldUpgrades[ i ].won = true;
+                return;
+            }
+        }
+
 
 
     },

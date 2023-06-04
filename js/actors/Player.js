@@ -8,6 +8,8 @@ class Player {
         this.digging = false;
         this.hovering = false;
         this.helicopterCapacity = 0;
+        this.shield = 0;
+        this.showShieldCooldown = 0;
         this.depth = 0;
         this.score = 0;
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true); 
@@ -20,8 +22,8 @@ class Player {
         this.facing = Direction.LEFT;
         
         this.inventory = {
-            ore: 10,
-            blueOre: 10,
+            ore: 0,
+            blueOre: 0,
         }
         
         this.footstepDelay = 250; // ms between sounds
@@ -129,7 +131,8 @@ class Player {
             hoverYVelocity: -1,
             jumpMultiplier: 8,
             gravity: 0.25,
-
+            shieldMax: 10,
+            showShieldCooldown: 100,
         }
 
         this.gravity = this.limits.gravity
@@ -239,6 +242,9 @@ class Player {
         this.collider.draw()
         this.diggerang.draw();
         this.drawDamageTextFX();
+        if(this.showShieldCooldown > 0){ this.drawShield(); }
+
+        
 
         if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight(Direction.LEFT) };
         if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight(Direction.RIGHT) };
@@ -255,7 +261,9 @@ class Player {
         this.checkForFallingRocks();
         this.checkBounds();
         this.hurtCooldown--;
+        this.showShieldCooldown--;
         this.depth = Math.round(this.y/8);
+        this.shield = Math.min(this.shield, this.limits.shieldMax);
         this.canDig = this.checkDig();
         this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
         this.canHelicopter = !this.diggerang.active;
@@ -591,17 +599,45 @@ class Player {
     hurt(damage) {
         if(this.hurtCooldown > 0){ return; }
         //TODO: blink player sprite
-        this.collider.emit(particleDefinitions.hurt);
-        audio.playSound(sounds[randChoice(player_damages)]);
-        this.health -= damage;
-        if (this.health <= 0) {
-            this.health = 0;
-            this.die();
-        } else {
-            this.damageTextFX(damage);
-            tileMap.shakeScreen();
+        if(this.shield > 0){
+            this.shield -= damage;
+            this.shieldHit();
+        }
+        if(this.shield <= 0){
+            this.collider.emit(particleDefinitions.hurt);
+            audio.playSound(sounds[randChoice(player_damages)]);
+            this.health -= damage;
+            if (this.health <= 0) {
+                this.health = 0;
+                this.die();
+            } else {
+                this.damageTextFX(damage);
+                tileMap.shakeScreen();
+            }
         }
         this.hurtCooldown = this.limits.hurtCooldown;
+    }
+
+    shieldHit() {
+        //audio.playSound(sounds[randChoice(player_shield_hits)]);
+        //draw a dot for each point of shield, in a circle around player
+        this.showShieldCooldown = this.limits.showShieldCooldown;
+        
+        //this.collider.emit(particleDefinitions.shieldHit);
+    }
+
+    drawShield() {
+        if (this.showShieldCooldown-- <= 0) return;
+        let shieldRadius = 16;
+        let shieldAngle = 0;
+        let shieldAngleIncrement = Math.PI*2/this.limits.shieldMax;
+        for (let i = 0; i < this.shield; i++) {
+            let x = this.x + Math.cos(shieldAngle) * shieldRadius;
+            let y = this.y + Math.sin(shieldAngle) * shieldRadius;
+            shieldAngle += shieldAngleIncrement;
+            canvasContext.fillStyle = "yellow";
+            canvasContext.fillRect(x+4-view.x, y+6-view.y, 4, 4);
+        }
     }
 
     die() {

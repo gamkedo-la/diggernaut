@@ -53,13 +53,14 @@ function fillRect(x, y, width, height) {
  * @param  {} color: color of pixel. default is error magenta
  * 
  */
-function pset(x, y) {
-    canvasContext.fillRect(x|0, y|0, 1, 1);
+function pset(x, y, color, context=canvasContext) {
+    context.fillRect(x|0, y|0, 1, 1);
+    //context.drawImage(img['aap64palette1x64'], color, 0, 1, 1, x, y, 1, 1);
 }
 
 //line uses pset and breseham's line algorithm to draw a pixel line between two points in a single color
 //dynamically drawn objects and effects should use this instead of canvasContext.line, to avoid anti-aliasing.
-function line(x1, y1, x2, y2, color = '#FF00FF', context) {
+function line(x1, y1, x2, y2, color = 1, context=canvasContext) {
     context = context || canvasContext;
     //we take in floats, but we need to round them to integers for the algorithm to work
     x1 = Math.round(x1);
