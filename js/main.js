@@ -273,6 +273,10 @@ function generateMap(config){
         tileMap.insertPrefab(rooms.plus, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
         tileMap.insertPrefab(rooms.checkerboard, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
         tileMap.insertPrefab(rooms.pipe, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.longhallway, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.stairsleft, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.stairsright, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.hut, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
     }
 
     tileMap.insertPrefab(rooms["c-shelter"], 10, 16)
