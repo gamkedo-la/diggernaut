@@ -72,5 +72,17 @@ class uiMinimap {
 
         // display depth in meters
         tinyFont.drawText(player.depth+"m",{x:txtX,y:txtY},0,0, 1);
+
+        /*
+        // depth milestone minimap markers
+        // commented out because the world's so big they overlap on the map
+        for (let d of DEPTH_MILESTONES) {
+            if (d<=player.depth) {
+                let dpy = Math.round(this.height * ((d*8)/(tileMap.tileHeight*tileMap.heightInTiles)));
+                tinyFont.drawText("----",{x:this.x,y:dpy},0,0, 1);
+            } else break;
+        }
+        */
+
     }
 }

@@ -263,8 +263,18 @@ function generateMap(config){
     for(let i = 0; i < 100; i++){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        tileMap.insertPrefab(rooms.room1, x, y)
+        tileMap.insertPrefab(rooms.room1, x, y);
     }
+
+    //more random little rooms
+    for(let i = 0; i < 100; i++){
+        tileMap.insertPrefab(rooms.hallway, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.well, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.plus, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.checkerboard, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.pipe, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+    }
+
     tileMap.insertPrefab(rooms["c-shelter"], 10, 16)
     //columns prefab to test wall jump
     tileMap.insertPrefab(rooms.columns, 20, 20);
