@@ -1,8 +1,8 @@
 class Stalagmite {
     constructor(x,y){
         this.x = x;
-        this.y = y-1;
-        this.spawnY = y - 1;
+        this.y = y;;
+        this.spawnY = y;
         this.previousY = 0;
         this.yvel = 0;
         this.width = 32;
@@ -10,7 +10,7 @@ class Stalagmite {
         this.gravity = 0;
         this.yvelLimit = 5;
         this.health = 10;
-        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: -1}, "Stalagmite")
+        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "Stalagmite")
     }
     draw(){
         if(!inView(this)) return;
