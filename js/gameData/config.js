@@ -65,6 +65,20 @@ const damageValues = [
     10, //TILE_TENTACLE
 ]
 
+//these are arrays of damage values for each enemy type, indexed by world depth,
+//so that enemies can be made more difficult as the player goes deeper
+const enemyDamageValues = {
+    flyer:          [ 1, 1, 1, 1, 1, 1, 1 ],
+    crawler:        [ 1, 1, 1, 1, 1, 1, 1 ],
+    tentacleTip:    [ 1, 1, 1, 1, 1, 1, 1 ],
+    tentacleBlock:  [ 1, 1, 1, 1, 1, 1, 1 ],
+    fallingBlock:   [ 1, 1, 1, 1, 1, 1, 1 ],
+    explosiveTile:  [ 1, 1, 1, 1, 1, 1, 1 ],
+    stalagmite:     [ 1, 1, 1, 1, 1, 1, 1 ],
+}
+
+
+
 const GAMESTATE_TITLE = 0
 const GAMESTATE_PLAY = 1;
 const GAMESTATE_GAME_OVER = 2;

@@ -318,6 +318,7 @@ class Player {
                 this.digging = true;
                 this.dig(Direction.UP);
             }
+            this.facing = Direction.UP;
             
         } 
         else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s) || Key.isDown(Key.j) || Joy.down) {
@@ -325,6 +326,7 @@ class Player {
                 this.digging = true;
                 this.dig(Direction.DOWN);
             }
+            this.facing = Direction.DOWN;
         }
 
         if (Key.isDown(Key.SPACE) || Joy.a) {
@@ -620,9 +622,7 @@ class Player {
 
     shieldHit() {
         //audio.playSound(sounds[randChoice(player_shield_hits)]);
-        //draw a dot for each point of shield, in a circle around player
         this.showShieldCooldown = this.limits.showShieldCooldown;
-        
         emitParticles(this.x + 8, this.y + 10, particleDefinitions.shieldHit);
     }
 
@@ -679,7 +679,7 @@ class Player {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y-16;
                 this.diggerang.xvel = 6; // Set the initial horizontal velocity
-                this.diggerang.yvel = -0.5; // Set the initial vertical velocity
+                this.diggerang.yvel = 0; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
@@ -688,11 +688,28 @@ class Player {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y-16;
                 this.diggerang.xvel = -6; // Set the initial horizontal velocity
-                this.diggerang.yvel = -0.5; // Set the initial vertical velocity
+                this.diggerang.yvel = 0; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
             break;
+            case Direction.UP: {
+                this.diggerang.x = this.x;
+                this.diggerang.y = this.y-16;
+                this.diggerang.xvel = 0; // Set the initial horizontal velocity
+                this.diggerang.yvel = -6; // Set the initial vertical velocity
+                this.diggerang.active = true;
+                this.diggerang.returning = false;
+            }
+            break;
+            case Direction.DOWN: {
+                this.diggerang.x = this.x;
+                this.diggerang.y = this.y-16;
+                this.diggerang.xvel = 0; // Set the initial horizontal velocity
+                this.diggerang.yvel = 6; // Set the initial vertical velocity
+                this.diggerang.active = true;
+                this.diggerang.returning = false;
+            }        
         }
         
       }
