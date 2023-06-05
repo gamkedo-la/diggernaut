@@ -1,20 +1,20 @@
 class Stalagmite {
     constructor(x,y){
         this.x = x;
-        this.y = y;;
-        this.spawnY = y;
+        this.y = y+12;
+        this.spawnY = y+12;
         this.previousY = 0;
         this.yvel = 0;
         this.width = 32;
-        this.height = 32;
+        this.height = 20;
         this.gravity = 0;
         this.yvelLimit = 5;
         this.health = 10;
-        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top: 0, bottom: 0}, "Stalagmite")
+        this.collider = new Collider(this.x, this.y, this.width, this.height, {left: 0, right: 0, top:0, bottom:0}, "Stalagmite")
     }
     draw(){
         if(!inView(this)) return;
-        drawTileSprite(tileSets.caveTileset, 16*10, this.x - view.x, this.y - view.y)
+        drawTileSprite(tileSets.caveTileset, 16*10, this.x - view.x, this.y-12 - view.y)
         this.collider.draw();
     }
     update(){
