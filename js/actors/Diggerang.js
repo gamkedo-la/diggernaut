@@ -9,7 +9,8 @@ class Diggerang {
     this.previousX = this.x;
     this.previousY = this.y;
     this.width = 24;
-    this.height = 24;
+    this.height = 16;
+    this.drawOffset = {x: 0, y: 0};
     this.active = false;
     this.returning = false;
     this.timeSinceThrown = 0;
@@ -59,14 +60,9 @@ class Diggerang {
     if (!this.active) { this.stop(); return; }
     this.currentAnimation.update();
 
-    let end1X = this.x + 16 + Math.cos ((ticker / 2) + Math.PI) * 16;
-    let end1Y = this.y + 8 + Math.sin ((ticker / 2) + Math.PI) * 8;
-    let end2X = this.x  + 16 + Math.cos (ticker / 2) * 16;
-    let end2Y = this.y  + 8 + Math.sin (ticker / 2) * 8;
-    emitParticles(end1X, end1Y, particleDefinitions.blueOreSparks);
-    emitParticles(end2X, end2Y, particleDefinitions.blueOreSparks);
-    emitParticles(end1X, end1Y, particleDefinitions.blueOreSparks);
-    emitParticles(end2X, end2Y, particleDefinitions.blueOreSparks);
+    this.handleUpgrades();
+
+    
 
     this.previousX = this.x;
     this.previousY = this.y;
@@ -123,8 +119,8 @@ class Diggerang {
 
    
     this.currentAnimation.render({
-      x: Math.floor(this.x-view.x),
-      y: Math.floor(this.y-view.y),
+      x: Math.floor(this.x-view.x-4),
+      y: Math.floor(this.y-view.y-8),
       width: 32,
       height: 32
     })
@@ -137,7 +133,7 @@ class Diggerang {
                  this.y - view.y - 16,
                  bufferContext);
             bufferContext.restore();
-    //this.collider.draw();
+    this.collider.draw();
   }
 
   pan() {
@@ -208,7 +204,9 @@ class Diggerang {
 
               //slow down after bumping into a wall
               this.xvel *= 0.9;
+              this.xvel += Math.random() * 0.1 - 0.05;
               this.yvel *= 0.9;
+              this.yvel += Math.random() * 0.1 - 0.05;
               break;
             }
         }
@@ -224,6 +222,18 @@ class Diggerang {
     this.collider.update(this.x, this.y);
   }
 
+  handleUpgrades() {
+    if(player.upgrades.boomerang) {
+      let end1X = this.x + 16 + Math.cos ((ticker / 2) + Math.PI) * 16;
+      let end1Y = this.y + 12 + Math.sin ((ticker / 2) + Math.PI) * 8;
+      let end2X = this.x  + 16 + Math.cos (ticker / 2) * 16;
+      let end2Y = this.y  + 12 + Math.sin (ticker / 2) * 8;
+      emitParticles(end1X, end1Y, particleDefinitions.blueOreSparks);
+      emitParticles(end2X, end2Y, particleDefinitions.blueOreSparks);
+      emitParticles(end1X, end1Y, particleDefinitions.blueOreSparks);
+      emitParticles(end2X, end2Y, particleDefinitions.blueOreSparks);
+    }
+  }
   stop() {
     this.x = player.x;
     this.y = player.y;

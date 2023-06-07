@@ -12,6 +12,7 @@ class Player {
         this.showShieldCooldown = 0;
         this.depth = 0;
         this.score = 0;
+        this.upgrades = {};
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true); 
         this.drawOffset = {
             x: 7,
@@ -122,7 +123,7 @@ class Player {
             maxYAccel: 5,
             digCooldown: 12,
             hurtCooldown: 20,
-            healthMax: 100,
+            healthMax: 50,
             moveLeftCooldown: 20,
             moveRightCooldown: 20,
             coyoteCooldown: 10,
@@ -168,7 +169,7 @@ class Player {
         this.xAccel = 0;
         this.yAccel = 0;
         this.digCooldown = 12;
-        this.hurtCooldown = 0;
+        this.hurtCooldown = 300;
         this.health = 40;
         this.moveLeftCooldown = 0;
         this.moveRightCooldown = 0;
@@ -176,12 +177,13 @@ class Player {
         this.wallSliding = false;
         this.facing = Direction.LEFT;
         this.score = 0;
-        //this.diggerang = new Diggerang(this.x, this.y);
+        this.upgrades = {};
         this.inventory = {
             ore: 5,
             blueOre: 5,
         }
         blueUpgrades = createBlueUpgrades();
+        goldUpgrades = createGoldUpgrades();
     }
     draw() {
        this.currentAnimation.render({
@@ -253,9 +255,6 @@ class Player {
     }
 
     update() {
-
-       
-
         this.applyForces();
         this.handleCollisions();
         this.checkForFallingRocks();
@@ -348,6 +347,15 @@ class Player {
         if (Key.justReleased(Key.p) || Joy.startReleased) { signal.dispatch('pause'); }
         if (Key.justReleased(Key.i) || Joy.yReleased) { signal.dispatch('inventory'); }
         if (Key.justReleased(Key.x) || Joy.bReleased) { this.throw() }
+    }
+
+    shieldBoost(amount) {
+        this.shield += amount;
+        if(this.shield != this.limits.shieldMax){
+            this.showShieldCooldown = this.limits.showShieldCooldown;
+        }
+        
+        
     }
 
     updateCollider(x, y) {
@@ -677,7 +685,7 @@ class Player {
         switch(this.facing){
             case Direction.RIGHT: {
                 this.diggerang.x = this.x;
-                this.diggerang.y = this.y-16;
+                this.diggerang.y = this.y;
                 this.diggerang.xvel = 6; // Set the initial horizontal velocity
                 this.diggerang.yvel = 0; // Set the initial vertical velocity
                 this.diggerang.active = true;
@@ -686,7 +694,7 @@ class Player {
             break;
             case Direction.LEFT: {
                 this.diggerang.x = this.x;
-                this.diggerang.y = this.y-16;
+                this.diggerang.y = this.y;
                 this.diggerang.xvel = -6; // Set the initial horizontal velocity
                 this.diggerang.yvel = 0; // Set the initial vertical velocity
                 this.diggerang.active = true;
@@ -694,8 +702,8 @@ class Player {
             }
             break;
             case Direction.UP: {
-                this.diggerang.x = this.x;
-                this.diggerang.y = this.y-16;
+                this.diggerang.x = this.x-4;
+                this.diggerang.y = this.y-4;
                 this.diggerang.xvel = 0; // Set the initial horizontal velocity
                 this.diggerang.yvel = -6; // Set the initial vertical velocity
                 this.diggerang.active = true;
@@ -703,8 +711,8 @@ class Player {
             }
             break;
             case Direction.DOWN: {
-                this.diggerang.x = this.x;
-                this.diggerang.y = this.y-16;
+                this.diggerang.x = this.x-4;
+                this.diggerang.y = this.y+8;
                 this.diggerang.xvel = 0; // Set the initial horizontal velocity
                 this.diggerang.yvel = 6; // Set the initial vertical velocity
                 this.diggerang.active = true;

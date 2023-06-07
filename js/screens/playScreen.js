@@ -123,7 +123,7 @@ const playScreen = {
         bufferContext.globalCompositeOperation = 'screen';
         let randX = randChoice([0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,-1]);
         let randY = randChoice([0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,-1]);
-        bufferContext.drawImage(img['big_green_glow'], player.x-view.x-160 + randX, player.y-view.y-160 + randY, 320, 320 );
+        bufferContext.drawImage(img['big_green_glow'], player.x-view.x-160, player.y-view.y-160, 320, 320 );
         bufferContext.restore();
     },
 

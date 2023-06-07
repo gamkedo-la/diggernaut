@@ -60,7 +60,7 @@ class Ore {
         if(this.distanceTo(player) < 10 && this.life < 270){
             audio.playSound(sounds["clink"]);
             player.inventory.ore++;
-            player.shield++;
+            player.shieldBoost(0.25);
             this.destroy();
         }
         if(this.distanceTo(player.diggerang) < 90 && player.diggerang.active){

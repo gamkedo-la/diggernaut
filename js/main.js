@@ -210,6 +210,7 @@ function generateMap(config){
     ui.miniMap = new uiMinimap(tileMap);
     let choices = mapConfig.caveGenPools.vanilla;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
+
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
@@ -267,18 +268,18 @@ function generateMap(config){
     }
 
     //more random little rooms
-    for(let i = 0; i < 100; i++){
-        tileMap.insertPrefab(rooms.hallway, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.well, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.plus, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.checkerboard, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.pipe, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.longhallway, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.stairsleft, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.stairsright, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.hut, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.t_intersection, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
-        tileMap.insertPrefab(rooms.platform, Math.floor(mapRNG() * tileMap.widthInTiles), Math.floor(mapRNG() * tileMap.heightInTiles));
+    for(let i = 0; i < 1000; i++){
+        tileMap.insertPrefab(rooms.hallway, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.well, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.plus, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.checkerboard, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.pipe, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.longhallway, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.stairsleft, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.stairsright, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.hut, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.t_intersection, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.platform, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
     }
 
     tileMap.insertPrefab(rooms["c-shelter"], 10, 16)
@@ -327,18 +328,7 @@ function populateMap(config){
     actors.push(new Tentacle(playerSettings.x + 32*11, playerSettings.y + 32*6));
     tileMap.setTileAtPixelPosition(playerSettings.x + 32*11, playerSettings.y + 32*6, TILE_EMPTY);
 
-    //create several tentacles  within 20 tiles of player
-    for(let i = 0; i < 10; i++){
-        let x = playerSettings.x + Math.floor(rand(-320, 320));
-        let y = playerSettings.y + Math.floor(rand(0, 1000));
-        //make x and y multiples of 32
-        x = Math.floor(x / 32) * 32;
-        y = Math.floor(y / 32) * 32;
-        //set tile to empty
-        tileMap.setTileAtPixelPosition(x, y, TILE_EMPTY);
-
-        actors.push(new Tentacle(x, y));
-    }
+   
 
 
 
@@ -377,6 +367,19 @@ function populateMap(config){
                 new Stalagmite(x * tileMap.tileWidth, (y-1) * tileMap.tileHeight)
             )
         }
+    }
+
+     //create several tentacles  within 20 tiles of player
+     for(let i = 0; i < 10; i++){
+        let x = playerSettings.x + Math.floor(rand(-320, 320));
+        let y = playerSettings.y + Math.floor(rand(0, 1000));
+        //make x and y multiples of 32
+        x = Math.floor(x / 32) * 32;
+        y = Math.floor(y / 32) * 32;
+        //set tile to empty
+        tileMap.setTileAtPixelPosition(x, y, TILE_EMPTY);
+
+        actors.push(new Tentacle(x, y));
     }
 
     for(let i = 0; i < collectibles.Treasure.length; i++){

@@ -317,7 +317,7 @@ const playerSettings = {
 }
 
 // Setting seed to a specific value causes mapRNG to run the same sequence of numbers each time it restarts
-let seed = 3141592653589793;
+const seed = Math.random() * 100000000000000000;
 const mapRNG = new Math.seedrandom(seed);
 
 var sounds = {};
@@ -548,8 +548,8 @@ const particleDefinitions = {
         yVelocity: () => rand(2, -1),
         gravity: () => 0,
         custom: (particle) => {
-            particle.xVelocity += rand(-0.5, 0.5);
-            particle.yVelocity += rand(-0.2, 0.3);
+            particle.xVelocity = rand(-2, 2),
+            particle.yVelocity = rand(-2, 2)
         },
         gradientPalette: particleGradients.ore
         }
@@ -566,15 +566,20 @@ const particleDefinitions = {
         collides: false,
         color: () => "gold",
         life: () => 20,
-        xVelocity: () => rand(-0.4, 0.4),
-        yVelocity: () => rand(-0.6, 0.4),
+        xVelocity: () => 0,
+        yVelocity: () => 0,
         gravity: () => 0,
         custom: (particle) => {
+            var angle = Math.random() * 2 * Math.PI;
             if(particle.life >= 20){
-                let angle = Math.random() * 2 * Math.PI;
+                
                 particle.x += Math.sin(angle) * 21;
                 particle.y += Math.cos(angle) * 21;
+                particle.xVelocity = Math.sin(angle + Math.PI)
+                particle.yVelocity = Math.cos(angle + Math.PI)
             }
+            particle.xVelocity += (Math.random() - 0.5) ;
+            particle.yVelocity += (Math.random() - 0.5) ;
             
         },
         gradientPalette: particleGradients.ore
