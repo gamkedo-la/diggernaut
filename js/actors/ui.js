@@ -70,14 +70,14 @@ const ui = {
         }
 
         canvasContext.fillStyle = ui.energyBar.color;
-        canvasContext.fillRect(ui.energyBar.x, ui.energyBar.y+8, Math.min(100, energyBarWidth), ui.energyBar.height);
+        canvasContext.fillRect(ui.energyBar.x, ui.energyBar.y + 8, Math.min(100, energyBarWidth), ui.energyBar.height);
         drawTileSprite(tileSets.ui_icons, 2, ui.energyBar.x - 16, ui.energyBar.y);
 
         // Ore Bar
         const oreCrates = Math.floor(ui.oreBar.value / 500);
         const oreBoxes = Math.floor((ui.oreBar.value % 500) / 100);
         const oreBarWidth = Math.floor((ui.oreBar.value % 500) % 100);
-        
+
 
         canvasContext.fillStyle = ui.oreBar.crateColor;
         canvasContext.strokeStyle = ui.oreBar.crateStroke;
@@ -94,7 +94,7 @@ const ui = {
         }
 
         canvasContext.fillStyle = ui.oreBar.color;
-        canvasContext.fillRect(ui.oreBar.x, ui.oreBar.y+8, Math.min(100, oreBarWidth), ui.oreBar.height);
+        canvasContext.fillRect(ui.oreBar.x, ui.oreBar.y + 8, Math.min(100, oreBarWidth), ui.oreBar.height);
         drawTileSprite(tileSets.ui_icons, 1, ui.oreBar.x - 16, ui.oreBar.y);
 
 
@@ -113,5 +113,5 @@ const ui = {
         ui.healthBar.value = player.health;
         ui.oreBar.value = player.inventory.ore;
     }
-    
+
 }

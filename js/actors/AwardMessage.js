@@ -25,18 +25,15 @@ class AwardMessage {
       this.kill();
       emitParticles(this.x-30, this.drawY-30, particleDefinitions.awardSparksMessageDeath, uiActors);
     }
-    
   }
 
   draw(ctx) {
     if (!this.active) return;
-    
     this.font.drawText(this.message, {x: this.x - view.x - 100, y: this.drawY - view.y - 50 }, 0, 0, this.scale)
   }
 
   kill() {
     uiActors.splice(uiActors.indexOf(this), 1);
-    console.log('killing award message')
   }
 
 }

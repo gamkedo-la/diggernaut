@@ -4,7 +4,7 @@ const gameOverScreen = {
         canvasContext.fillStyle = 'black';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         
-        bigFontRed.drawText("GAME OVER", { x: 110, y: 70 + Math.sin(ticker/10) * 20 }, 0, 1, 3);
+        bigFontRed.drawText("GAME OVER", { x: 110, y: 70 + Math.sin(ticker/20) * 20 }, 0, 1, 3);
         gameFont.drawText("Press Enter to return to titleScreen\nPress SPACE to try again", { x: 140, y: 190 }, 0, 1);
     },
     update: function () {

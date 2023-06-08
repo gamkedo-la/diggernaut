@@ -1,4 +1,4 @@
-const Signal = function Signal(){
+const Signal = function Signal() {
     var target = document.createTextNode(null);
     this.addEventListener = target.addEventListener.bind(target);
     this.removeEventListener = target.removeEventListener.bind(target);
@@ -7,9 +7,9 @@ const Signal = function Signal(){
     return this;
 }
 
-Signal.prototype.dispatch = function dispatch(eventName, params={}){
+Signal.prototype.dispatch = function dispatch(eventName, params = {}) {
     console.log('dispatching event: ' + eventName);
-    var event = new CustomEvent(eventName, {detail: params});
+    var event = new CustomEvent(eventName, { detail: params });
     this.dispatchEvent(event);
 }
 

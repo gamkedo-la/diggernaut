@@ -1,6 +1,7 @@
 
 
 signal.addEventListener('startGame', startGame);
+signal.addEventListener('resetGame', resetGame);
 signal.addEventListener('gotoPlay', function (event) { gameState = GAMESTATE_PLAY;stats.domElement.style.display = 'block'; }, false)
 signal.addEventListener('gameOver', gameOver);
 signal.addEventListener('titleScreen', gotoTitleScreen);
@@ -17,6 +18,15 @@ signal.addEventListener('pause', gotoInventory);
 function startGame(event){
     startTransition(() => {
         console.log('startGame triggered');
+        playScreen.reset();
+        gameState = GAMESTATE_PLAY;
+    });
+}
+
+function resetGame(event){
+    startTransition(() => {
+        console.log('resetGame triggered');
+        gameSetup();
         playScreen.reset();
         gameState = GAMESTATE_PLAY;
     });
@@ -66,11 +76,5 @@ function gotoCreditScreen(event){
     });
 }
 
-function emitParticles(x, y, definition, pool=actors){
-    
-    for (let i = 0; i < definition().quantity; i++) {
-        let particle = new Particle(x + definition().offset.x(), y + definition().offset.y(), definition(), pool);
-        pool.push(particle);
-    }
-}
+
 

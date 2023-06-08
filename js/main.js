@@ -48,14 +48,33 @@ function initAudio() {
 }
 
 function loadSounds() {
-    console.log('loading sounds');
+    // console.log('loading sounds');
     loader.soundLoader({ context: audio.context, urlList: soundList, callback: loadingComplete });
     loader.loadAudioBuffer();
 }
 
 function loadingComplete() {
 
-    //create tileset sprites from loaded images
+    
+    generateSpriteFonts();
+    processURLQuery();
+    generateTilesets();
+    gameSetup();
+    begin(fps);
+}
+
+function generateSpriteFonts() {
+    gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
+    bigFont = new spriteFont(510, 128*4, 12, 36, img["bigFont"])
+    bigFontBlack = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72)
+    bigFontOrangeGradient = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*2)
+    bigFontBlue = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*3)
+    bigFontGreen = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*4)
+    bigFontRed = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*5)
+    tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
+}
+
+function generateTilesets() {
     tileSets.caveTileset = new Tileset(
         img["autoTiles"], 
         {tileWidth: 32, tileHeight: 32, tileCount: 16*10, tileColumns: 16, tileRows: 10});
@@ -138,29 +157,18 @@ function loadingComplete() {
         img["tentacle-block"],
         {tileWidth: 32, tileHeight: 32, tileCount: 5, tileColumns: 5, tileRows: 1}
     )
+}
 
-
+function gameSetup() {
+    player = new Player(playerSettings),
     collectibles = createCollectibles(tileSets);
     depthAwards = createDepthAwards(DEPTH_MILESTONES);
     blueUpgrades = createBlueUpgrades(BLUE_UPGRADES);
     goldUpgrades = createGoldUpgrades(GOLD_UPGRADES);
 
-    console.log('loading complete, starting game')
     sounds = loader.sounds;
     generateMap(mapConfig);    
     populateMap(mapConfig);
-
-    player = new Player(playerSettings),
-    gameFont = new spriteFont(255, 128, 6, 9, img["smallFont"])
-    bigFont = new spriteFont(510, 128*4, 12, 36, img["bigFont"])
-    bigFontBlack = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72)
-    bigFontOrangeGradient = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*2)
-    bigFontBlue = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*3)
-    bigFontGreen = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*4)
-    bigFontRed = new spriteFont(510, 128*4, 12, 36, img["bigFont"], 0, 72*5)
-    tinyFont = new spriteFont(320, 240, 4, 6, img["3x5font"])
-    processURLQuery();
-    begin(fps);
 }
 
 function begin(fps) {
@@ -168,6 +176,7 @@ function begin(fps) {
     then = Date.now();
     startTime = then;
     Joy.init();
+    // console.log('loading complete, starting game')
     mainLoop();
 }
 
@@ -208,9 +217,9 @@ function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
     ui.miniMap = new uiMinimap(tileMap);
+
     let choices = mapConfig.caveGenPools.vanilla;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
-
     let mapTotalTiles = config.widthInTiles * config.heightInTiles;
     
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
@@ -222,7 +231,6 @@ function generateMap(config){
         const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const y = Math.floor(mapRNG() * tileMap.heightInTiles);
         tileMap.tileFillRect(x, y, 2, 2, 0);
-        //tileMap.data[i] = 0;
     }
 
     //random room sized voids
@@ -260,13 +268,6 @@ function generateMap(config){
         tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.oreGalore);
     }
 
-    //test of prefab function
-    for(let i = 0; i < 100; i++){
-        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        tileMap.insertPrefab(rooms.room1, x, y);
-    }
-
     //more random little rooms
     for(let i = 0; i < 1000; i++){
         tileMap.insertPrefab(rooms.hallway, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
@@ -282,10 +283,6 @@ function generateMap(config){
         tileMap.insertPrefab(rooms.platform, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
     }
 
-    tileMap.insertPrefab(rooms["c-shelter"], 10, 16)
-    //columns prefab to test wall jump
-    tileMap.insertPrefab(rooms.columns, 20, 20);
-
     //fill two columns at left and right edge with unbreakable blocks
     tileMap.tileFillRect(0, 0, 1, tileMap.heightInTiles, 3);
     tileMap.tileFillRect(tileMap.widthInTiles-1, 0, 1, tileMap.heightInTiles, 3);
@@ -299,38 +296,11 @@ function generateMap(config){
 }
 
 function populateMap(config){
-    // let i = 20;
-    // while(i--){
-    //     let x = playerSettings.x + Math.floor(rand(-300, 300));
-    //     let y = 600 + Math.floor(rand(-50, 10));
-    //     let arm = new Arm(x, y);
-    //     arm.addSegment(10);
-    //     arm.addSegment(10);
-    //     arm.addSegment(10);
-    //     arm.addSegment(10);
-    //     arm.addSegment(10);
-    //     arm.addSegment(10);
-    //     arm.addSegment(10);
-    //     arm.addSegment(10);
-    //     actors.push(arm);
-    // }
 
-    
-    actors.push(new Tentacle(playerSettings.x + 32*2, playerSettings.y ));
-    tileMap.setTileAtPixelPosition(playerSettings.x + 32*2, playerSettings.y, TILE_EMPTY);
-    
-    actors.push(new Tentacle(playerSettings.x - 32*5, playerSettings.y + 32*2));
-    tileMap.setTileAtPixelPosition(playerSettings.x + 32*5, playerSettings.y + 32*2, TILE_EMPTY);
-
-    actors.push(new Tentacle(playerSettings.x + 32*7, playerSettings.y + 32*3));
-    tileMap.setTileAtPixelPosition(playerSettings.x + 32*7, playerSettings.y + 32*3, TILE_EMPTY);
-
-    actors.push(new Tentacle(playerSettings.x + 32*11, playerSettings.y + 32*6));
-    tileMap.setTileAtPixelPosition(playerSettings.x + 32*11, playerSettings.y + 32*6, TILE_EMPTY);
-
-   
-
-
+    //TODO
+    /* break this down into a function that spawn more enemies ahead of player at certain depth intervals,
+        and different subsets of enemies at different depths
+    */
 
     for (let i = 0; i < 10000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
@@ -341,6 +311,7 @@ function populateMap(config){
             )
         }
     }
+
     for (let i = 0; i < 5000; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = Math.floor(mapRNG() * tileMap.heightInTiles);
@@ -349,9 +320,7 @@ function populateMap(config){
             while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
                 y++;
             }
-            actors.push(
-                new Crawler(x * tileMap.tileWidth, (y-1) * tileMap.tileHeight)
-            )
+            actors.push( new Crawler(x * tileMap.tileWidth, (y-1) * tileMap.tileHeight) )
         }
     }
 
@@ -363,9 +332,7 @@ function populateMap(config){
             while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
                 y++;
             }
-            actors.push(
-                new Stalagmite(x * tileMap.tileWidth, (y-1) * tileMap.tileHeight)
-            )
+            actors.push( new Stalagmite(x * tileMap.tileWidth, (y-1) * tileMap.tileHeight) )
         }
     }
 
@@ -378,7 +345,6 @@ function populateMap(config){
         y = Math.floor(y / 32) * 32;
         //set tile to empty
         tileMap.setTileAtPixelPosition(x, y, TILE_EMPTY);
-
         actors.push(new Tentacle(x, y));
     }
 
@@ -396,7 +362,6 @@ function populateMap(config){
                     "Treasure",
                     collectibles.Treasure[i])
             )
-            console.log(`spawned treasure at ${x}, ${y}`)
         }else{
             tileMap.setTileAtPosition(x, y, TILE_EMPTY);
             actors.push(
@@ -404,7 +369,6 @@ function populateMap(config){
                     "Treasure",
                     collectibles.Treasure[i])
             )
-            console.log(`spawned treasure at ${x}, ${y}`)
         }
     }
    

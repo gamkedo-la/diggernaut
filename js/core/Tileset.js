@@ -1,6 +1,6 @@
 class Tileset {
 
-  constructor (image, {tileWidth, tileHeight, tileCount, tileColumns, tileRows}) {
+  constructor(image, { tileWidth, tileHeight, tileCount, tileColumns, tileRows }) {
     this.image = image;
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
@@ -9,5 +9,5 @@ class Tileset {
     this.tileRows = tileRows;
   }
 
-  
+
 }

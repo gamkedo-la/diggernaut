@@ -428,7 +428,7 @@ const particleDefinitions = {
 
     helicopter: function(){
         return{
-            quantity: 12,
+            quantity: 8,
             offset: {
                 x: () => 8 + rand(-16, 16),
                 y: () => -4 + rand(-8, 8)
@@ -449,7 +449,7 @@ const particleDefinitions = {
             
     oreSparks: function(){
         return{
-        quantity: 2,
+        quantity: 1,
         offset: {
             x: () => rand(-2.5, 2.5),
             y: () => 0
@@ -460,10 +460,6 @@ const particleDefinitions = {
         xVelocity: () => rand(-0.2, .2),
         yVelocity: () => rand(0, -1),
         gravity: () => rand(0, 0.1),
-        custom: (particle) => {
-            particle.xvel += rand(-0.5, 0.5);
-            particle.yvel += rand(-0.2, 0.3);
-        },
         gradientPalette: particleGradients.ore
         }
     },
@@ -492,7 +488,7 @@ const particleDefinitions = {
     awardSparks: function(){
         return{
         pool: uiActors,
-        quantity: 1000,
+        quantity: 800,
         offset: {
             x: () => rand(-300, 300),
             y: () => rand(-15, 15)
@@ -503,10 +499,6 @@ const particleDefinitions = {
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(2, -1),
         gravity: () => 0,
-        custom: (particle) => {
-            particle.xvel += rand(-0.5, 0.5);
-            particle.yvel += rand(-0.2, 0.3);
-        },
         gradientPalette: particleGradients.green
         }
     },
@@ -514,7 +506,7 @@ const particleDefinitions = {
     awardSparksBlue: function(){
         return{
         pool: uiActors,
-        quantity: 1000,
+        quantity: 800,
         offset: {
             x: () => rand(-300, 300),
             y: () => rand(-15, 15)
@@ -525,10 +517,6 @@ const particleDefinitions = {
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(2, -1),
         gravity: () => 0,
-        custom: (particle) => {
-            particle.xvel += rand(-0.5, 0.5);
-            particle.yvel += rand(-0.2, 0.3);
-        },
         gradientPalette: particleGradients.ice
         }
     },
@@ -536,7 +524,7 @@ const particleDefinitions = {
     awardSparksGold: function(){
         return{
         pool: uiActors,
-        quantity: 1000,
+        quantity: 800,
         offset: {
             x: () => rand(-300, 300),
             y: () => rand(-15, 15)
@@ -547,10 +535,6 @@ const particleDefinitions = {
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(2, -1),
         gravity: () => 0,
-        custom: (particle) => {
-            particle.xVelocity = rand(-2, 2),
-            particle.yVelocity = rand(-2, 2)
-        },
         gradientPalette: particleGradients.ore
         }
     },
@@ -558,7 +542,7 @@ const particleDefinitions = {
     shieldHit: function(){
         return{
         pool: uiActors,
-        quantity: 500,
+        quantity: 300,
         offset: {
             x: () => 0,
             y: () => 0,
@@ -589,7 +573,7 @@ const particleDefinitions = {
     awardSparksMessageDeath: function(){
         return{
         pool: uiActors,
-        quantity: 500,
+        quantity: 300,
         offset: {
             x: () => rand(-75, 75),
             y: () => rand(18, -18)
@@ -610,7 +594,7 @@ const particleDefinitions = {
 
     healthSparks: function(){
         return{
-        quantity: 3,
+        quantity: 1,
         offset: {
             x: () => rand(-2.5, 2.5),
             y: () => 0
@@ -631,7 +615,7 @@ const particleDefinitions = {
 
     fallSparks: function(){
         return{
-        quantity: 50,
+        quantity: 30,
         offset: {
             x: () => 0,
             y: () => 0
@@ -665,7 +649,7 @@ const particleDefinitions = {
 
     hurt: function(){
         return{
-            quantity: 100,
+            quantity: 50,
             offset: {
                 x: () =>  0,
                 y: () => 0
@@ -682,7 +666,7 @@ const particleDefinitions = {
 
     explodingTile: function(){
         return{
-        quantity: 20,
+        quantity: 10,
         offset: {
             x: () => 0,
             y: () => 0
@@ -699,7 +683,7 @@ const particleDefinitions = {
     boom25px: function(){
         return{
         tileSprite: tileSets.splode_25px,
-        quantity: 2,
+        quantity: 1,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -735,7 +719,7 @@ const particleDefinitions = {
         return{
         tileSprite: tileSets.splode_glow32px,
         glow: true,
-        quantity: 4,
+        quantity: 1,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -752,7 +736,7 @@ const particleDefinitions = {
     boom17px: function(){
         return{
         tileSprite: tileSets.splode_17px,
-        quantity: 3,
+        quantity: 1,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -770,7 +754,7 @@ const particleDefinitions = {
         return{
         tileSprite: tileSets.splode_7px,
         //glow: true,
-        quantity: 10,
+        quantity: 5,
         offset: {
             x: () => rand(-10, 10),
             y: () => rand(-10, 10),
@@ -788,7 +772,7 @@ const particleDefinitions = {
         return{
             tileSprite: tileSets.splode_dirt7px,
             //glow: true,
-            quantity: 60,
+            quantity: 30,
             offset: {
                 x: () => rand(-18, 18),
                 y: () => rand(-18, 18),
@@ -804,7 +788,7 @@ const particleDefinitions = {
 
     wallJumpLeft: function(){
         return{
-        quantity: 100,
+        quantity: 50,
         offset: {
             x: () =>-10,
             y: () => 0
@@ -821,7 +805,7 @@ const particleDefinitions = {
 
     wallJumpRight: function(){
         return{
-        quantity: 100,
+        quantity: 50,
         offset: {
             x: () => 10,
             y: () => 0

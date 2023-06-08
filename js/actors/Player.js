@@ -1,7 +1,7 @@
 class Player {
     constructor(settings = {}) {
         Object.assign(this, settings);
-        
+
         this.previousX = this.x;
         this.previousY = this.y;
         this.diggerang = new Diggerang(this.x, this.y);
@@ -13,7 +13,7 @@ class Player {
         this.depth = 0;
         this.score = 0;
         this.upgrades = {};
-        this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true); 
+        this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true);
         this.drawOffset = {
             x: 7,
             y: 8
@@ -21,12 +21,12 @@ class Player {
 
         // Start facing left with idleLeft animation
         this.facing = Direction.LEFT;
-        
+
         this.inventory = {
             ore: 50,
             blueOre: 0,
         }
-        
+
         this.footstepDelay = 250; // ms between sounds
         this.footstepLast = 0; // a timestamp
 
@@ -44,11 +44,11 @@ class Player {
                     frameRate: 1
                 },
                 walkLeft: {
-                    frames: [0,1,2,3],
+                    frames: [0, 1, 2, 3],
                     frameRate: 10
                 },
                 walkRight: {
-                    frames: [4,5,6,7],
+                    frames: [4, 5, 6, 7],
                     frameRate: 10
                 },
                 jumpLeft: {
@@ -105,7 +105,7 @@ class Player {
             }
         })
 
-       
+
 
 
         this._updateInternalAnimations();
@@ -116,7 +116,7 @@ class Player {
             maxXVel: 5,
             minYVel: -10,
             maxYVel: 20,
-            hurtVelocity: 10, 
+            hurtVelocity: 10,
             minXAccel: -3,
             maxXAccel: 3,
             minYAccel: -3,
@@ -144,7 +144,7 @@ class Player {
     }
 
     // Object to hold current animation for easy access
-    _updateInternalAnimations(){
+    _updateInternalAnimations() {
         this.animations = {
             helicopter: this.spritesheet.animations["helicopter"],
             idle: this.spritesheet.animations[this.facing === Direction.LEFT ? "idleLeft" : 'idleRight'],
@@ -186,72 +186,72 @@ class Player {
         goldUpgrades = createGoldUpgrades();
     }
     draw() {
-       this.currentAnimation.render({
-        x: Math.floor(this.x-view.x)-this.drawOffset.x, 
-        y: Math.floor(this.y-view.y)-this.drawOffset.y,
-        width: 32,
-        height: 32
-    })
-
-    if(this.hovering){
-        this.diggerang.currentAnimation.render({
-            x: Math.floor(this.x-view.x),
-            y: Math.floor(this.y-view.y)-22,
+        this.currentAnimation.render({
+            x: Math.floor(this.x - view.x) - this.drawOffset.x,
+            y: Math.floor(this.y - view.y) - this.drawOffset.y,
             width: 32,
             height: 32
         })
-    }
 
-    if(this.digging){
-        if (!this.diggerang.active){ 
+        if (this.hovering) {
+            this.diggerang.currentAnimation.render({
+                x: Math.floor(this.x - view.x),
+                y: Math.floor(this.y - view.y) - 22,
+                width: 32,
+                height: 32
+            })
+        }
 
-            if(Key.isDown(Key.UP)||Joy.up){
-                this.diggerang.currentAnimation.update();
-                this.diggerang.currentAnimation.render({
-                    x: Math.floor(this.x-view.x-8),
-                    y: Math.floor(this.y-view.y)-22,
-                    width: 32,
-                    height: 32
-                })
-            } else if(Key.isDown(Key.DOWN)||Joy.down){
-                this.diggerang.currentAnimation.update();
-                this.diggerang.currentAnimation.render({
-                    x: Math.floor(this.x-view.x-8),
-                    y: Math.floor(this.y-view.y)+8,
-                    width: 32,
-                    height: 32
-                })
-            } else if(Key.isDown(Key.LEFT)||Joy.left){
-                this.diggerang.verticalSpin.update();
-                this.diggerang.verticalSpin.render({
-                    x: Math.floor(this.x-view.x-14),
-                    y: Math.floor(this.y-view.y-4),
-                    width: 32,
-                    height: 32
-                })
-            } else if(Key.isDown(Key.RIGHT)||Joy.right){
-                this.diggerang.verticalSpin.update();
-                this.diggerang.verticalSpin.render({
-                    x: Math.floor(this.x-view.x+6),
-                    y: Math.floor(this.y-view.y-4),
-                    width: 32,
-                    height: 32
-                })
+        if (this.digging) {
+            if (!this.diggerang.active) {
+
+                if (Key.isDown(Key.UP) || Joy.up) {
+                    this.diggerang.currentAnimation.update();
+                    this.diggerang.currentAnimation.render({
+                        x: Math.floor(this.x - view.x - 8),
+                        y: Math.floor(this.y - view.y) - 22,
+                        width: 32,
+                        height: 32
+                    })
+                } else if (Key.isDown(Key.DOWN) || Joy.down) {
+                    this.diggerang.currentAnimation.update();
+                    this.diggerang.currentAnimation.render({
+                        x: Math.floor(this.x - view.x - 8),
+                        y: Math.floor(this.y - view.y) + 8,
+                        width: 32,
+                        height: 32
+                    })
+                } else if (Key.isDown(Key.LEFT) || Joy.left) {
+                    this.diggerang.verticalSpin.update();
+                    this.diggerang.verticalSpin.render({
+                        x: Math.floor(this.x - view.x - 14),
+                        y: Math.floor(this.y - view.y - 4),
+                        width: 32,
+                        height: 32
+                    })
+                } else if (Key.isDown(Key.RIGHT) || Joy.right) {
+                    this.diggerang.verticalSpin.update();
+                    this.diggerang.verticalSpin.render({
+                        x: Math.floor(this.x - view.x + 6),
+                        y: Math.floor(this.y - view.y - 4),
+                        width: 32,
+                        height: 32
+                    })
+                }
             }
         }
-    }
-        
+
         this.collider.draw()
         this.diggerang.draw();
         this.drawDamageTextFX();
-        if(this.showShieldCooldown > 0){ this.drawShield(); }
+        if (this.showShieldCooldown > 0) { this.drawShield(); }
 
-        
 
-        if(Key.isDown(Key.LEFT)||Joy.left){ this.drawDigTileHighlight(Direction.LEFT) };
-        if(Key.isDown(Key.RIGHT)||Joy.right){ this.drawDigTileHighlight(Direction.RIGHT) };
-        if(Key.isDown(Key.UP)||Joy.up){ this.drawDigTileHighlight(Direction.UP) };
-        if(Key.isDown(Key.DOWN)||Joy.down){ this.drawDigTileHighlight(Direction.DOWN) };
+
+        if (Key.isDown(Key.LEFT) || Joy.left) { this.drawDigTileHighlight(Direction.LEFT) };
+        if (Key.isDown(Key.RIGHT) || Joy.right) { this.drawDigTileHighlight(Direction.RIGHT) };
+        if (Key.isDown(Key.UP) || Joy.up) { this.drawDigTileHighlight(Direction.UP) };
+        if (Key.isDown(Key.DOWN) || Joy.down) { this.drawDigTileHighlight(Direction.DOWN) };
     }
 
     update() {
@@ -261,30 +261,30 @@ class Player {
         this.checkBounds();
         this.hurtCooldown--;
         this.showShieldCooldown--;
-        this.depth = Math.round(this.y/8);
+        this.depth = Math.round(this.y / 8);
         this.shield = Math.min(this.shield, this.limits.shieldMax);
         this.canDig = this.checkDig();
         this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
         this.canHelicopter = !this.diggerang.active;
-        if(this.canJump){ this.helicopterCapacity = this.limits.helicopterCapacity; }
+        if (this.canJump) { this.helicopterCapacity = this.limits.helicopterCapacity; }
         this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Joy.left || Joy.right);
         this.canWallJump = this.isOnWall() && !this.isOnFloor();
-        if(this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
-        if(this.moveRightCooldown > 0) { this.moveRightCooldown--; }
+        if (this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
+        if (this.moveRightCooldown > 0) { this.moveRightCooldown--; }
         this.xAccel = 0;
         this.yAccel = 0;
-        if(Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
-        if(this.wallSliding) this.collider.emit(particleDefinitions.sparks);
-         if(this.yvel > this.limits.hurtVelocity-2) emitParticles(this.x + rand(0,12), this.y, particleDefinitions.fallSparks);
-        
+        if (Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
+        if (this.wallSliding) this.collider.emit(particleDefinitions.sparks);
+        if (this.yvel > this.limits.hurtVelocity - 2) emitParticles(this.x + rand(0, 12), this.y, particleDefinitions.fallSparks);
+
         this.handleAnimationState();
 
         this.diggerang.update(this);
 
-        if(this.hovering){
+        if (this.hovering) {
             this.hoverSound.volume.gain.value = 1;
             this.diggerang.currentAnimation.update();
-        }else {
+        } else {
             this.hoverSound.volume.gain.value = 0;
         }
 
@@ -298,14 +298,14 @@ class Player {
         //this.hovering = false;
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.h) || Joy.left) {
             this.moveLeft();
-            if(Key.isDown(Key.z) || Joy.x){
+            if (Key.isDown(Key.z) || Joy.x) {
                 this.digging = true;
                 this.dig(Direction.LEFT);
             }
         }
         else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Key.isDown(Key.l) || Joy.right) {
-            this.moveRight(); 
-            if(Key.isDown(Key.z) || Joy.x){
+            this.moveRight();
+            if (Key.isDown(Key.z) || Joy.x) {
                 this.digging = true;
                 this.dig(Direction.RIGHT);
             }
@@ -313,15 +313,15 @@ class Player {
 
         if (Key.isDown(Key.UP) || Key.isDown(Key.w) || Key.isDown(Key.k) || Joy.up) {
             this.currentAnimation = this.animations.lookUp;
-            if(Key.isDown(Key.z) || Joy.x){
+            if (Key.isDown(Key.z) || Joy.x) {
                 this.digging = true;
                 this.dig(Direction.UP);
             }
             this.facing = Direction.UP;
-            
-        } 
+
+        }
         else if (Key.isDown(Key.DOWN) || Key.isDown(Key.s) || Key.isDown(Key.j) || Joy.down) {
-            if(Key.isDown(Key.z) || Joy.x){
+            if (Key.isDown(Key.z) || Joy.x) {
                 this.digging = true;
                 this.dig(Direction.DOWN);
             }
@@ -329,16 +329,16 @@ class Player {
         }
 
         if (Key.isDown(Key.SPACE) || Joy.a) {
-            if(this.canJump) {
+            if (this.canJump) {
                 this.jump();
-            }else if(this.canHelicopter && this.yvel > this.limits.hoverYVelocity){
+            } else if (this.canHelicopter && this.yvel > this.limits.hoverYVelocity) {
                 this.helicopter();
             }
         }
 
-        if ( Key.justReleased(Key.SPACE) || Joy.aReleased ) {
+        if (Key.justReleased(Key.SPACE) || Joy.aReleased) {
             this.hovering = false;
-            if(this.canWallJump ) {
+            if (this.canWallJump) {
                 this.wallJump(tileMap);
             }
         }
@@ -351,11 +351,11 @@ class Player {
 
     shieldBoost(amount) {
         this.shield += amount;
-        if(this.shield != this.limits.shieldMax){
+        if (this.shield != this.limits.shieldMax) {
             this.showShieldCooldown = this.limits.showShieldCooldown;
         }
-        
-        
+
+
     }
 
     updateCollider(x, y) {
@@ -382,33 +382,33 @@ class Player {
         this.yvel *= (this.wallSliding ? 0.8 : 1);
     }
 
-    handleAnimationState(){
+    handleAnimationState() {
         this._updateInternalAnimations();
         this.currentAnimation.update();
 
-        if(this.xvel > 0) {
+        if (this.xvel > 0) {
             this.facing = Direction.RIGHT;
             this.currentAnimation = this.animations.walk;
-        } else if(this.xvel < 0) {
+        } else if (this.xvel < 0) {
             this.facing = Direction.LEFT;
             this.currentAnimation = this.animations.walk;
         } else {
             this.currentAnimation = this.animations.idle;
         }
 
-        if(this.yvel < 0) {
+        if (this.yvel < 0) {
             this.currentAnimation = this.animations.jump;
-            if(this.hovering){
+            if (this.hovering) {
                 this.currentAnimation = this.animations.helicopter;
             }
         }
-        if(this.yvel > 0) {
+        if (this.yvel > 0) {
             this.currentAnimation = this.animations.falling;;
         }
-        if(this.digging) {
-            if(Key.isDown(Key.UP)){
+        if (this.digging) {
+            if (Key.isDown(Key.UP)) {
                 this.currentAnimation = this.animations.digUp;
-            } else if(Key.isDown(Key.DOWN)){
+            } else if (Key.isDown(Key.DOWN)) {
                 this.currentAnimation = this.animations.digDown;
             } else this.currentAnimation = this.animations.dig;
         }
@@ -439,7 +439,7 @@ class Player {
                 if (this.collider.tileCollisionCheck(0)) {
                     this.y = this.previousY;
                     this.updateCollider(this.x, this.y);
-                    
+
                     this.yvel = 0;
                     break;
                 }
@@ -475,49 +475,49 @@ class Player {
     }
 
     footStepSFX() {
-        
+
         if (!this.isOnFloor()) {
             // this.footstepLast = 0; // no delay once we land
             return;
         }
-        
+
         let now = performance.now();
         if (this.footstepLast + this.footstepDelay <= now) {
             //console.log("step! footstepLast="+this.footstepLast.toFixed(2)+" now="+now.toFixed(2));
-            audio.playSound(sounds[randChoice(footsteps)],0,FOOTSTEP_VOLUME);
+            audio.playSound(sounds[randChoice(footsteps)], 0, FOOTSTEP_VOLUME);
             this.footstepLast = now;
         }
     }
-    
+
     moveLeft() {
         this.moveRightCooldown = 0;
-        if(!this.moveLeftCooldown){
+        if (!this.moveLeftCooldown) {
             this.xAccel = -this.speed;
-            this.footStepSFX();        
+            this.footStepSFX();
         }
     }
 
     moveRight() {
         this.moveLeftCooldown = 0;
-        if(!this.moveRightCooldown){
+        if (!this.moveRightCooldown) {
             this.xAccel = this.speed;
-            this.footStepSFX();        
+            this.footStepSFX();
         }
     }
 
     moveDown() {
         //this.yAccel = this.speed;
     }
-    
+
     wallJump(world) {
         this.yAccel = -this.speed * 10;
         let onleftWall = world.data[world.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y)]
-        onleftWall ? this.moveLeftCooldown = this.limits.moveLeftCooldown : this.moveRightCooldown = this.limits.moveRightCooldown; 
+        onleftWall ? this.moveLeftCooldown = this.limits.moveLeftCooldown : this.moveRightCooldown = this.limits.moveRightCooldown;
         this.xAccel = onleftWall ? this.speed * 5 : -this.speed * 5;
         this.play("jump");
         // audio.playSound("walljump"); // error - noaudio buffer? but the sound loads?
-        let particleDef = onleftWall? particleDefinitions.wallJumpLeft : particleDefinitions.wallJumpRight;
-        let emitLocation = onleftWall? this.collider.leftFeeler : this.collider.rightFeeler;
+        let particleDef = onleftWall ? particleDefinitions.wallJumpLeft : particleDefinitions.wallJumpRight;
+        let emitLocation = onleftWall ? this.collider.leftFeeler : this.collider.rightFeeler;
         emitParticles(emitLocation.x, emitLocation.y, particleDef);
     }
 
@@ -528,7 +528,7 @@ class Player {
         this.xVel = 0;
     }
 
-    drawDigTileHighlight(direction=Direction.DOWN) {
+    drawDigTileHighlight(direction = Direction.DOWN) {
 
         const directionTiles = {
             [Direction.UP]: this.collider.topFeeler,
@@ -546,7 +546,7 @@ class Player {
             let tileWidth = tileMap.tileWidth;
             let tileHeight = tileMap.tileHeight;
             canvasContext.fillStyle = "rgba(255,255,255,0.5)";
-            canvasContext.fillRect(tileX-view.x, tileY-view.y, tileWidth, tileHeight);
+            canvasContext.fillRect(tileX - view.x, tileY - view.y, tileWidth, tileHeight);
         }
     }
 
@@ -561,7 +561,7 @@ class Player {
         }
     }
 
-    getDigPropsForIndex (tileIndex) {
+    getDigPropsForIndex(tileIndex) {
         return {
             spawnX: tileMap.tileIndexToPixelX(tileIndex) + tileMap.tileWidth || 0,
             spawnY: tileMap.tileIndexToPixelY(tileIndex) + tileMap.tileHeight || 0,
@@ -569,7 +569,7 @@ class Player {
         }
     }
 
-    digWithProps (startTileValue, startTileIndex, dmg) {
+    digWithProps(startTileValue, startTileIndex, dmg) {
         let type = TILE_TYPES[startTileValue];
         tileMap.damageTileAt(
             startTileIndex,
@@ -580,17 +580,17 @@ class Player {
 
     dig(direction) {
         if (!this.canDig) return;
-        if (this.diggerang.active){ this.diggerang.returning = true; return;}
+        if (this.diggerang.active) { this.diggerang.returning = true; return; }
         this.digging = true;
-        
+
         const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
-        
+
         if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
     }
 
     damageTextFX(damage) {
-        this.damageTxt = "-"+Math.round(damage);
+        this.damageTxt = "-" + Math.round(damage);
         this.damageTxtFrame = 0;
         this.damageTxtFrameMax = 20;
     }
@@ -598,22 +598,22 @@ class Player {
     drawDamageTextFX() {
         if (!this.damageTxt) return;
         if (this.damageTxtFrame++ < this.damageTxtFrameMax) {
-            canvasContext.globalAlpha = 1 - (this.damageTxtFrame/this.damageTxtFrameMax);
-            let x = Math.floor(this.x-view.x)-this.drawOffset.x + 12;
-            let y = Math.floor(this.y-view.y)-this.drawOffset.y - this.damageTxtFrame;
-            tinyFont.drawText(this.damageTxt, {x:x,y:y});
+            canvasContext.globalAlpha = 1 - (this.damageTxtFrame / this.damageTxtFrameMax);
+            let x = Math.floor(this.x - view.x) - this.drawOffset.x + 12;
+            let y = Math.floor(this.y - view.y) - this.drawOffset.y - this.damageTxtFrame;
+            tinyFont.drawText(this.damageTxt, { x: x, y: y });
             canvasContext.globalAlpha = 1;
         }
     }
 
     hurt(damage) {
-        if(this.hurtCooldown > 0){ return; }
+        if (this.hurtCooldown > 0) { return; }
         //TODO: blink player sprite
-        if(this.shield > 0){
+        if (this.shield > 0) {
             this.shield -= damage;
             this.shieldHit();
         }
-        if(this.shield <= 0){
+        if (this.shield <= 0) {
             this.collider.emit(particleDefinitions.hurt);
             audio.playSound(sounds[randChoice(player_damages)]);
             this.health -= damage;
@@ -638,13 +638,13 @@ class Player {
         if (this.showShieldCooldown-- <= 0) return;
         let shieldRadius = 25;
         let shieldAngle = 0;
-        let shieldAngleIncrement = Math.PI*2/this.limits.shieldMax;
+        let shieldAngleIncrement = Math.PI * 2 / this.limits.shieldMax;
         for (let i = 0; i < this.shield; i++) {
-            let x = Math.floor( this.x + Math.cos(shieldAngle) * shieldRadius ) + 8;
-            let y = Math.floor( this.y + Math.sin(shieldAngle) * shieldRadius ) + 9;
+            let x = Math.floor(this.x + Math.cos(shieldAngle) * shieldRadius) + 8;
+            let y = Math.floor(this.y + Math.sin(shieldAngle) * shieldRadius) + 9;
             shieldAngle += shieldAngleIncrement;
             canvasContext.fillStyle = "yellow";
-            canvasContext.fillRect(x-view.x, y-view.y, 3, 3);
+            canvasContext.fillRect(x - view.x, y - view.y, 3, 3);
         }
     }
 
@@ -657,7 +657,7 @@ class Player {
         this.digCooldown--
         if (this.digCooldown <= 0) {
             this.digCooldown = this.limits.digCooldown;
-            
+
             return true;
         }
         return false;
@@ -676,76 +676,76 @@ class Player {
     }
 
     throw() {
-        if (this.diggerang.active){ this.diggerang.returning = true; return;}
+        if (this.diggerang.active) { this.diggerang.returning = true; return; }
         if (this.inventory.ore < DIGGERANG_COST) return;
 
         this.inventory.ore -= DIGGERANG_COST;
         this.hovering = false;
 
-        switch(this.facing){
+        switch (this.facing) {
             case Direction.RIGHT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
-                this.diggerang.xvel = 6; // Set the initial horizontal velocity
-                this.diggerang.yvel = 0; // Set the initial vertical velocity
+                this.diggerang.xVel = 6; // Set the initial horizontal velocity
+                this.diggerang.yVel = 0; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
-            break;
+                break;
             case Direction.LEFT: {
                 this.diggerang.x = this.x;
                 this.diggerang.y = this.y;
-                this.diggerang.xvel = -6; // Set the initial horizontal velocity
-                this.diggerang.yvel = 0; // Set the initial vertical velocity
+                this.diggerang.xVel = -6; // Set the initial horizontal velocity
+                this.diggerang.yVel = 0; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
-            break;
+                break;
             case Direction.UP: {
-                this.diggerang.x = this.x-4;
-                this.diggerang.y = this.y-4;
-                this.diggerang.xvel = 0; // Set the initial horizontal velocity
-                this.diggerang.yvel = -6; // Set the initial vertical velocity
+                this.diggerang.x = this.x - 4;
+                this.diggerang.y = this.y - 4;
+                this.diggerang.xVel = 0; // Set the initial horizontal velocity
+                this.diggerang.yVel = -6; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
             }
-            break;
+                break;
             case Direction.DOWN: {
-                this.diggerang.x = this.x-4;
-                this.diggerang.y = this.y+8;
-                this.diggerang.xvel = 0; // Set the initial horizontal velocity
-                this.diggerang.yvel = 6; // Set the initial vertical velocity
+                this.diggerang.x = this.x - 4;
+                this.diggerang.y = this.y + 8;
+                this.diggerang.xVel = 0; // Set the initial horizontal velocity
+                this.diggerang.yVel = 6; // Set the initial vertical velocity
                 this.diggerang.active = true;
                 this.diggerang.returning = false;
-            }        
+            }
         }
-        
-      }
+
+    }
 
     helicopter() {
         this.hovering = true;
-        if (this.helicopterCapacity <= 0){ this.hovering = false; return };
+        if (this.helicopterCapacity <= 0) { this.hovering = false; return };
         //if (this.inventory.ore <= 0){this.hovering = false; return };
 
         //this.inventory.ore--;
         this.yVel -= 0.1;
         this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;
-        emitParticles(this.x+7, this.y, particleDefinitions.helicopter);
+        emitParticles(this.x + 7, this.y, particleDefinitions.helicopter);
     }
 
     jump() {
         this.yvel = -this.speed * this.limits.jumpMultiplier;
         this.play("jump");
-        audio.playSound(sounds["jump"], 0, 0.5, 2, false )
+        audio.playSound(sounds["jump"], 0, 0.5, 2, false)
         this.collider.emit(particleDefinitions.jumpPuff);
     }
 
-    play(animationName){
-   
+    play(animationName) {
+
         this.currentAnimation = this.animations[animationName];
-    
-        if (!this.currentAnimation.loop){
+
+        if (!this.currentAnimation.loop) {
             this.currentAnimation.reset();
         }
     }

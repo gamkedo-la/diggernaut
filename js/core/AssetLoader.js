@@ -75,9 +75,9 @@ AssetLoader.prototype.loadBuffer = function(url, key) {
           loader.sounds[key].push(buffer);
         }
         
-        console.log('loaded sound: ' + key);
+        // console.log('loaded sound: ' + key);
         if (++loader.loadCount == loader.urlList.length){
-          console.log('all sounds loaded');
+          // console.log('all sounds loaded');
           loader.onSoundsLoaded(loader.sounds);
         }
 

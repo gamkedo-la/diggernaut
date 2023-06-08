@@ -23,7 +23,7 @@ const AudioGlobal = function AudioGlobal() {
 	this.init = function(callback) {
 		if (this.initialized) return;
 
-		console.log("Initializing Audio...");
+		// console.log("Initializing Audio...");
 		//throws a warning in chrome. is fine. Just be sure to audioCtx.resume() on user interaction with title screen of your game.
 		audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
 		this.context = audioCtx;
@@ -53,7 +53,7 @@ const AudioGlobal = function AudioGlobal() {
 		filterBus.connect(masterBus);
 		masterBus.connect(compressor);
 		compressor.connect(audioCtx.destination);
-		console.log("Audio initialized.");
+		// console.log("Audio initialized.");
 		this.initialized = true;
 		callback()
 	}

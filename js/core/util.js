@@ -294,33 +294,23 @@ function randChoice(arr) {
     return arr[Math.floor(mapRNG() * arr.length)];
 }
 
-// function ikSolve(parent, child, targetX, targetY) {
-//     const dx = targetX - parent.x;
-//     const dy = targetY - parent.y;
-//     const distToTarget = Math.sqrt(dx * dx + dy * dy);
-
-//     const cosAngleA = (child.length * child.length - parent.length * parent.length - distToTarget * distToTarget) / (-2 * parent.length * distToTarget);
-//     const angleA = Math.acos(cosAngleA);
-
-//     const angleB = Math.atan2(dy, dx);
-
-//     parent.angle = angleB - angleA;
-
-//     child.attachTo(parent);
-//     child.pointAt(targetX, targetY);
-// }
-
 function cubicBezierPoint(t, p0, p1, p2, p3) {
     const oneMinusT = 1 - t;
     const oneMinusTSquared = oneMinusT * oneMinusT;
     const oneMinusTCubed = oneMinusTSquared * oneMinusT;
     const tSquared = t * t;
     const tCubed = tSquared * t;
-
     const x = oneMinusTCubed * p0.x + 3 * oneMinusTSquared * t * p1.x + 3 * oneMinusT * tSquared * p2.x + tCubed * p3.x;
     const y = oneMinusTCubed * p0.y + 3 * oneMinusTSquared * t * p1.y + 3 * oneMinusT * tSquared * p2.y + tCubed * p3.y;
 
     return { x, y };
+}
+
+function emitParticles(x, y, definition, pool=actors){
+    for (let i = 0; i < definition().quantity; i++) {
+        let particle = new Particle(x + definition().offset.x(), y + definition().offset.y(), definition(), pool);
+        pool.push(particle);
+    }
 }
 
 

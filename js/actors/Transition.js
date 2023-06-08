@@ -8,16 +8,16 @@ const transition = {
   scale: 1, // pixelation scale
 };
 
-function drawTransition () {
+function drawTransition() {
   if (!transition.active) return;
-  if(transition.type==='pixelation'){  drawPixelationTransition(); return }
-  const {progress, color, reverse} = transition;
+  if (transition.type === 'pixelation') { drawPixelationTransition(); return }
+  const { progress, color, reverse } = transition;
   const wipeWidth = reverse
     ? canvas.width * (1 - progress)
     : canvas.width * progress;
 
   canvasContext.fillStyle = color;
-  canvasContext.fillRect (
+  canvasContext.fillRect(
     reverse ? canvas.width - wipeWidth : 0,
     0,
     wipeWidth,
@@ -59,36 +59,36 @@ function drawPixelationTransition() {
 }
 
 
-function startTransition (callback, triggerReverse = true) {
+function startTransition(callback, triggerReverse = true) {
   if (transition.active) return;
 
   transition.active = true;
   transition.progress = 0;
 
-  const startTime = performance.now ();
-  const {duration} = transition;
+  const startTime = performance.now();
+  const { duration } = transition;
 
-  function updateTransition () {
-    const now = performance.now ();
+  function updateTransition() {
+    const now = performance.now();
     const elapsedTime = now - startTime;
-    transition.progress = Math.min (elapsedTime / duration, 1);
+    transition.progress = Math.min(elapsedTime / duration, 1);
 
     if (transition.progress < 1) {
-      requestAnimationFrame (updateTransition);
+      requestAnimationFrame(updateTransition);
     } else {
       transition.active = false;
       if (callback) {
-        callback ();
+        callback();
       }
       // Start the reverse wipe after the state change
       if (triggerReverse && !transition.reverse) {
         transition.reverse = true;
-        startTransition (() => {
+        startTransition(() => {
           transition.reverse = false;
         }, false);
       }
     }
   }
 
-  requestAnimationFrame (updateTransition);
+  requestAnimationFrame(updateTransition);
 }

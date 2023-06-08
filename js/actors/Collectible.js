@@ -1,5 +1,5 @@
 class Collectible {
-    constructor(x, y, category="", options={}){
+    constructor(x, y, category = "", options = {}) {
         this.x = x;
         this.y = y;
         this.category = category;
@@ -13,46 +13,35 @@ class Collectible {
             x: 4,
             y: 4
         }
-        this.collider = new Collider(this.x + this.offset.x, this.y + this.offset.y, 24, 24, {left: 0, right: 0, top: 0, bottom: 0}, "collectible");
+        this.collider = new Collider(this.x + this.offset.x, this.y + this.offset.y, 24, 24, { left: 0, right: 0, top: 0, bottom: 0 }, "collectible");
     }
 
-    draw(){
-        if(!inView(this)) return;
+    draw() {
+        if (!inView(this)) return;
         drawTileSprite(this.tileSet, this.tile, this.x - view.x, this.y - view.y);
         this.collider.draw();
-       
+
     }
 
-    update(){
-        if(!inView(this)){ return; }
+    update() {
+        if (!inView(this)) { return; }
         this.previousX = this.x;
         this.previousY = this.y;
-        //this.collider.update(this.x, this.y);
-        //this.x += this.xvel;
-        //this.y += this.yvel;
-        
-        //this.xvel *= this.friction;
-        //this.yvel *= this.friction; 
-        //this.yvel += this.gravity;
-
-        //emitParticles(this.x, this.y, particleDefinitions.oreSparks);
-
-        if(rectCollision(this.collider, player.collider)){
+        if (rectCollision(this.collider, player.collider)) {
             let thisItem = collectibles[this.category].find(item => item.name == this.name);
             thisItem.owned = true;
-            emitParticles(this.x+16, this.y+16, particleDefinitions.jumpPuff);
-            emitParticles(this.x+16, this.y+16, particleDefinitions.boom17px);
+            emitParticles(this.x + 16, this.y + 16, particleDefinitions.jumpPuff);
+            emitParticles(this.x + 16, this.y + 16, particleDefinitions.boom17px);
 
-            // FIXME: play different sounds depending on treasure type.
+            // TODO: play different sounds depending on treasure type.
             // currently chooses between two bitcrushed glass shattering sounds
             uiActors.push(new AwardMessage(this.x, this.y, thisItem.name, bigFontGreen, 1, 200, particleDefinitions.awardSparks));
-            audio.playSound(sounds[randChoice(collectibleSounds)],0,COLLECTIBLE_SOUND_VOLUME);
-
+            audio.playSound(sounds[randChoice(collectibleSounds)], 0, COLLECTIBLE_SOUND_VOLUME);
             this.destroy();
         }
     }
 
-    destroy(){
+    destroy() {
         let index = actors.indexOf(this);
         actors.splice(index, 1);
     }

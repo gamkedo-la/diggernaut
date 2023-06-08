@@ -25,7 +25,7 @@ function strokePolygon(x, y, r, sides, rotation = 0) {
     let ox, oy, px, py;
     for (let i = 0; i < sides; i++) {
         let j = i / sides * 6.283185; //tau radians
-        let j2 = (i + 1) / sides * 6.283185; 
+        let j2 = (i + 1) / sides * 6.283185;
         ox = x + Math.cos(j + rotation) * r;
         oy = y + Math.sin(j + rotation) * r;
         px = x + Math.cos(j2 + rotation) * r;
@@ -53,14 +53,14 @@ function fillRect(x, y, width, height) {
  * @param  {} color: color of pixel. default is error magenta
  * 
  */
-function pset(x, y, color, context=canvasContext) {
-    context.fillRect(x|0, y|0, 1, 1);
+function pset(x, y, color, context = canvasContext) {
+    context.fillRect(x | 0, y | 0, 1, 1);
     //context.drawImage(img['aap64palette1x64'], color, 0, 1, 1, x, y, 1, 1);
 }
 
 //line uses pset and breseham's line algorithm to draw a pixel line between two points in a single color
 //dynamically drawn objects and effects should use this instead of canvasContext.line, to avoid anti-aliasing.
-function line(x1, y1, x2, y2, color = 1, context=canvasContext) {
+function line(x1, y1, x2, y2, color = 1, context = canvasContext) {
     context = context || canvasContext;
     //we take in floats, but we need to round them to integers for the algorithm to work
     x1 = Math.round(x1);
@@ -74,10 +74,10 @@ function line(x1, y1, x2, y2, color = 1, context=canvasContext) {
     let sx = (x1 < x2) ? 1 : -1;
     let sy = (y1 < y2) ? 1 : -1;
     let err = dx - dy;
-    let tries = canvas.width*3;
+    let tries = canvas.width * 3;
     while (true) {
         tries--;
-        if(tries<0) break;
+        if (tries < 0) break;
         pset(x1, y1, context);
         if ((x1 == x2) && (y1 == y2)) break;
         let e2 = 2 * err;
@@ -115,7 +115,7 @@ class spriteFont {
         this.heightInCharacters = Math.floor(height / characterHeight);
         this.characterOrderString = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.0123456789 '!@#$%^&*()+-=,":;><`,
 
-        this.characterMap = this.characterOrderString.split("");
+            this.characterMap = this.characterOrderString.split("");
         this.image = image;
 
         return this;
@@ -140,7 +140,7 @@ class spriteFont {
         })
     }
 
-    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1 ){
+    _textLine({ textString, pos = { x: 0, y: 0 }, hspacing = 0 } = {}, scale = 1) {
         var textStringArray = textString.split("");
         var self = this;
         let ctx = canvasContext;
@@ -151,7 +151,7 @@ class spriteFont {
             let spriteX = self.origin.x + (keyIndex % self.widthInCharacters) * self.characterWidth;
             let spriteY = self.origin.y + Math.floor(keyIndex / self.widthInCharacters) * self.characterHeight;
             //draw
-           
+
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(
                 self.image,
@@ -178,7 +178,7 @@ class spriteFont {
 }
 
 
-function drawTileSprite(tileset, tileData, x, y, ctx){
+function drawTileSprite(tileset, tileData, x, y, ctx) {
     ctx = ctx || canvasContext;
     ctx.drawImage(
         tileset.image,
