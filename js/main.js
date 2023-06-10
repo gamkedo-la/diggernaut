@@ -180,7 +180,7 @@ function begin(fps) {
     then = Date.now();
     startTime = then;
     Joy.init();
-    // console.log('loading complete, starting game')
+    console.log('loading complete, starting game')
     mainLoop();
 }
 

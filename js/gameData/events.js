@@ -26,9 +26,10 @@ function startGame(event){
 function resetGame(event){
     startTransition(() => {
         console.log('resetGame triggered');
+        gameState = GAMESTATE_PLAY;
         gameSetup();
         playScreen.reset();
-        gameState = GAMESTATE_PLAY;
+        
     });
 }
 

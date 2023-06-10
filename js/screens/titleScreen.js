@@ -59,7 +59,6 @@ const titleScreen = {
             gameFont.drawText("Awesome! Hit Z to start", { x: 140, y: 270 - 40 }, 0, 0, 2);
             if(!titleScreen.music){
                 titleScreen.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
-                
             }
 
         }

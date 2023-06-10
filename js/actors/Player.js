@@ -99,9 +99,6 @@ class Player {
                     frames: [22],
                     frameRate: 1
                 }
-
-
-
             }
         })
 

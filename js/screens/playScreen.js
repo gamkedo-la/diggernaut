@@ -6,9 +6,11 @@ const playScreen = {
 
     reset: function () {
         player.reset();
-        if (!playScreen.music) {
-            playScreen.music = audio.playSound('downward-music', 0, 0.5, 1, true);
+        if (playScreen.music) {
+            playScreen.music.sound.stop();
+            playScreen.music = null;
         }
+        
     },
 
     draw: function () {
@@ -32,6 +34,9 @@ const playScreen = {
     },
 
     update: function () {
+        if (!playScreen.music) {
+            playScreen.music = audio.playSound(sounds['downward-music'], 0, 0.5, 1, true);
+        }
         this.followPlayer();
         ui.update();
         actors.forEach(actor => actor.update());
