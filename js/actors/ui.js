@@ -40,7 +40,7 @@ const ui = {
     },
 
     //init as empty object bc will be populated by main after tilemap is created
-    miniMap: {},
+    //miniMap: {},
 
     draw: function () {
         canvasContext.save();
@@ -101,7 +101,7 @@ const ui = {
         // gameFont.drawText(`${player.score.toString().padStart(14, '0')}`, 
         //     { x: 180, y:8 }, 0, 0, 2);
 
-        if (this.miniMap) this.miniMap.draw();
+        //if (this.miniMap) this.miniMap.draw();
 
         canvasContext.restore();
 

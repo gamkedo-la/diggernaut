@@ -908,7 +908,9 @@ const soundList = [
     { name: "footstep-d", url: "snd/footstep-d.wav"}, 
     { name: "gemstone-a", url: "snd/gemstone-a.wav"}, 
     { name: "gemstone-b", url: "snd/gemstone-b.wav"}, 
-    { name: "important_pickup", url: "snd/important_pickup.ogg"}, 
+    { name: "important_pickup", url: "snd/important_pickup.ogg"},
+    { name: "downward-music", url: "snd/downward-we-go.ogg"},
+    
 
 ]
 

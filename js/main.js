@@ -59,8 +59,9 @@ function loadingComplete() {
     generateSpriteFonts();
     processURLQuery();
     generateTilesets();
-    gameSetup();
-    begin(fps);
+    let ready = gameSetup();
+    if(ready){begin(fps);}
+    //begin(fps);
 }
 
 function generateSpriteFonts() {
@@ -159,7 +160,8 @@ function generateTilesets() {
     )
 }
 
-function gameSetup() {
+async function gameSetup() {
+    
     player = new Player(playerSettings),
     collectibles = createCollectibles(tileSets);
     depthAwards = createDepthAwards(DEPTH_MILESTONES);
@@ -169,6 +171,8 @@ function gameSetup() {
     sounds = loader.sounds;
     generateMap(mapConfig);    
     populateMap(mapConfig);
+
+    return 1;
 }
 
 function begin(fps) {
@@ -216,7 +220,7 @@ function gameLoop() {
 function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
-    ui.miniMap = new uiMinimap(tileMap);
+    //ui.miniMap = new uiMinimap(tileMap);
 
     let choices = mapConfig.caveGenPools.vanilla;
     let mapYstartOffset = config.mapStartY * config.widthInTiles;
@@ -288,7 +292,7 @@ function generateMap(config){
     tileMap.tileFillRect(tileMap.widthInTiles-1, 0, 1, tileMap.heightInTiles, 3);
 
     //full update on ui minimap
-    ui.miniMap.update();
+   // ui.miniMap.update();
 
     //full update on autotiles
     tileMap.updateAutoTiles(0,0, tileMap.widthInTiles, tileMap.heightInTiles);

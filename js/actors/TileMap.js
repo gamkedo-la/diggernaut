@@ -251,7 +251,7 @@ class TileMap {
                         console.log(`attempting to destroy tile type ${type} at index ${index} with no destroy function`)
                     }
 
-                    ui.miniMap.dirtyRectUpdate(x, y, 6, 6)
+                    //ui.miniMap.dirtyRectUpdate(x, y, 6, 6)
                     this.updateAutoTiles(left, top, right, bottom);
                 }
 

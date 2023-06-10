@@ -7,7 +7,7 @@ const playScreen = {
         player.reset();
         if (this.music) this.music.sound.stop();
         else {
-            this.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
+            //this.music = audio.playSound('downward-music', 0, 0.5, 1, true);
             //this.music.volume.gain.value = 0.5;
         }
 
