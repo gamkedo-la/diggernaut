@@ -3,7 +3,9 @@ const titleScreen = {
     music: null,
 
     draw: function () {
-
+        if (!titleScreen.clicked) {
+            gameFont.drawText("Click or tap to begin", { x: 220, y: 270 - 40 }, 0, 0);
+        } else {
         //fill background
         canvasContext.fillStyle = 'black';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
@@ -53,9 +55,7 @@ const titleScreen = {
 
         gameFont.drawText("Hit F to go Fullscreen", { x: 215, y: 240 - 40 }, 0, 0, 1, 'yellow');
         gameFont.drawText("Arrows to move, Z to dig, X to throw, SPACE to jump", { x: 125, y: 256 - 40 }, 0, 0);
-        if (!titleScreen.clicked) {
-            gameFont.drawText("Click or tap to play", { x: 220, y: 270 - 40 }, 0, 0);
-        } else {
+        
             gameFont.drawText("Awesome! Hit Z to start", { x: 140, y: 270 - 40 }, 0, 0, 2);
             if(!titleScreen.music){
                 titleScreen.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
