@@ -88,7 +88,7 @@ AssetLoader.prototype.loadBuffer = function(url, key) {
         canvasContext.fillRect(0, 0, (loader.loadCount / loader.urlList.length) * canvas.width, 20);
         canvasContext.font = '10px monospace';
 
-        let consoleText = `loading sound: ${key}`;
+        let consoleText = `loading sound ${loader.loadCount} of ${loader.urlList.length}: ${key}`;
         if(++loader.loadCount == loader.urlList.length){
           consoleText = 'all sounds loaded';
         }
@@ -96,7 +96,7 @@ AssetLoader.prototype.loadBuffer = function(url, key) {
         
       },
       function(error) {
-        console.error('decodeAudioData error', error);
+        console.error(url+' decodeAudioData error: ', error);
       }
     );
 }
