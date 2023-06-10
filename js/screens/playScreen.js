@@ -35,7 +35,7 @@ const playScreen = {
 
     update: function () {
         if (!playScreen.music) {
-            playScreen.music = audio.playSound(sounds['downward-music'], 0, 0.5, 1, true);
+            playScreen.music = audio.playSound(sounds['downward-music'], 0, 1, 1, true);
         }
         this.followPlayer();
         ui.update();
