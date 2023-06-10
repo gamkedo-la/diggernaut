@@ -882,6 +882,7 @@ const imageList = [
 const soundList = [
     { name: "test1", url: "snd/test1.mp3" },
     { name: "test2", url: "snd/test2.mp3" },
+    { name: "explore-music", url: "snd/BGM-deeper_deeper-draft_1.mp3"}, 
     { name: "shovel_on_metal", url: "snd/shovel_on_metal.ogg" },
     { name: "shovel_on_metal_2", url: "snd/shovel_on_metal_2.ogg" },
     { name: "pickup", url: "snd/pickup.ogg" },
@@ -900,7 +901,7 @@ const soundList = [
     { name: "player_damage_big_2", url: "snd/player_damage_big_2.ogg" },
     { name: "jump", url: "snd/jump_1.ogg" },
     { name: "clink", url: "snd/clink1.ogg"},
-    { name: "explore-music", url: "snd/BGM-deeper_deeper-draft_1.mp3"}, 
+
     { name: "walljump", url: "snd/walljump-subtle.wav"}, 
     { name: "footstep-a", url: "snd/footstep-a.wav"}, 
     { name: "footstep-b", url: "snd/footstep-b.wav"}, 
@@ -910,8 +911,6 @@ const soundList = [
     { name: "gemstone-b", url: "snd/gemstone-b.wav"}, 
     { name: "important_pickup", url: "snd/important_pickup.ogg"},
     { name: "downward-music", url: "snd/downward-we-go.ogg"},
-    
-
 ]
 
 //TODO:  shorten digging_dirt sound, make dirt it's own tile type

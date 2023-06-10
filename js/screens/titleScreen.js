@@ -1,5 +1,6 @@
 const titleScreen = {
     clicked: false,
+    music: null,
 
     draw: function () {
 
@@ -56,8 +57,9 @@ const titleScreen = {
             gameFont.drawText("Click or tap to play", { x: 220, y: 270 - 40 }, 0, 0);
         } else {
             gameFont.drawText("Awesome! Hit Z to start", { x: 140, y: 270 - 40 }, 0, 0, 2);
-            if(!this.music){
-                this.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
+            if(!titleScreen.music){
+                titleScreen.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
+                
             }
 
         }
@@ -66,7 +68,7 @@ const titleScreen = {
 
     update: function () {
         if (titleScreen.clicked && (Key.justReleased(Key.z) || Joy.aReleased || Joy.startReleased)) {
-            this.music.volume.gain.value = 0;
+            titleScreen.music.volume.gain.value = 0;
             signal.dispatch('resetGame');
         }
 

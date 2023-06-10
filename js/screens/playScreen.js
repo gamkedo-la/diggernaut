@@ -2,15 +2,13 @@ const playScreen = {
 
     hitCounter: 0,
     ticker: 0,
+    music: null,
 
     reset: function () {
         player.reset();
-        if (this.music) this.music.sound.stop();
-        else {
-            //this.music = audio.playSound('downward-music', 0, 0.5, 1, true);
-            //this.music.volume.gain.value = 0.5;
+        if (!playScreen.music) {
+            playScreen.music = audio.playSound('downward-music', 0, 0.5, 1, true);
         }
-
     },
 
     draw: function () {

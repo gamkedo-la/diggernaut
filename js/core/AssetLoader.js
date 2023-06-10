@@ -89,7 +89,7 @@ AssetLoader.prototype.loadBuffer = function(url, key) {
         canvasContext.font = '10px monospace';
 
         let consoleText = `loading sound ${loader.loadCount} of ${loader.urlList.length}: ${key}`;
-        if(++loader.loadCount == loader.urlList.length){
+        if(loader.loadCount == loader.urlList.length){
           consoleText = 'all sounds loaded';
         }
         canvasContext.fillText(consoleText, 10, 40);
