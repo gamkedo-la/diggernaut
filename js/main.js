@@ -148,7 +148,7 @@ function generateTilesets() {
     )
     tileSets.ui_icons = new Tileset(
         img["ui-icons"],
-        {tileWidth: 11, tileHeight: 11, tileCount: 3, tileColumns: 3, tileRows: 1}
+        {tileWidth: 11, tileHeight: 11, tileCount: 4, tileColumns: 4, tileRows: 1}
     )
     tileSets.tentacle_arm = new Tileset(
         img["tentacle-arm"],

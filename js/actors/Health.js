@@ -19,17 +19,16 @@ class Health {
         this.life--;
         canvasContext.save();
         canvasContext.fillStyle = this.color;
-        let drawX = Math.floor(this.x - view.x);
-        let drawY = Math.floor(this.y - view.y);
+        let drawX = Math.floor(this.x - view.x-2);
+        let drawY = Math.floor(this.y - view.y-2);
         if (this.life > 100) {
-            canvasContext.fillStyle = COLORS[4]
-            fillRect(drawX, drawY, 5, 5);
+            
+            drawTileSprite(tileSets.ui_icons, 3, drawX, drawY, canvasContext);
             this.drawGlow(drawX - 16, drawY - 16);
         } else {
             let blink = ticker % 8 > 4;
             if (blink) {
-                canvasContext.fillStyle = COLORS[4]
-                fillRect(drawX, drawY, 5, 5);
+                drawTileSprite(tileSets.ui_icons, 3, drawX, drawY, canvasContext);
                 this.drawGlow(drawX - 16, drawY - 16);
             }
         }

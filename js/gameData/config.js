@@ -601,16 +601,12 @@ const particleDefinitions = {
             y: () => 0
         },
         collides: false,
-        color: () => "red",
+        color: () => "green",
         life: () => 30,
         xVelocity: () => rand(-0.2, .2),
         yVelocity: () => rand(0, -1),
         gravity: () => 0,
-        custom: (particle) => {
-            particle.xvel += rand(-0.5, 0.5);
-            particle.yvel += rand(-0.2, 0.3);
-        },
-        gradientPalette: particleGradients.hurt
+        gradientPalette: particleGradients.green
         }
     },
 
@@ -633,7 +629,7 @@ const particleDefinitions = {
 
     jumpPuff: function(){
         return{
-        quantity: 20,
+        quantity: 10,
         offset: {
             x: () => 0,
             y: () => 0
@@ -642,7 +638,7 @@ const particleDefinitions = {
         xVelocity: () => rand(-1, 1),
         yVelocity: () => rand(-.5, -2),
         color:  () => "white",
-        life: () => rand(19, 20),
+        life: () => rand(10, 15),
         gravity: () => rand(0, 0.1),
         gradientPalette: particleGradients.ice
         }
@@ -1067,6 +1063,7 @@ const damageTileWithEffects = {
         
         actors.forEach(actor => {
             if(inView(actor)){
+                if(actor.collider === undefined){ return; }
                 if(rectCollision(actor.collider, explosionCollider)){
                     if(actor.constructor.name === "Flyer"){ actor.kill(); }
                     if(actor.constructor.name === "Crawler"){ actor.kill(); }
