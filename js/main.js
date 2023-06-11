@@ -171,6 +171,7 @@ async function gameSetup() {
     sounds = loader.sounds;
     generateMap(mapConfig);    
     populateMap(mapConfig);
+    explosionCollider = new Collider(0,0,32*5, 32*5, {left: 0, right: 0, up: 0, down: 0});
 
     return 1;
 }

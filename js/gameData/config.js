@@ -1057,6 +1057,23 @@ const damageTileWithEffects = {
             }
             tileMap.shakeScreen(30);
         }
+        
+        //move explosionCollder 2 tiles up and 2 tiles left from the startTileIndex, in pixels
+        explosionCollider.x = tileMap.tileIndexToPixelX(startTileIndex) - 64;
+        explosionCollider.y = tileMap.tileIndexToPixelY(startTileIndex) - 64;
+        explosionCollider.width = 32 * 5;
+        explosionCollider.height = 32 * 5;
+        //check for actors in the explosion area
+        
+        actors.forEach(actor => {
+            if(inView(actor)){
+                if(rectCollision(actor.collider, explosionCollider)){
+                    if(actor.constructor.name === "Flyer"){ actor.kill(); }
+                    if(actor.constructor.name === "Crawler"){ actor.kill(); }
+                    if(actor.constructor.name === "Tentacle"){ actor.kill(); }  
+                }
+            }
+        })
     },
 
     TILE_BLUE_ORE : function (tileIndex) {
