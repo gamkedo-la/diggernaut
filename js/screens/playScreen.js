@@ -54,7 +54,7 @@ const playScreen = {
         }
 
         for (let i = 0; i < BLUE_UPGRADES.length; i++) {
-            if (player.inventory.blueOre == BLUE_UPGRADES[i].cost) {
+            if (player.inventory.blueOre > BLUE_UPGRADES[i].cost) {
                 if (blueUpgrades[i].won) return;
                 blueUpgrades[i].effect();
                 blueUpgrades[i].won = true;
@@ -63,7 +63,7 @@ const playScreen = {
         }
 
         for (let i = 0; i < GOLD_UPGRADES.length; i++) {
-            if (player.inventory.ore == GOLD_UPGRADES[i].cost) {
+            if (player.inventory.ore > GOLD_UPGRADES[i].cost) {
                 if (goldUpgrades[i].won) return;
                 goldUpgrades[i].effect();
                 goldUpgrades[i].won = true;

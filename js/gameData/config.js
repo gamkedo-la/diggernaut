@@ -96,12 +96,16 @@ screens[GAMESTATE_INVENTORY] = inventoryScreen;
 screens[GAMESTATE_MAP] = mapScreen;
 
 const DEPTH_MILESTONES = [
-    100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
-    1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800,
-    1900, 2000, 2100, 2200, 2300, 2400, 2500, 2600,
-    2700, 2800, 2900, 3000, 3100, 3200, 3300, 3400,
-    3500, 3600, 3700, 3800, 3900, 4000, 4100, 4200,
-    4300, 4400, 4500, 4600, 4700, 4800, 4900, 5000
+    250, 500, 750, 1000, 1250, 1500, 1750, 2000,
+    2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000,
+    4250, 4500, 4750, 5000, 5250, 5500, 5750, 6000,
+    6250, 6500, 6750, 7000, 7250, 7500, 7750, 8000,
+    8250, 8500, 8750, 9000, 9250, 9500, 9750, 10000,
+    10250, 10500, 10750, 11000, 11250, 11500, 11750, 12000,
+    12250, 12500, 12750, 13000, 13250, 13500, 13750, 14000,
+    14250, 14500, 14750, 15000, 15250, 15500, 15750, 16000,
+    16250, 16500, 16750, 17000, 17250, 17500, 17750, 18000,
+    18250, 18500, 18750, 19000, 19250, 19500, 19750, 20000
 ]
 
 const BLUE_UPGRADES = [
@@ -155,9 +159,60 @@ const BLUE_UPGRADES = [
     {
         name: "Diggerang Damage +",
         description: "DIGGERANG UBERDAMAGE",
-        cost: 90,
+        cost: 100,
         effect: function () {
+            player.upgrades.diggerang = true;
             player.diggerang.damageMultiplier = 4;
+        }
+    },
+
+    {
+        name: "Diggerdrill",
+        description: "DIGGERDRILL 1",
+        cost: 110,
+        effect: function () {
+            player.upgrades.fastDig = true;
+            player.upgrades.fastDigLevel = 0;
+        }
+    },
+
+    {
+        name: "Diggerdrill",
+        description: "DIGGERDRILL 1",
+        cost: 120,
+        effect: function () {
+            player.upgrades.fastDig = true;
+            player.upgrades.fastDigLevel = 0;
+        }
+    },
+
+    {
+        name: "Diggerdrill 2",
+        description: "DIGGERDRILL 2",
+        cost: 130,
+        effect: function () {
+            player.upgrades.fastDig = true;
+            player.upgrades.fastDigLevel = 1;
+        }
+    },
+
+    {
+        name: "Diggerdrill 3",
+        description: "DIGGERDRILL 3",
+        cost: 140,
+        effect: function () {
+            player.upgrades.fastDig = true;
+            player.upgrades.fastDigLevel = 2;
+        }
+    },
+
+    {
+        name: "Diggerdrill 4",
+        description: "DIGGERDRILL 4",
+        cost: 150,
+        effect: function () {
+            player.upgrades.fastDig = true;
+            player.upgrades.fastDigLevel = 3;
         }
     },
 
@@ -192,6 +247,66 @@ const GOLD_UPGRADES = [
         effect: function () {
             player.limits.shieldMax = 40;
             player.shield = 40;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "MAX SHIELD 50",
+        cost: 110,
+        effect: function () {
+            player.limits.shieldMax = 50;
+            player.shield = 40;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "MAX SHIELD 60",
+        cost: 120,
+        effect: function () {
+            player.limits.shieldMax = 60;
+            player.shield = 60;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "MAX SHIELD 70",
+        cost: 130,
+        effect: function () {
+            player.limits.shieldMax = 70;
+            player.shield = 70;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "MAX SHIELD 80",
+        cost: 140,
+        effect: function () {
+            player.limits.shieldMax = 80;
+            player.shield = 80;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "MAX SHIELD 90",
+        cost: 150,
+        effect: function () {
+            player.limits.shieldMax = 90;
+            player.shield = 90;
+        }
+    },
+
+    {
+        name: "Shield ++",
+        description: "MAX SHIELD 100",
+        cost: 160,
+        effect: function () {
+            player.limits.shieldMax = 100;
+            player.shield = 100;
         }
     },
 ]
@@ -1335,7 +1450,7 @@ function createGoldUpgrades() {
             
             uiActors.push(new AwardMessage(player.x, player.y, `${this.description}`, bigFontOrangeGradient, 1, 100, particleDefinitions.awardSparksGold))
             upgrade.effect();
-            player.inventory.goldOre -= upgrade.cost;
+            player.inventory.ore -= upgrade.cost;
             
             }
 

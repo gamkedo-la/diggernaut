@@ -13,10 +13,7 @@ class Player {
         this.depth = 0;
         this.score = 0;
         this.gravity = 0.25;
-        this.upgrades = {
-            diggerang: true,
-            fastDig: true
-        };
+        
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true);
         this.drawOffset = {
             x: 7,
@@ -26,7 +23,7 @@ class Player {
         // Start facing left with idleLeft animation
         this.facing = Direction.LEFT;
         this.inventory = {
-            ore: 50,
+            ore: 10,
             blueOre: 0,
         }
         this.footstepDelay = 250; // ms between sounds
@@ -115,7 +112,7 @@ class Player {
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
-            digCooldown: 0,
+            digCooldown: 12,
             hurtCooldown: 100,
             healthMax: 50,
             moveLeftCooldown: 20,
@@ -137,7 +134,20 @@ class Player {
         this.collider = new Collider(this.x, this.y, this.width, this.height,
             { left: 2, right: 2, top: 10, bottom: 6 }, 'player')
         this.digCollider = new Collider(this.x, this.y, this.width, this.height,
-            { left: 24, right: 24, top: 32, bottom: 24 }, 'player_shovel');
+            { left: 2, right: 2, top: 10, bottom: 6 }, 'player_shovel');
+
+        this.upgrades = {
+            diggerang: false,
+            diggerangDrill: false,
+            fastDig: false,
+            fastDigLevel: 0,
+            fastDigLevels: [
+                { feelerDelta: { left: 12, right: 12, top: 20, bottom: 18 }, damageBonus: 100 },   
+                { feelerDelta: { left: 18, right: 18, top: 32, bottom: 24 }, damageBonus: 300 },
+                { feelerDelta: { left: 24, right: 24, top: 32, bottom: 24 }, damageBonus: 700 },
+                { feelerDelta: { left: 38, right: 38, top: 38, bottom: 31 }, damageBonus: 1000 },
+            ]
+        };
     }
 
     // Object to hold current animation for easy access
@@ -165,7 +175,7 @@ class Player {
         this.yvel = 0;
         this.xAccel = 0;
         this.yAccel = 0;
-        this.digCooldown = 0;
+        this.digCooldown = 12;
         this.hurtCooldown = 0;
         this.health = 40;
         this.moveLeftCooldown = 0;
@@ -599,12 +609,20 @@ class Player {
         if (!this.canDig) return;
         if (this.diggerang.active) { this.diggerang.returning = true; return; }
         this.digging = true;
+        
+        if(this.upgrades.fastDig){
+            const feelerDelta = this.upgrades.fastDigLevels[this.upgrades.fastDigLevel].feelerDelta;
+            
+            this.digCollider.feelerDelta = feelerDelta;
+        }
         const { startTileIndex } = this.digCollider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
         audio.playSound(sounds[randChoice(dig_sounds)], 0, 0.2, 1, false);
         if (startTileValue > 0){
             if(this.upgrades.fastDig){
-                this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]+1000);
+                const damageBonus = this.upgrades.fastDigLevels[this.upgrades.fastDigLevel].damageBonus;
+                this.digWithProps(startTileValue, startTileIndex, 
+                    damageValues[startTileValue] + damageBonus);
             }
             else {
                 this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
