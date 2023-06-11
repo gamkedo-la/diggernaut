@@ -843,7 +843,7 @@ const imageList = [
     'diggerang-spin-vertical',
     'tentacle-arm',
     'tentacle-block',
-    'aap64palette1x64'
+    'aap64palette1x64',
 
     
 ]

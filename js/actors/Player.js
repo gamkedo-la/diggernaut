@@ -7,13 +7,16 @@ class Player {
         this.diggerang = new Diggerang(this.x, this.y);
         this.digging = false;
         this.hovering = false;
-        this.justLanded = false;
         this.helicopterCapacity = 0;
         this.shield = 10;
         this.showShieldCooldown = 0;
         this.depth = 0;
         this.score = 0;
-        this.upgrades = {};
+        this.gravity = 0.25;
+        this.upgrades = {
+            diggerang: true,
+            fastDig: true
+        };
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true);
         this.drawOffset = {
             x: 7,
@@ -22,15 +25,12 @@ class Player {
 
         // Start facing left with idleLeft animation
         this.facing = Direction.LEFT;
-
         this.inventory = {
             ore: 50,
             blueOre: 0,
         }
-
         this.footstepDelay = 250; // ms between sounds
         this.footstepLast = 0; // a timestamp
-
         this.spritesheet = new SpriteSheet({
             image: img['movingPlayerSprite'],
             frameWidth: 32,
@@ -102,10 +102,6 @@ class Player {
                 }
             }
         })
-
-
-
-
         this._updateInternalAnimations();
         this.currentAnimation = this.spritesheet.animations["idleLeft"];
 
@@ -119,7 +115,7 @@ class Player {
             maxXAccel: 3,
             minYAccel: -3,
             maxYAccel: 5,
-            digCooldown: 12,
+            digCooldown: 0,
             hurtCooldown: 100,
             healthMax: 50,
             moveLeftCooldown: 20,
@@ -133,12 +129,15 @@ class Player {
             shieldMax: 10,
             showShieldCooldown: 100,
         }
-
-        this.gravity = this.limits.gravity
-
-        this.collider = new Collider(this.x, this.y, this.width, this.height, {
-            left: 2, right: 2, top: 10, bottom: 6
-        }, 'player')
+        this.previous = {
+            x: 0, y: 0,
+            xVel: 0, yVel: 0,
+            onFloor: false
+        }
+        this.collider = new Collider(this.x, this.y, this.width, this.height,
+            { left: 2, right: 2, top: 10, bottom: 6 }, 'player')
+        this.digCollider = new Collider(this.x, this.y, this.width, this.height,
+            { left: 24, right: 24, top: 32, bottom: 24 }, 'player_shovel');
     }
 
     // Object to hold current animation for easy access
@@ -166,7 +165,7 @@ class Player {
         this.yvel = 0;
         this.xAccel = 0;
         this.yAccel = 0;
-        this.digCooldown = 12;
+        this.digCooldown = 0;
         this.hurtCooldown = 0;
         this.health = 40;
         this.moveLeftCooldown = 0;
@@ -174,9 +173,9 @@ class Player {
         this.coyoteCooldown = 0;
         this.facing = Direction.LEFT;
         this.score = 0;
-        this.upgrades = {
-            diggerang: false,
-        };
+        // this.upgrades = {
+        //     diggerang: false,
+        // };
         this.inventory = {
             ore: 5,
             blueOre: 5,
@@ -185,7 +184,7 @@ class Player {
         goldUpgrades = createGoldUpgrades();
     }
     draw() {
-        let blink = this.hurtCooldown > 0 && ticker % 4 > 1;
+        let blink = this.hurtCooldown > 0 && ticker % 6 > 2;
         if(!blink) {
             this.currentAnimation.render({
                 x: Math.floor(this.x - view.x) - this.drawOffset.x,
@@ -274,6 +273,11 @@ class Player {
     }
 
     update() {
+        this.previous.x = this.x;
+        this.previous.y = this.y;
+        this.previous.xVel = this.xVel;
+        this.previous.yVel = this.yVel;
+        this.previous.onFloor = this.isOnFloor();
         this.applyForces();
         this.handleCollisions();
         this.checkForFallingRocks();
@@ -378,6 +382,7 @@ class Player {
         this.x = x;
         this.y = y;
         this.collider.update(x, y);
+        this.digCollider.update(x, y);
     }
 
     applyForces() {
@@ -455,11 +460,10 @@ class Player {
                 if (this.collider.tileCollisionCheck(0)) {
                     this.y = this.previousY;
                     this.updateCollider(this.x, this.y);
-
                     this.yvel = 0;
-                    if(this.isOnFloor() && this.justLanded){
+                    if(this.isOnFloor() && !this.previous.onFloor){
+                        console.log('just landed')
                         audio.playSound(sounds["landing"]);
-                        this.justLanded = false;
                     }
                     break;
                 }
@@ -595,11 +599,17 @@ class Player {
         if (!this.canDig) return;
         if (this.diggerang.active) { this.diggerang.returning = true; return; }
         this.digging = true;
-
-        const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
+        const { startTileIndex } = this.digCollider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
         audio.playSound(sounds[randChoice(dig_sounds)], 0, 0.2, 1, false);
-        if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
+        if (startTileValue > 0){
+            if(this.upgrades.fastDig){
+                this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]+1000);
+            }
+            else {
+                this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
+            }
+        } 
     }
 
     damageTextFX(damage) {
@@ -753,9 +763,7 @@ class Player {
     }
 
     play(animationName) {
-
         this.currentAnimation = this.animations[animationName];
-
         if (!this.currentAnimation.loop) {
             this.currentAnimation.reset();
         }
