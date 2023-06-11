@@ -1,11 +1,13 @@
 const titleScreen = {
     clicked: false,
     music: null,
+    firstTime: false,
 
     draw: function () {
         if (!titleScreen.clicked) {
-            gameFont.drawText("Click or tap to begin", { x: 220, y: 270 - 40 }, 0, 0);
+            gameFont.drawText("Click or tap to begin", { x: 150, y: 100 }, 0, 0, 2);
         } else {
+            
         //fill background
         canvasContext.fillStyle = 'black';
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
@@ -67,7 +69,6 @@ const titleScreen = {
 
     update: function () {
         if (titleScreen.clicked && (Key.justReleased(Key.z) || Joy.aReleased || Joy.startReleased)) {
-            titleScreen.music.volume.gain.value = 0;
             signal.dispatch('resetGame');
         }
 

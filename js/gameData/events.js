@@ -19,6 +19,8 @@ function startGame(event){
     startTransition(() => {
         console.log('startGame triggered');
         playScreen.reset();
+        titleScreen.music.sound.stop();
+        titleScreen.music = null;
         gameState = GAMESTATE_PLAY;
     });
 }
@@ -27,6 +29,8 @@ function resetGame(event){
     startTransition(() => {
         console.log('resetGame triggered');
         gameState = GAMESTATE_PLAY;
+        titleScreen.music.sound.stop();
+        titleScreen.music = null;
         gameSetup();
         playScreen.reset();
         
@@ -59,6 +63,8 @@ function gameOver(event){
     startTransition(() => {
         console.log('gameOver triggered');
         gameOverScreen.gameEndState = event.detail;
+        playScreen.music.sound.stop();
+        playScreen.music = null;
         gameState = GAMESTATE_GAME_OVER;
     });
 }
@@ -66,6 +72,8 @@ function gameOver(event){
 function gotoTitleScreen(event){
     startTransition(() => {
         console.log('gotoTitleScreen triggered');
+        playScreen.music.sound.stop();
+        playScreen.music = null;
         gameState = GAMESTATE_TITLE;
     });
 }

@@ -7,6 +7,7 @@ class Player {
         this.diggerang = new Diggerang(this.x, this.y);
         this.digging = false;
         this.hovering = false;
+        this.justLanded = false;
         this.helicopterCapacity = 0;
         this.shield = 10;
         this.showShieldCooldown = 0;
@@ -119,7 +120,7 @@ class Player {
             minYAccel: -3,
             maxYAccel: 5,
             digCooldown: 12,
-            hurtCooldown: 20,
+            hurtCooldown: 100,
             healthMax: 50,
             moveLeftCooldown: 20,
             moveRightCooldown: 20,
@@ -166,15 +167,16 @@ class Player {
         this.xAccel = 0;
         this.yAccel = 0;
         this.digCooldown = 12;
-        this.hurtCooldown = 300;
+        this.hurtCooldown = 0;
         this.health = 40;
         this.moveLeftCooldown = 0;
         this.moveRightCooldown = 0;
         this.coyoteCooldown = 0;
-        this.wallSliding = false;
         this.facing = Direction.LEFT;
         this.score = 0;
-        this.upgrades = {};
+        this.upgrades = {
+            diggerang: false,
+        };
         this.inventory = {
             ore: 5,
             blueOre: 5,
@@ -183,12 +185,15 @@ class Player {
         goldUpgrades = createGoldUpgrades();
     }
     draw() {
-        this.currentAnimation.render({
-            x: Math.floor(this.x - view.x) - this.drawOffset.x,
-            y: Math.floor(this.y - view.y) - this.drawOffset.y,
-            width: 32,
-            height: 32
-        })
+        let blink = this.hurtCooldown > 0 && ticker % 4 > 1;
+        if(!blink) {
+            this.currentAnimation.render({
+                x: Math.floor(this.x - view.x) - this.drawOffset.x,
+                y: Math.floor(this.y - view.y) - this.drawOffset.y,
+                width: 32,
+                height: 32
+            })
+        } 
 
         if (this.hovering) {
             this.diggerang.currentAnimation.render({
@@ -234,7 +239,24 @@ class Player {
                         width: 32,
                         height: 32
                     })
+                } else if (this.facing == Direction.LEFT) {
+                    this.diggerang.verticalSpin.update();
+                    this.diggerang.verticalSpin.render({
+                        x: Math.floor(this.x - view.x - 14),
+                        y: Math.floor(this.y - view.y - 4),
+                        width: 32,
+                        height: 32
+                    })
+                } else if (this.facing == Direction.RIGHT) {
+                    this.diggerang.verticalSpin.update();
+                    this.diggerang.verticalSpin.render({
+                        x: Math.floor(this.x - view.x + 6),
+                        y: Math.floor(this.y - view.y - 4),
+                        width: 32,
+                        height: 32
+                    })
                 }
+
             }
         }
 
@@ -257,21 +279,19 @@ class Player {
         this.checkForFallingRocks();
         this.checkBounds();
         this.hurtCooldown--;
+        if(this.hurtCooldown < 0)  { this.hurtCooldown = 0; }
         this.showShieldCooldown--;
         this.depth = Math.round(this.y / 8);
         this.shield = Math.min(this.shield, this.limits.shieldMax);
-        this.canDig = this.checkDig();
-        this.canJump = this.isOnFloor() || this.coyoteCooldown > 0;
-        this.canHelicopter = !this.diggerang.active;
+        this.canDig = this.checkDig() && !this.hovering;
+        this.canJump = ( this.isOnFloor() || this.coyoteCooldown > 0) && !this.isOnCeiling();
+        this.canHelicopter = !this.diggerang.active && !this.isOnCeiling();
         if (this.canJump) { this.helicopterCapacity = this.limits.helicopterCapacity; }
-        this.wallSliding = this.isOnWall() && !this.isOnFloor() && (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.RIGHT) || Key.isDown(Key.d) || Joy.left || Joy.right);
-        this.canWallJump = this.isOnWall() && !this.isOnFloor();
         if (this.moveLeftCooldown > 0) { this.moveLeftCooldown--; }
         if (this.moveRightCooldown > 0) { this.moveRightCooldown--; }
         this.xAccel = 0;
         this.yAccel = 0;
         if (Math.abs(this.xvel) < 0.05) { this.xvel = 0; }
-        if (this.wallSliding) this.collider.emit(particleDefinitions.sparks);
         if (this.yvel > this.limits.hurtVelocity - 2) emitParticles(this.x + rand(0, 12), this.y, particleDefinitions.fallSparks);
 
         this.handleAnimationState();
@@ -293,6 +313,10 @@ class Player {
     handleInput() {
         this.digging = false;
         //this.hovering = false;
+        if (Key.isDown(Key.z) || Joy.x) {
+            this.digging = true;
+        }
+
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.h) || Joy.left) {
             this.moveLeft();
             if (Key.isDown(Key.z) || Joy.x) {
@@ -335,9 +359,6 @@ class Player {
 
         if (Key.justReleased(Key.SPACE) || Joy.aReleased) {
             this.hovering = false;
-            if (this.canWallJump) {
-                this.wallJump(tileMap);
-            }
         }
 
         if (Key.justReleased(Key.z) || Joy.xReleased) { this.digCooldown = 0; }
@@ -351,8 +372,6 @@ class Player {
         if (this.shield != this.limits.shieldMax) {
             this.showShieldCooldown = this.limits.showShieldCooldown;
         }
-
-
     }
 
     updateCollider(x, y) {
@@ -364,7 +383,7 @@ class Player {
     applyForces() {
         this.previousX = this.x;
         this.previousY = this.y;
-        let yAccelDelta = this.wallSliding ? 0.25 : 1;
+        let yAccelDelta = 1;
         this.yAccel += (this.gravity * yAccelDelta);
         this.xvel += this.xAccel;
         this.yvel += this.yAccel;
@@ -376,7 +395,7 @@ class Player {
         if (this.xAccel < this.limits.minXAccel) { this.xAccel = this.limits.minXAccel; }
 
         this.xvel *= this.friction;
-        this.yvel *= (this.wallSliding ? 0.8 : 1);
+        
     }
 
     handleAnimationState() {
@@ -438,6 +457,10 @@ class Player {
                     this.updateCollider(this.x, this.y);
 
                     this.yvel = 0;
+                    if(this.isOnFloor() && this.justLanded){
+                        audio.playSound(sounds["landing"]);
+                        this.justLanded = false;
+                    }
                     break;
                 }
             }
@@ -469,6 +492,11 @@ class Player {
             this.coyoteCooldown--;
             return false;
         }
+    }
+
+    isOnCeiling() {
+        let rc = tileMap.data[tileMap.pixelToTileIndex(this.collider.topFeeler.x, this.collider.topFeeler.y)];
+        return (rc > 0);
     }
 
     footStepSFX() {
@@ -504,18 +532,6 @@ class Player {
 
     moveDown() {
         //this.yAccel = this.speed;
-    }
-
-    wallJump(world) {
-        this.yAccel = -this.speed * 10;
-        let onleftWall = world.data[world.pixelToTileIndex(this.collider.leftFeeler.x, this.collider.leftFeeler.y)]
-        onleftWall ? this.moveLeftCooldown = this.limits.moveLeftCooldown : this.moveRightCooldown = this.limits.moveRightCooldown;
-        this.xAccel = onleftWall ? this.speed * 5 : -this.speed * 5;
-        this.play("jump");
-        // audio.playSound("walljump"); // error - noaudio buffer? but the sound loads?
-        let particleDef = onleftWall ? particleDefinitions.wallJumpLeft : particleDefinitions.wallJumpRight;
-        let emitLocation = onleftWall ? this.collider.leftFeeler : this.collider.rightFeeler;
-        emitParticles(emitLocation.x, emitLocation.y, particleDef);
     }
 
     stop() {
@@ -582,7 +598,7 @@ class Player {
 
         const { startTileIndex } = this.collider.getTileIndexAndSpawnPos(direction);
         const startTileValue = tileMap.data[startTileIndex] || 0;
-
+        audio.playSound(sounds[randChoice(dig_sounds)], 0, 0.2, 1, false);
         if (startTileValue > 0) this.digWithProps(startTileValue, startTileIndex, damageValues[startTileValue]);
     }
 
@@ -605,14 +621,13 @@ class Player {
 
     hurt(damage) {
         if (this.hurtCooldown > 0) { return; }
-        //TODO: blink player sprite
         if (this.shield > 0) {
             this.shield -= damage;
             this.shieldHit();
         }
         if (this.shield <= 0) {
             this.collider.emit(particleDefinitions.hurt);
-            audio.playSound(sounds[randChoice(player_damages)]);
+            audio.playSound(sounds[randChoice(player_damages)], 0, 0.3, 1.5, false);
             this.health -= damage;
             if (this.health <= 0) {
                 this.health = 0;
@@ -722,9 +737,6 @@ class Player {
     helicopter() {
         this.hovering = true;
         if (this.helicopterCapacity <= 0) { this.hovering = false; return };
-        //if (this.inventory.ore <= 0){this.hovering = false; return };
-
-        //this.inventory.ore--;
         this.yVel -= 0.1;
         this.yAccel -= this.speed * this.limits.hoverMultiplier;
         this.helicopterCapacity--;
@@ -734,7 +746,9 @@ class Player {
     jump() {
         this.yvel = -this.speed * this.limits.jumpMultiplier;
         this.play("jump");
-        audio.playSound(sounds["jump"], 0, 0.5, 2, false)
+        if(this.coyoteCooldown == this.limits.coyoteCooldown){
+            audio.playSound(sounds["jump"], 0, 0.3, 3, false)
+        }
         this.collider.emit(particleDefinitions.jumpPuff);
     }
 

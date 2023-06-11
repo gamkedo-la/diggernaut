@@ -195,7 +195,7 @@ class Diggerang {
   }
 
   handleUpgrades() {
-    if (player.upgrades.boomerang) {
+    if (player.upgrades.diggerang) {
       let end1X = this.x + 16 + Math.cos((ticker / 2) + Math.PI) * 16;
       let end1Y = this.y + 12 + Math.sin((ticker / 2) + Math.PI) * 8;
       let end2X = this.x + 16 + Math.cos(ticker / 2) * 16;

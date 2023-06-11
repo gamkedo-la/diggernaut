@@ -155,7 +155,7 @@ class Tentacle {
         }
 
         if (rectCollision(this.tipCollider, player.collider)) {
-            //player.hurt(10);
+            player.hurt(10);
         }
         if (rectCollision(this.collider, player.collider)) {
             this.collideWithPlayer();
@@ -213,7 +213,7 @@ class Tentacle {
     kill() {
         emitParticles(this.x, this.y, particleDefinitions.fallSparks)
         emitParticles(this.x, this.y, particleDefinitions.hurt)
-        audio.playSound(sounds["player_damage_big_1"], 0, 0.5, 0.6, false);
+        audio.playSound(sounds["player_damage_big_1"], 0, 0.3, 0.6, false);
         let i = 5;
         while (i--) {
             actors.push(new Health(this.x, this.y));

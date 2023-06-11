@@ -118,7 +118,7 @@ class Crawler {
     kill() {
         emitParticles(this.x, this.y, particleDefinitions.fallSparks)
         emitParticles(this.x, this.y, particleDefinitions.hurt)
-        audio.playSound(sounds["player_damage_big_1"], 0, 0.5, 0.6, false);
+        audio.playSound(sounds["player_damage_big_1"], 0, 0.5, 0.3, false);
         let i = 5;
         while (i--) {
             actors.push(new Health(this.x, this.y));

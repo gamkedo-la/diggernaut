@@ -147,6 +147,7 @@ const BLUE_UPGRADES = [
         description: "DIGGERANG DAMAGE",
         cost: 90,
         effect: function () {
+            player.upgrades.diggerang = true;
             player.diggerang.damageMultiplier = 2;
         }
     },
@@ -786,39 +787,7 @@ const particleDefinitions = {
             }
     },
 
-    wallJumpLeft: function(){
-        return{
-        quantity: 50,
-        offset: {
-            x: () =>-10,
-            y: () => 0
-        },
-        collides: false,
-        xVelocity: () => rand(0, 2),
-        yVelocity: () => rand(-1, 1),
-        color: () => ["white", "yellow"][randInt(0, 1)],
-        life: () => rand(5, 20),
-        gravity: () => rand(0, 0.1),
-        gradientPalette: particleGradients.fire
-        }
-    },
 
-    wallJumpRight: function(){
-        return{
-        quantity: 50,
-        offset: {
-            x: () => 10,
-            y: () => 0
-        },
-        collides: false,
-        xVelocity: () => rand(0, -2),
-        yVelocity: () => rand(-1, 1),
-        color: () => ["white", "yellow"][randInt(0, 1)],
-        life: () => rand(5, 20),
-        gravity: () => rand(0, 0.1),
-        gradientPalette: particleGradients.fire
-        }
-    }
 }
 
 /*
@@ -894,14 +863,16 @@ const soundList = [
     { name: "explosion_2", url: "snd/explosion_2.ogg" },
     { name: "explosion_3", url: "snd/explosion_3.ogg" },
     { name: "diggerang_whoosh", url: "snd/boomerang_repeat.ogg" },
-    { name: "digging_dirt", url: "snd/digging_dirt.ogg" },
+    { name: "dig1", url: "snd/dig1.ogg" },
+    { name: "dig2", url: "snd/dig2.ogg" },
+    { name: "dig3", url: "snd/dig3.ogg" },
+    { name: "landing", url: "snd/landing_1.mp3" },
     { name: "player_damage_1", url: "snd/player_damage_1.ogg" },
     { name: "player_damage_2", url: "snd/player_damage_2.ogg" },
     { name: "player_damage_big_1", url: "snd/player_damage_big_1.ogg" },
     { name: "player_damage_big_2", url: "snd/player_damage_big_2.ogg" },
     { name: "jump", url: "snd/jump_1.ogg" },
     { name: "clink", url: "snd/clink1.ogg"},
-
     { name: "walljump", url: "snd/walljump-subtle.wav"}, 
     { name: "footstep-a", url: "snd/footstep-a.wav"}, 
     { name: "footstep-b", url: "snd/footstep-b.wav"}, 
@@ -917,12 +888,13 @@ const soundList = [
 const rock_crumbles = [ "rock_crumble_1", "rock_crumble_2", "rock_crumble_3"]
 const explosions = [ "explosion_1", "explosion_2", "explosion_3" ]
 const metal_dings = [ "shovel_on_metal", "shovel_on_metal_2" ]
-const player_damages = [ "player_damage_1", "player_damage_2", "player_damage_big_1", "player_damage_big_2" ]
+const player_damages = [ "player_damage_1", "player_damage_2", "player_damage_big_1" ]
+const dig_sounds = [ "dig1", "dig2", "dig3" ]
 
 const FOOTSTEP_VOLUME = 0.7;
 const footsteps = [ "footstep-a","footstep-b","footstep-c","footstep-d" ]
 
-const COLLECTIBLE_SOUND_VOLUME = 3;
+const COLLECTIBLE_SOUND_VOLUME = 0.7;
 const collectibleSounds = [ "important_pickup" ]; // "gemstone-a","gemstone-b" ]
 
 var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px, gems, bones
@@ -952,7 +924,7 @@ const destroyTileWithEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
-        audio.playSound(sounds[randChoice(rock_crumbles)])
+        audio.playSound(sounds[randChoice(rock_crumbles)], 0, 0.5, 1.25, false)
     },
 
     TILE_UNBREAKABLE_STONE : function (tileIndex) {
@@ -960,7 +932,7 @@ const destroyTileWithEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
-        audio.playSound(sounds[randChoice(rock_crumbles)])
+        audio.playSound(sounds[randChoice(rock_crumbles)], 0, 0.5, 1.25, false)
     },
 
     TILE_UNBREAKABLE_METAL : function (tileIndex) {
@@ -968,7 +940,7 @@ const destroyTileWithEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
-        audio.playSound(sounds[randChoice(rock_crumbles)])
+        audio.playSound(sounds[randChoice(rock_crumbles)], 0, 0.5, 1.25, false)
     },
 
     TILE_GOLD_ORE : function (tileIndex) {
@@ -1307,7 +1279,16 @@ function createDepthAwards() {
     DEPTH_MILESTONES.forEach(function(depth){
         out[depth] = function(){
             uiActors.push(new AwardMessage(player.x, player.y, `${depth} METERS!`, bigFontGreen, 1, 100, particleDefinitions.awardSparks))
+            if(depth % 500 == 0){
+                actors.forEach(function(actor){
+                    if(inView(actor)){
+                        if(actor.constructor.name == 'Flyer') actor.kill();
+                        if(actor.constructor.name == 'Crawler') actor.kill();
+                        if(actor.constructor.name == 'Tentacle') actor.kill();
+                    }
+                });
             }
+        }
     });
     return out;
 }

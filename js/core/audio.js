@@ -155,7 +155,7 @@ const AudioGlobal = function AudioGlobal() {
 			currentMusicTrack.sound.stop(audioCtx.currentTime + CROSSFADE_TIME);
 		}
 
-		source.start(); // FIXME: causes errors in chrome
+		source.start(); 
 		currentMusicTrack = {sound: source, volume: gainNode};
 
 		musicStartTime = audioCtx.currentTime;
