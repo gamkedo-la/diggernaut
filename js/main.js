@@ -357,7 +357,7 @@ function populateMap(config){
      //create several tentacles  within 20 tiles of player
      for(let i = 0; i < 1000; i++){
         let x = Math.floor(rand(3, 68))
-        let y = Math.floor(rand(200, 4000))
+        let y = Math.floor(rand(40, 2000))
         //make x and y multiples of 32
         x = x * 32;
         y = y * 32;
