@@ -72,12 +72,7 @@ const playScreen = {
                 }
             }
         }
-
-
-
     },
-
-
 
     followPlayer: function () {
         //TODO: lerp camera, implement deadzone and camera shake
@@ -121,14 +116,14 @@ const playScreen = {
     },
     prepareLightingOverlay: function () {
         bufferContext.save();
-        bufferContext.fillStyle = COLORS[17];
+        bufferContext.fillStyle = 'black';
         bufferContext.fillRect(0, 0, canvas.width, canvas.height);
 
 
         bufferContext.globalCompositeOperation = 'screen';
-        let randX = randChoice([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1]);
-        let randY = randChoice([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1]);
-        bufferContext.drawImage(img['big_green_glow'], player.x - view.x - 160, player.y - view.y - 160, 320, 320);
+        let glowSize = mapRange(player.depth, 60, 1000, 700, 160);
+        let half = glowSize / 2;
+        bufferContext.drawImage(img['big_green_glow'], player.x - view.x - half, player.y - view.y - half, glowSize, glowSize);
         bufferContext.restore();
     },
 
@@ -143,6 +138,7 @@ const playScreen = {
 
         canvasContext.save();
         canvasContext.globalCompositeOperation = 'multiply';
+        let alpha = mapRange(player.depth, 60, 1000, 0, 1);
         canvasContext.globalAlpha = 0.9;
         canvasContext.drawImage(bufferCanvas, 0, 0);
 

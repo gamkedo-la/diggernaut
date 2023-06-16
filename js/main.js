@@ -272,6 +272,21 @@ function generateMap(config){
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
         tileMap.data[i] = choices[ Math.floor(mapRNG() * choices.length) ];
     }
+    //random blobs of fallingFun tile pool
+    for(let i = 0; i < 400; i++){
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        const radius = 8;
+        tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.fallingFun);
+    }
+
+    //random blobs of oreGalore tile pool
+    for(let i = 0; i < 400; i++){
+        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+        const radius = 8;
+        tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.oreGalore);
+    }
 
         //random giant gaps -fall spaces
     for(let i = 0; i < 30; i++){
@@ -353,19 +368,7 @@ function generateMap(config){
 
     //random round blobs of dense rock and ore, random size
 
-    // for(let i = 0; i < 400; i++){
-    //     const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-    //     const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-    //     const radius = 8;
-    //     tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.fallingFun);
-    // }
 
-    // for(let i = 0; i < 400; i++){
-    //     const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-    //     const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-    //     const radius = 8;
-    //     tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.oreGalore);
-    // }
 
     //random giant gaps -fall spaces
     // for(let i = 0; i < 10; i++){
