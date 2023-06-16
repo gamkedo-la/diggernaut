@@ -24,6 +24,7 @@ class Tentacle {
         this.yvel = 0;
         this.yAccel = 0;
         this.xAccel = 0;
+        this.movementOffset = rand(.9, 1.2);
         this.state = "asleep";
         this.viewBlocked = false;
         this.limits = {
@@ -75,7 +76,7 @@ class Tentacle {
                     let targetLength = this.baseSegmentLength - this.baseSegmentLength * (i / totalSegments)
                     this.arm.segments[i].length = lerp(this.arm.segments[i].length, targetLength, 0.5);
                 }
-                let targetWobble = Math.sin(performance.now() / 888) * 7 * Math.sin(performance.now() / 157);
+                let targetWobble = Math.sin(performance.now() / 888*this.movementOffset) * 7 * this.movementOffset * Math.sin(performance.now() / 157*this.movementOffset);
                 this.arm.target.x = lerp(this.arm.target.x + targetWobble, player.x, 0.05);
                 this.arm.target.y = lerp(this.arm.target.y + targetWobble, player.y, 0.05);
                 this.eyelidStateTarget = 2;
