@@ -218,6 +218,48 @@ function gameLoop() {
     Joy.update();
 }
 
+function applyCellularAutomaton(mapData, width, height) {
+    const newMapData = mapData.slice();
+  
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        const index = x + y * width;
+        const neighborIndices = getNeighborIndices(x, y, width, height);
+        const neighborTiles = neighborIndices.map(i => mapData[i]);
+  
+        const emptyNeighbors = neighborTiles.filter(tile => tile === TILE_EMPTY)
+          .length;
+  
+        if (
+          mapData[index] > 0 &&
+          emptyNeighbors >= 5 // Adjust the threshold to control the "openness" of the map
+        ) {
+          newMapData[index] = TILE_EMPTY;
+        }
+      }
+    }
+  
+    return newMapData;
+  }
+  
+  function getNeighborIndices(x, y, width, height) {
+    const indices = [];
+  
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        const nx = x + dx;
+        const ny = y + dy;
+  
+        if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+          indices.push(nx + ny * width);
+        }
+      }
+    }
+  
+    return indices;
+  }
+  
+
 function generateMap(config){
 
     tileMap = new TileMap(config.widthInTiles, config.heightInTiles, config.tileSize, config.tileSize);
@@ -230,6 +272,26 @@ function generateMap(config){
     for (let i = mapYstartOffset; i < mapTotalTiles;  i++) {
         tileMap.data[i] = choices[ Math.floor(mapRNG() * choices.length) ];
     }
+
+        //random giant gaps -fall spaces
+    for(let i = 0; i < 20; i++){
+        //const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+        const startY = Math.floor(mapRNG() * tileMap.heightInTiles);
+        const gapHeight = Math.floor(mapRNG() * 100 + 75);   
+        let i = 300;
+        while(i--){
+            let x = Math.floor(mapRNG() * tileMap.widthInTiles);
+            let y = Math.floor(startY + mapRNG() * gapHeight);
+            tileMap.tileFillRect(x, y, 10, 10, 0);
+        }
+    }
+
+
+    for (let i = 0; i < 10; i++) {
+        tileMap.data = applyCellularAutomaton(tileMap.data, tileMap.widthInTiles, tileMap.heightInTiles);
+    }    
+
+
     
     // //random tiny holes
     // for(let i = 0; i < 1200; i++){
@@ -263,34 +325,60 @@ function generateMap(config){
         tileMap.insertPrefab(rooms.t_intersection, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
         tileMap.insertPrefab(rooms.platform, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
     }
+
+    //more smoothing
+    for (let i = 0; i < 3; i++) {
+        tileMap.data = applyCellularAutomaton(tileMap.data, tileMap.widthInTiles, tileMap.heightInTiles);
+    }
+
+     //more random little rooms
+     for(let i = 0; i < 300; i++){
+        tileMap.insertPrefab(rooms.hallway, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.well, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.plus, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+        //tileMap.insertPrefab(rooms.checkerboard, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.pipe, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        //tileMap.insertPrefab(rooms.longhallway, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles - config.mapStartY));
+        tileMap.insertPrefab(rooms.stairsleft, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.stairsright, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.hut, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.t_intersection, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+        tileMap.insertPrefab(rooms.platform, Math.floor(mapRNG() * tileMap.widthInTiles), config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles));
+    }
+
+    //more smoothing
+    for (let i = 0; i < 1; i++) {
+        tileMap.data = applyCellularAutomaton(tileMap.data, tileMap.widthInTiles, tileMap.heightInTiles);
+    }
+
     //random round blobs of dense rock and ore, random size
 
-    for(let i = 0; i < 400; i++){
-        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        const radius = 8;
-        tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.fallingFun);
-    }
+    // for(let i = 0; i < 400; i++){
+    //     const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+    //     const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+    //     const radius = 8;
+    //     tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.fallingFun);
+    // }
 
-    for(let i = 0; i < 400; i++){
-        const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        const y = Math.floor(mapRNG() * tileMap.heightInTiles);
-        const radius = 8;
-        tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.oreGalore);
-    }
+    // for(let i = 0; i < 400; i++){
+    //     const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+    //     const y = Math.floor(mapRNG() * tileMap.heightInTiles);
+    //     const radius = 8;
+    //     tileMap.tileFillCircle(x, y, radius, mapConfig.caveGenPools.oreGalore);
+    // }
 
     //random giant gaps -fall spaces
-    for(let i = 0; i < 10; i++){
-        //const x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        const startY = Math.floor(mapRNG() * tileMap.heightInTiles);
-        const gapHeight = Math.floor(mapRNG() * 200 + 150);   
-        let i = 300;
-        while(i--){
-            let x = Math.floor(mapRNG() * tileMap.widthInTiles);
-            let y = Math.floor(startY + mapRNG() * gapHeight);
-            tileMap.tileFillRect(x, y, 10, 10, 0);
-        }
-    }
+    // for(let i = 0; i < 10; i++){
+    //     //const x = Math.floor(mapRNG() * tileMap.widthInTiles);
+    //     const startY = Math.floor(mapRNG() * tileMap.heightInTiles);
+    //     const gapHeight = Math.floor(mapRNG() * 200 + 150);   
+    //     let i = 300;
+    //     while(i--){
+    //         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
+    //         let y = Math.floor(startY + mapRNG() * gapHeight);
+    //         tileMap.tileFillRect(x, y, 10, 10, 0);
+    //     }
+    // }
 
     //fill two columns at left and right edge with unbreakable blocks
     tileMap.tileFillRect(0, 0, 1, tileMap.heightInTiles, 3);
@@ -301,12 +389,12 @@ function generateMap(config){
     //empty circle around player
     tileMap.tileFillCircle(player.x / tileMap.tileWidth, playerSettings.y / tileMap.tileHeight, 3, 0);
     tileMap.tileFillRect(0, 0, 70, 20, 0);
-    tileMap.tileFillRect(0, 20, 70, 10, 1);
+    tileMap.tileFillRect(0, 20, 70, 2, 1);
 
     //big block of random tiles under player start
-    for (let i = mapYstartOffset; i < 10*70;  i++) {
-        tileMap.data[i] = choices[ Math.floor(mapRNG() * choices.length) ];
-    }
+    // for (let i = mapYstartOffset; i < 10*70;  i++) {
+    //     tileMap.data[i] = choices[ Math.floor(mapRNG() * choices.length) ];
+    // }
 
     //full update on autotiles
     tileMap.updateAutoTiles(0,0, tileMap.widthInTiles, tileMap.heightInTiles);
@@ -368,8 +456,11 @@ function populateMap(config){
 
     //create collectibles
     for(let i = 0; i < collectibles.Treasure.length; i++){
-        let x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        let y = Math.floor(mapRNG() * (tileMap.heightInTiles/16))//-config.mapStartY) + config.mapStartY);
+        let yChunkHeight = Math.floor( tileMap.heightInTiles / collectibles.Treasure.length )
+        let yChunkStart = yChunkHeight * i;
+        let yChunkEnd = yChunkHeight * (i+1);
+        let x = Math.floor(rand(3, tileMap.widthInTiles - 3));
+        let y = Math.floor(rand(yChunkStart, yChunkEnd));
         if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
             //check downward until we find a solid tile
             while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){

@@ -18,7 +18,7 @@ class Collectible {
 
     draw() {
         if (!inView(this)) return;
-        drawTileSprite(this.tileSet, this.tile, this.x - view.x, this.y - view.y);
+        drawTileSprite(this.tileSet, this.tile, this.x - view.x, this.y - view.y+Math.floor(Math.sin(ticker/20)*5));
         this.collider.draw();
 
     }

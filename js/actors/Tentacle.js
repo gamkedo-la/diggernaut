@@ -105,7 +105,7 @@ class Tentacle {
     draw() {
         if (!inView(this)) return;
 
-        tinyFont.drawText(this.state, { x: this.x - view.x, y: this.y - view.y - 10 }, 0, 1);
+        //tinyFont.drawText(this.state, { x: this.x - view.x, y: this.y - view.y - 10 }, 0, 1);
         //this.arm.draw();
         this.drawArm();
 
@@ -116,8 +116,8 @@ class Tentacle {
 
         this.states[this.state].draw.call(this);
 
-        this.collider.draw();
-        this.tipCollider.draw();
+        //this.collider.draw();
+        //this.tipCollider.draw();
 
     }
     update() {
