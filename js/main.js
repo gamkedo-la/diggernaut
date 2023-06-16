@@ -274,10 +274,10 @@ function generateMap(config){
     }
 
         //random giant gaps -fall spaces
-    for(let i = 0; i < 20; i++){
+    for(let i = 0; i < 30; i++){
         //const x = Math.floor(mapRNG() * tileMap.widthInTiles);
         const startY = Math.floor(mapRNG() * tileMap.heightInTiles);
-        const gapHeight = Math.floor(mapRNG() * 100 + 75);   
+        const gapHeight = Math.floor(mapRNG() * 70 + 40);   
         let i = 300;
         while(i--){
             let x = Math.floor(mapRNG() * tileMap.widthInTiles);
@@ -287,7 +287,7 @@ function generateMap(config){
     }
 
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 8; i++) {
         tileMap.data = applyCellularAutomaton(tileMap.data, tileMap.widthInTiles, tileMap.heightInTiles);
     }    
 
