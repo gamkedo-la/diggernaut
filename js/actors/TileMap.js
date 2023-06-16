@@ -18,6 +18,7 @@ class TileMap {
         this.damagedTiles = {} // {[tileIndex]: 10, [tileIndex]: 35}
         this.shakingTiles = {} // {[tileIndex]: {timeRemaining: 0, callback: callbackFunction, shake: {x: 0, y: 0}}}
         this.autoTileData = [];
+        this.treasureTiles = new Uint16Array(widthInTiles * heightInTiles);
         this.standardShakeTime = 7;
         this.explosiveShakeTime = 42;
         this.screenShakeTime = 0;

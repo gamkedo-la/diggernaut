@@ -23,7 +23,7 @@ const mapScreen = {
         //calculate how many rows of tiles we can draw in columnsToDraw
 
         clearScreen('black');
-        let fills = ["black", "#553", "#333", "#999", "#88ff00", "magenta", "red", "yellow", "black"]
+        let fills = ["black", "#553", "#553", "#553", "#553", "#553", "#553", "#553", "#553"]
 
         for (let y = this.scrollOffset; y < totalYView + this.scrollOffset; y++) {
             for (let x = 0; x < tileMap.widthInTiles; x++) {
@@ -32,9 +32,19 @@ const mapScreen = {
                 yOffset = ((y - this.scrollOffset) % (canvas.height));
 
                 let tile = tileMap.getTileAtPosition(x, y);
+                const treasureHere = tileMap.treasureTiles[x + y * tileMap.widthInTiles]
+                
                 if (tile > 0) {
 
                     canvasContext.fillStyle = fills[tile];
+                    fillRect(
+                        xOffset + x,
+                        yOffset,
+                        1, 1,
+                    ); 
+                }
+                if(treasureHere > 0){
+                    canvasContext.fillStyle = 'white';
                     fillRect(
                         xOffset + x,
                         yOffset,

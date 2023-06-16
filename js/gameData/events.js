@@ -19,8 +19,8 @@ function startGame(event){
     startTransition(() => {
         console.log('startGame triggered');
         playScreen.reset();
-        titleScreen.music.volume.gain.value = 0;
-        playScreen.music.volume.gain.value = 1;
+        if(titleScreen.music)titleScreen.music.volume.gain.value = 0;
+        if(playScreen.music)playScreen.music.volume.gain.value = 1;
         gameState = GAMESTATE_PLAY;
     });
 }
@@ -29,8 +29,8 @@ function resetGame(event){
     startTransition(() => {
         console.log('resetGame triggered');
         gameState = GAMESTATE_PLAY;
-        titleScreen.music.volume.gain.value = 0;
-        playScreen.music.volume.gain.value = 1;
+        if(playScreen.music){playScreen.music.volume.gain.value = 1;}
+        if(titleScreen.music){titleScreen.music.volume.gain.value = 0;}
         gameSetup();
         playScreen.reset();
         
@@ -63,8 +63,7 @@ function gameOver(event){
     startTransition(() => {
         console.log('gameOver triggered');
         gameOverScreen.gameEndState = event.detail;
-        playScreen.music.volume.gain.value = 0;
-
+        if(playScreen.music){playScreen.music.volume.gain.value = 0;}
         gameState = GAMESTATE_GAME_OVER;
     });
 }
@@ -72,8 +71,8 @@ function gameOver(event){
 function gotoTitleScreen(event){
     startTransition(() => {
         console.log('gotoTitleScreen triggered');
-        playScreen.music.volume.gain.value = 0;
-        titleScreen.music.volume.gain.value = 1;
+        if(playScreen.music){playScreen.music.volume.gain.value = 0;}
+        if(titleScreen.music){titleScreen.music.volume.gain.value = 1;}
         gameState = GAMESTATE_TITLE;
     });
 }

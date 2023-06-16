@@ -354,7 +354,7 @@ function populateMap(config){
         }
     }
 
-     //create several tentacles  within 20 tiles of player
+     //create tentacles
      for(let i = 0; i < 1000; i++){
         let x = Math.floor(rand(3, 68))
         let y = Math.floor(rand(40, 2000))
@@ -366,9 +366,10 @@ function populateMap(config){
         actors.push(new Tentacle(x, y));
     }
 
+    //create collectibles
     for(let i = 0; i < collectibles.Treasure.length; i++){
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
-        let y = Math.floor(mapRNG() * tileMap.heightInTiles) + config.mapStartY;
+        let y = Math.floor(mapRNG() * (tileMap.heightInTiles/16))//-config.mapStartY) + config.mapStartY);
         if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
             //check downward until we find a solid tile
             while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
@@ -380,6 +381,7 @@ function populateMap(config){
                     "Treasure",
                     collectibles.Treasure[i])
             )
+            tileMap.treasureTiles[x + y * tileMap.widthInTiles] = 1;
         }else{
             tileMap.setTileAtPosition(x, y, TILE_EMPTY);
             actors.push(
