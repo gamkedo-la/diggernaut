@@ -27,6 +27,7 @@ Ryan Malm: Lead Programmer, Game Design, Art
     },
 
     update: function () {
-        if (Key.justReleased(Key.ENTER) || Joy.aReleased || Joy.startReleased) { signal.dispatch('titleScreen'); }
+        Joy.update();
+        if (Key.justReleased(Key.ENTER) || Joy.a || Joy.start || Joy.x) { signal.dispatch('titleScreen'); }
     }
 }
