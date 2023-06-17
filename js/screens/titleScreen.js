@@ -68,7 +68,8 @@ const titleScreen = {
     },
 
     update: function () {
-        if (titleScreen.clicked && (Key.justReleased(Key.z) || Joy.aReleased || Joy.startReleased)) {
+        Joy.update();
+        if (titleScreen.clicked && (Key.justReleased(Key.z) || Joy.start || Joy.x || Joy.a || Joy.aReleased || Joy.startReleased || Joy.xReleased)) {
             signal.dispatch('resetGame');
         }
 
