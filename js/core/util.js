@@ -92,7 +92,10 @@ const Joy = {
     update() {
         if (!navigator.getGamepads) return;
         let allGamepads = navigator.getGamepads();
-        for (let num=0; num<allGamepads.length; num++) {
+        // FIXME: we only use the first gamepad because the "released" logic
+        // gets confused when another controller is in charge
+        for (let num = 0; num<1; num++) {
+        //for (let num=0; num<allGamepads.length; num++) {
             let g = allGamepads[num];
             if (!g || !g.axes) break; // can be null for a few frames
             // left thumbstick or dpad to move
@@ -100,6 +103,7 @@ const Joy = {
             this.right = (g.axes[0] > this.dz) || g.buttons[15].value;
             this.up = (g.axes[1] < -this.dz) || g.buttons[12].value;
             this.down = (g.axes[1] > this.dz) || g.buttons[13].value;
+            // this logic is buggy if gamepad 2 is controlling things! =(
             this.aReleased = this.a && !(g.buttons[0].value > this.dz);
             this.bReleased = this.b && !(g.buttons[1].value > this.dz);
             this.xReleased = this.x && !(g.buttons[2].value > this.dz);

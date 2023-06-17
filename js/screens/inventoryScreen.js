@@ -42,6 +42,7 @@ const inventoryScreen = {
     },
 
     update: function () {
+        Joy.update();
         if (Key.justReleased(Key.i)) { signal.dispatch('returnToGame'); }
         if (Key.justReleased(Key.p)) { signal.dispatch('returnToGame'); }
         if (Joy.yReleased) { signal.dispatch('returnToGame'); }
