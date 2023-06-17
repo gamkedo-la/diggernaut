@@ -66,7 +66,7 @@ const Key = {
 
 // TODO refactor into a Key lookalike with isDown() and justReleased() and button index constants
 const Joy = {
-    dz:0.1, // deadzone prevents drift on old gamepads
+    start:false,
     up:false,
     down:false,
     left:false,
@@ -75,19 +75,18 @@ const Joy = {
     b:false,
     x:false,
     y:false,
-    start:false,
     aReleased:false,
     bReleased:false,
     xReleased:false,
     yReleased:false,
     startReleased:false,
+    dz:0.1, // deadzone prevents drift on old gamepads
 
     init() {
         window.addEventListener("gamepadconnected", function(e) {
             console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
                 e.gamepad.index, e.gamepad.id,
                 e.gamepad.buttons.length, e.gamepad.axes.length);
-            g = navigator.getGamepads()[0];
         });
     },
     update() {
