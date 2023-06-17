@@ -47,7 +47,7 @@ class BlueOre {
         this.xvel *= this.friction;
         this.yvel *= this.friction;
         this.yvel += this.gravity;
-        emitParticles(this.x, this.y - 2, particleDefinitions.blueOreSparks);
+        if(ticker%4==0)emitParticles(this.x, this.y - 2, particleDefinitions.blueOreSparks);
 
         if (this.distanceTo(player) < 50 && this.life < 270) {
             this.moveTowards(player);

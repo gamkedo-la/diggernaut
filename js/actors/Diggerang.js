@@ -118,7 +118,7 @@ class Diggerang {
       this.y - view.y - 16,
       bufferContext);
     bufferContext.restore();
-    this.collider.draw();
+    //this.collider.draw();
   }
 
   pan() {

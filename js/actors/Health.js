@@ -49,7 +49,7 @@ class Health {
         this.yvel *= this.friction;
         this.yvel += this.gravity;
 
-        emitParticles(this.x, this.y - 2, particleDefinitions.healthSparks);
+        if(ticker%4==0)emitParticles(this.x, this.y - 2, particleDefinitions.healthSparks);
 
 
         if (this.distanceTo(player) < 50 && this.life < 270) {

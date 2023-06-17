@@ -50,7 +50,7 @@ class Ore {
         this.yvel *= this.friction;
         this.yvel += this.gravity;
 
-        emitParticles(this.x, this.y - 2, particleDefinitions.oreSparks);
+        if(ticker%4==0)emitParticles(this.x, this.y - 2, particleDefinitions.oreSparks);
 
 
         if (this.distanceTo(player) < 50 && this.life < 270) {

@@ -5,7 +5,7 @@ const titleScreen = {
 
     draw: function () {
         if (!titleScreen.clicked) {
-            gameFont.drawText("Click or tap to begin", { x: 150, y: 100 }, 0, 0, 2);
+            gameFont.drawText("Click or tap to begin", { x: 270, y: 200 }, 0, 0, 2);
         } else {
             
         //fill background
@@ -47,18 +47,18 @@ const titleScreen = {
 
         let titleOffsets = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 0, y: 4 }, { x: 4, y: 4 }];
         for (let i = 0; i < titleOffsets.length; i++) {
-            bigFontBlack.drawText("DIGGERNAUTS", { x: 125 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 2);
+            bigFontBlack.drawText("DIGGERNAUTS", { x: 185 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 3);
         }
         titleOffsets = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }];
         for (let i = 0; i < titleOffsets.length; i++) {
-            bigFontOrangeGradient.drawText("DIGGERNAUTS", { x: 125 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 2);
+            bigFontOrangeGradient.drawText("DIGGERNAUTS", { x: 185 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 3);
         }
 
-
-        gameFont.drawText("Hit F to go Fullscreen", { x: 215, y: 240 - 40 }, 0, 0, 1, 'yellow');
-        gameFont.drawText("Arrows to move, Z to dig, X to throw, SPACE to jump", { x: 125, y: 256 - 40 }, 0, 0);
+        let xoffset = 130, yoffset = 140
+        gameFont.drawText("Hit F to go Fullscreen", { x: 215 + xoffset, y: 240+yoffset - 40 }, 0, 0, 1, 'yellow');
+        gameFont.drawText("Arrows to move, Z to dig, X to throw, SPACE to jump, I for inventory", { x: 70+xoffset, y: 256+yoffset - 40 }, 0, 0);
         
-            gameFont.drawText("Awesome! Hit Z to start", { x: 140, y: 270 - 40 }, 0, 0, 2);
+            gameFont.drawText("Awesome! Hit Z to start", { x: 140+xoffset, y: 270+yoffset - 40 }, 0, 0, 2);
             if(!titleScreen.music){
                 titleScreen.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
             }

@@ -211,9 +211,7 @@ class Player {
                 width: 32,
                 height: 32
             })
-        }
-
-        if (this.digging) {
+        }else if (this.digging) {
             if (!this.diggerang.active) {
 
                 if (Key.isDown(Key.UP) || Joy.up) {
@@ -297,7 +295,7 @@ class Player {
         this.showShieldCooldown--;
         this.depth = Math.round(this.y / 8);
         this.shield = Math.min(this.shield, this.limits.shieldMax);
-        this.canDig = this.checkDig() && !this.hovering;
+        this.canDig = this.checkDig() && (!this.hovering || Key.isDown(Key.UP) || Joy.up);
         this.canJump = ( this.isOnFloor() || this.coyoteCooldown > 0) && !this.isOnCeiling();
         this.canHelicopter = !this.diggerang.active && !this.isOnCeiling();
         if (this.canJump) { this.helicopterCapacity = this.limits.helicopterCapacity; }

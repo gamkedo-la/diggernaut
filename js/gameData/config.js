@@ -377,6 +377,13 @@ const COLORS = [
     '#5a4e44',
     '#423934'
 ]
+const BG_GRADIENT = [
+    color(COLORS[18]),
+    color(COLORS[5]),
+    color(COLORS[4]),
+    color(COLORS[1]),
+    color(COLORS[0])
+]
 // const COLORS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
 //                 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,
 //                 33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,
@@ -387,15 +394,15 @@ const DIGGERANG_COST = 0;
 const view = {
     x: 0,
     y: 0,
-    width: 544,
-    height: 306,
+    width: 800,
+    height: 450,
 }
 
 const mapConfig = {
     widthInTiles: 60,
     heightInTiles: 8000,
     tileSize: 32,
-    mapStartY: 20, //start generating tiles at this Y position
+    mapStartY: 10, //start generating tiles at this Y position
     caveGenPools:{
         vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,5,6,7,8,9],
         fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,1,1,1,4,7,8,9],
@@ -404,8 +411,8 @@ const mapConfig = {
 }
 
 const playerSettings = {
-    x: 80 * 32/2, 
-    y: 20 * 32 - 64,
+    x: 60 * 32/2, 
+    y: 10 * 32 - 64,
     previousX: 0,
     previousY: 0,
     canJump: false,

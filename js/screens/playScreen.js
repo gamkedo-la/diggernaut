@@ -114,14 +114,19 @@ const playScreen = {
             }
         });
     },
+
+    
     prepareLightingOverlay: function () {
+        let colorLevel = Math.max(0, mapRange(player.depth, 60, 3000, 0, 1));
+        let backgroundFill = rgbaString( currentColor(BG_GRADIENT, colorLevel) );
+        
         bufferContext.save();
-        bufferContext.fillStyle = 'black';
+        bufferContext.fillStyle = backgroundFill;
         bufferContext.fillRect(0, 0, canvas.width, canvas.height);
 
 
         bufferContext.globalCompositeOperation = 'screen';
-        let glowSize = mapRange(player.depth, 60, 1000, 700, 160);
+        let glowSize = Math.max( mapRange(player.depth, 60, 3000, 900, 160), 160);
         let half = glowSize / 2;
         bufferContext.drawImage(img['big_green_glow'], player.x - view.x - half, player.y - view.y - half, glowSize, glowSize);
         bufferContext.restore();

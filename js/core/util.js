@@ -313,5 +313,55 @@ function emitParticles(x, y, definition, pool=actors){
     }
 }
 
+//color function takes an rgba() string or hex value string fillStyle and returns an object with r, g, b, a values
+function color(colorString) {
+    if (colorString[0] === "#") {
+        const r = parseInt(colorString.slice(1, 3), 16);
+        const g = parseInt(colorString.slice(3, 5), 16);
+        const b = parseInt(colorString.slice(5, 7), 16);
+        const a = 1;
+        //return {r, g, b, a};
+        //return should have named keys
+        return {r: r, g: g, b: b, a: a};
+    } else {
+        const r = parseInt(colorString.slice(5, 8));
+        const g = parseInt(colorString.slice(9, 12));
+        const b = parseInt(colorString.slice(13, 16));
+        const a = 1;
+        return {r: r, g: g, b: b, a: a};
+    }   
+}
+
+//rgbaString takes an object with r, g, b, a values and returns an rgba() string
+function rgbaString(color) {
+    return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+}
+
+//hexString takes a color object with r, g, b, a values and returns a hex string
+function hexString(color) {
+    const r = color.r.toString(16).padStart(2, "0");
+    const g = color.g.toString(16).padStart(2, "0");
+    const b = color.b.toString(16).padStart(2, "0");
+    const a = Math.round(color.a * 255).toString(16).padStart(2, "0");
+    return `#${r}${g}${b}${a}`;
+}
+
+
+//colorLerp takes two colors and a value between 0 and 1 and returns a color between the two
+function colorLerp(color1, color2, t) {
+    const r = lerp(color1.r, color2.r, t);
+    const g = lerp(color1.g, color2.g, t);
+    const b = lerp(color1.b, color2.b, t);
+    const a = lerp(color1.a, color2.a, t);
+    return {r, g, b, a};
+}
+
+//currentColor takes an array of colors and a value between 0 and 1 and returns a color lerped between array values
+function currentColor(colors, t) {
+    const color1 = colors[Math.floor(t * colors.length)];
+    const color2 = colors[Math.ceil(t * colors.length)];
+    return colorLerp(color1, color2, t * colors.length % 1);
+}
+
 
 
