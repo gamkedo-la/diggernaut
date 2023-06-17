@@ -367,6 +367,7 @@ function colorLerp(color1, color2, t) {
 function currentColor(colors, t) {
     const color1 = colors[Math.floor(t * colors.length)];
     const color2 = colors[Math.ceil(t * colors.length)];
+    if(!color2) return color1;
     return colorLerp(color1, color2, t * colors.length % 1);
 }
 
