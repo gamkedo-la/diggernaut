@@ -443,13 +443,13 @@ function populateMap(config){
             while(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
                 y++;
             }
-            tileMap.setTileAtPosition(x, y, TILE_EMPTY);
-            actors.push(
-                new Collectible( x * tileMap.tileWidth, y * tileMap.tileHeight,
-                    "Treasure",
-                    collectibles.Treasure[i])
-            )
-            tileMap.treasureTiles[x + y * tileMap.widthInTiles] = 1;
+            // tileMap.setTileAtPosition(x, y, TILE_EMPTY);
+            // actors.push(
+            //     new Collectible( x * tileMap.tileWidth, y * tileMap.tileHeight,
+            //         "Treasure",
+            //         collectibles.Treasure[i])
+            // )
+            // 
         }else{
             tileMap.setTileAtPosition(x, y, TILE_EMPTY);
             actors.push(
@@ -457,6 +457,7 @@ function populateMap(config){
                     "Treasure",
                     collectibles.Treasure[i])
             )
+            tileMap.treasureTiles[x + y * tileMap.widthInTiles] = 1;
         }
     }
    

@@ -50,15 +50,20 @@ const inventoryScreen = {
             for (let j = top; j < bottom; j++) {
                 
                 const index = tileMap.getIndexAtPosition(i, j)
-                if(index < 0) continue;
-                if (tileMap.data[index] === 0) continue;
-               
-                //fillRect 2x2 for each tile in map
+                
+                
                 let x = 500,
-                    y = 25;
-                if((j + yOffset + y) > 425) continue;
-                let size = 4;
+                    y = 25,
+                    size = 4;
+
+                //if(tileMap.data[index] === 0 && tileMap.treasureTiles[index] === 0) continue;
+                //if((j + yOffset + y) > 425) continue;
+                if(index < 0) continue;
+
                 canvasContext.fillStyle = inventoryScreen.mapColors[tileMap.data[index]];
+                if(tileMap.treasureTiles[index] != 0){
+                    canvasContext.fillStyle = "#0f0"
+                }
                 canvasContext.fillRect(x + i * size, y + (j + yOffset) * size, size, size);
             }
         }
@@ -67,16 +72,6 @@ const inventoryScreen = {
         canvasContext.fillStyle = '#ddd';
         canvasContext.fillRect(500 + playerTileX * 4, 25 + (playerTileY + yOffset) * 4, 4, 4);
 
-        actors.forEach(actor => {
-            if (actor.constructor.name === "Collectible"){
-                //fill square for each collectible
-                collectibleTileX = Math.floor(actor.x / tileMap.tileWidth);
-                collectibleTileY = Math.floor(actor.y / tileMap.tileHeight);
-                canvasContext.fillStyle = '#0f0';
-                if(collectibleTileY + top > 0) return;
-                canvasContext.fillRect(500 + collectibleTileX * 4, 25 + (collectibleTileY + yOffset) * 4, 4, 4);
-            }
-        });
         canvasContext.strokeStyle = 'white';
         canvasContext.strokeRect(500, 25, tileMap.widthInTiles*4, 400);
         canvasContext.restore();

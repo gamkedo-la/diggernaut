@@ -32,6 +32,7 @@ class Collectible {
             thisItem.owned = true;
             emitParticles(this.x + 16, this.y + 16, particleDefinitions.jumpPuff);
             emitParticles(this.x + 16, this.y + 16, particleDefinitions.boom17px);
+            UIMsg('Hit I to view collected treasures and treasure map')
 
             // TODO: play different sounds depending on treasure type.
             // currently chooses between two bitcrushed glass shattering sounds
