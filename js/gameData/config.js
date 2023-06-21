@@ -414,7 +414,7 @@ const mapConfig = {
     },
     flyerSpawnCount: 2000,
     crawlerSpawnCount: 2000,
-    TentacleSpawnCount: 1500,
+    tentacleSpawnCount: 1500,
     stalagmiteSpawnCount: 1000,
 }
 
