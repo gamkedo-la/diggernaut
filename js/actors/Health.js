@@ -19,7 +19,7 @@ class Health {
         this.life--;
         canvasContext.save();
         canvasContext.fillStyle = this.color;
-        let drawX = Math.floor(this.x - view.x-2);
+        let drawX = Math.floor(this.x - view.x-4);
         let drawY = Math.floor(this.y - view.y-2);
         if (this.life > 100) {
             
