@@ -400,7 +400,7 @@ const view = {
 
 const mapConfig = {
     widthInTiles: 60,
-    heightInTiles: 8000,
+    heightInTiles: 5390, //height in meters is tiles * 4
     tileSize: 32,
     mapStartY: 10, //start generating tiles at this Y position
     caveGenPools:{
@@ -1000,6 +1000,7 @@ const soundList = [
     { name: "gemstone-b", url: "snd/gemstone-b.wav"}, 
     { name: "important_pickup", url: "snd/important_pickup.ogg"},
     { name: "downward-music", url: "snd/downward-we-go.ogg"},
+    { name: "health-pickup", url: "snd/health_pickup.ogg"},
 ]
 
 //TODO:  shorten digging_dirt sound, make dirt it's own tile type

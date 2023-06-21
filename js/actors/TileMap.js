@@ -209,7 +209,9 @@ class TileMap {
         }
     }
     //-=============================================================================
-    draw() {
+    draw(view, context) {
+        if(!context) context = canvasContext;
+        if(!view) view = window.view;
         const left = Math.floor(view.x / this.tileWidth);
         const right = Math.ceil((view.x + view.width) / this.tileWidth);
         const top = Math.floor(view.y / this.tileHeight);
@@ -219,7 +221,7 @@ class TileMap {
             for (let j = top; j < bottom; j++) {
                 const index = this.getIndexAtPosition(i, j)
                 if (this.data[index] === 0) continue;
-                this.drawTile(tileSets.caveTileset, this.autoTileData[index], i, j)
+                this.drawTile(tileSets.caveTileset, this.autoTileData[index], i, j, context)
                 this.drawDamagedTiles(index, i, j);
                 this.drawFlashingTiles(index, i, j);
                 this.drawGlowingTiles(index, i, j);
@@ -273,7 +275,8 @@ class TileMap {
 
     }
 
-    drawTile(tileset, tileData, tx, ty) {
+    drawTile(tileset, tileData, tx, ty, canvasContext=null) {
+        if (!canvasContext) { canvasContext = window.canvasContext; }
         let index = this.getIndexAtPosition(tx, ty);
         let dx = this.shakingTiles[index] ? this.shakingTiles[index].shake.x : 0;
         let dy = this.shakingTiles[index] ? this.shakingTiles[index].shake.y : 0;

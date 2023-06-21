@@ -57,8 +57,8 @@ class Health {
         }
 
         if (this.distanceTo(player) < 10 && this.life < 270) {
-            audio.playSound(sounds["clink"]);
-            player.health += 3;
+            audio.playSound(sounds["health-pickup"], 0, 0.3, 1.5, false);
+            player.healthBoost(3);
             this.destroy();
         }
 

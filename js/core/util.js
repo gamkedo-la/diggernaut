@@ -79,7 +79,11 @@ const Joy = {
     bReleased:false,
     xReleased:false,
     yReleased:false,
+    leftTriggerReleased:false,
+    rightTriggerReleased:false,
     startReleased:false,
+    leftTrigger:false,
+    rightTrigger:false,
     dz:0.1, // deadzone prevents drift on old gamepads
 
     init() {
@@ -108,11 +112,15 @@ const Joy = {
             this.bReleased = this.b && !(g.buttons[1].value > this.dz);
             this.xReleased = this.x && !(g.buttons[2].value > this.dz);
             this.yReleased = this.y && !(g.buttons[3].value > this.dz);
+            this.leftTriggerReleased = this.leftTrigger && !(g.buttons[6].value > this.dz);
+            this.rightTriggerReleased = this.rightTrigger && !(g.buttons[7].value > this.dz);
             this.startReleased = this.start && !(g.buttons[9].value > this.dz);
             this.a = g.buttons[0].value > this.dz;
             this.b = g.buttons[1].value > this.dz;
             this.x = g.buttons[2].value > this.dz;
             this.y = g.buttons[3].value > this.dz;
+            this.leftTrigger = g.buttons[6].value > this.dz;
+            this.rightTrigger = g.buttons[7].value > this.dz;
             this.start = g.buttons[9].value > this.dz;
         }
     }

@@ -271,6 +271,7 @@ class Player {
         this.diggerang.draw();
         this.drawDamageTextFX();
         if (this.showShieldCooldown > 0) { this.drawShield(); }
+        if (this.hurtCooldown > 0) { this.drawHealth(); }
 
 
 
@@ -376,7 +377,7 @@ class Player {
         if (Key.justReleased(Key.z) || Joy.xReleased) { this.digCooldown = 0; }
         if (Key.justReleased(Key.p) || Joy.startReleased) { signal.dispatch('pause'); }
         if (Key.justReleased(Key.i) || Joy.yReleased) { signal.dispatch('inventory'); }
-        if (Key.justReleased(Key.x) || Joy.bReleased) { this.throw() }
+        if (Key.justReleased(Key.x) || Joy.bReleased || Joy.rightTriggerReleased) { this.throw() }
     }
 
     shieldBoost(amount) {
@@ -384,6 +385,14 @@ class Player {
         if (this.shield != this.limits.shieldMax) {
             this.showShieldCooldown = this.limits.showShieldCooldown;
         }
+    }
+
+    healthBoost(amount) {
+        this.health += amount;
+        if(this.health != this.limits.healthMax) {
+            this.hurtCooldown = 20;
+        }
+       
     }
 
     updateCollider(x, y) {
@@ -660,10 +669,11 @@ class Player {
                 this.die();
             } else {
                 this.damageTextFX(damage);
-                tileMap.shakeScreen();
+                this.hurtCooldown = this.limits.hurtCooldown;
+                //tileMap.shakeScreen();
             }
         }
-        this.hurtCooldown = this.limits.hurtCooldown;
+        
     }
 
     shieldHit() {
@@ -682,6 +692,19 @@ class Player {
             let y = Math.floor(this.y + Math.sin(shieldAngle) * shieldRadius) + 9;
             shieldAngle += shieldAngleIncrement;
             canvasContext.fillStyle = "yellow";
+            canvasContext.fillRect(x - view.x, y - view.y, 3, 3);
+        }
+    }
+    //if shield is zero, we'll draw health the same way
+    drawHealth() {
+        let healthRadius = 25;
+        let healthAngle = 0;
+        let healthAngleIncrement = Math.PI * 2 / this.limits.healthMax;
+        for (let i = 0; i < this.health; i++) {
+            let x = Math.floor(this.x + Math.cos(healthAngle) * healthRadius) + 8;
+            let y = Math.floor(this.y + Math.sin(healthAngle) * healthRadius) + 9;
+            healthAngle += healthAngleIncrement;
+            canvasContext.fillStyle = "red";
             canvasContext.fillRect(x - view.x, y - view.y, 3, 3);
         }
     }

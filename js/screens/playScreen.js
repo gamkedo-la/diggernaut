@@ -18,7 +18,7 @@ const playScreen = {
         this.prepareLightingOverlay();
         this.prepareBloomOverlay();
         this.drawParallaxBackground();
-        tileMap.draw();
+        tileMap.draw(view, canvasContext);
         actors.forEach(actor => actor.draw(canvasContext));
         player.draw();
         this.drawLightingOverlay();
