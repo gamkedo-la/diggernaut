@@ -18,7 +18,7 @@ const playScreen = {
         this.prepareLightingOverlay();
         this.prepareBloomOverlay();
         this.drawParallaxBackground();
-        tileMap.draw();
+        tileMap.draw(view, canvasContext);
         actors.forEach(actor => actor.draw(canvasContext));
         player.draw();
         this.drawLightingOverlay();
@@ -114,14 +114,19 @@ const playScreen = {
             }
         });
     },
+
+    
     prepareLightingOverlay: function () {
+        let colorLevel = Math.max(0, mapRange(player.depth, 60, 3000, 0, 1));
+        let backgroundFill = rgbaString( currentColor(BG_GRADIENT, colorLevel) );
+        
         bufferContext.save();
-        bufferContext.fillStyle = 'black';
+        bufferContext.fillStyle = backgroundFill;
         bufferContext.fillRect(0, 0, canvas.width, canvas.height);
 
 
         bufferContext.globalCompositeOperation = 'screen';
-        let glowSize = mapRange(player.depth, 60, 1000, 700, 160);
+        let glowSize = Math.max( mapRange(player.depth, 60, 3000, 900, 160), 160);
         let half = glowSize / 2;
         bufferContext.drawImage(img['big_green_glow'], player.x - view.x - half, player.y - view.y - half, glowSize, glowSize);
         bufferContext.restore();
@@ -160,5 +165,7 @@ yvel: ${player.yvel.toFixed(1)} xvel: ${player.xvel.toFixed(1)} health: ${player
 diggerang: x: ${player.diggerang.x.toFixed(1)} y: ${player.diggerang.y.toFixed(1)}
 elapsed: ${elapsed.toFixed(1)}`,
             { x: 10, y: 12 }, 0, 0, 1);
-    }
+    },
+
+    
 }

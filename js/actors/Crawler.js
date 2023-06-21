@@ -63,7 +63,7 @@ class Crawler {
             width: 32,
             height: 32
         })
-        this.collider.draw();
+        //this.collider.draw();
     }
     update() {
         if (!inView(this)) return;

@@ -85,6 +85,7 @@ class Diggerang {
 
     if (this.timeSinceThrown > this.limits.airTimeBeforeTeleport) {
       //todo: visual feedback for returned diggerang
+      UIMsg("Returned Diggerang!");
       this.x = player.x;
       this.y = player.y;
       this.timeSinceThrown = 0
@@ -118,7 +119,7 @@ class Diggerang {
       this.y - view.y - 16,
       bufferContext);
     bufferContext.restore();
-    this.collider.draw();
+    //this.collider.draw();
   }
 
   pan() {

@@ -1,7 +1,7 @@
 const ui = {
 
     healthBar: {
-        x: 400,
+        x: 700,
         y: 10,
         width: 100,
         height: 5,
@@ -10,7 +10,7 @@ const ui = {
     },
 
     oreBar: {
-        x: 400,
+        x: 700,
         y: 24,
         width: 100,
         height: 5,
@@ -25,7 +25,7 @@ const ui = {
     },
 
     energyBar: {
-        x: 400,
+        x: 700,
         y: 44,
         width: 100,
         height: 5,

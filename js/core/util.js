@@ -66,7 +66,7 @@ const Key = {
 
 // TODO refactor into a Key lookalike with isDown() and justReleased() and button index constants
 const Joy = {
-    dz:0.1, // deadzone prevents drift on old gamepads
+    start:false,
     up:false,
     down:false,
     left:false,
@@ -75,39 +75,54 @@ const Joy = {
     b:false,
     x:false,
     y:false,
-    start:false,
     aReleased:false,
     bReleased:false,
     xReleased:false,
     yReleased:false,
+    leftTriggerReleased:false,
+    rightTriggerReleased:false,
     startReleased:false,
+    leftTrigger:false,
+    rightTrigger:false,
+    dz:0.1, // deadzone prevents drift on old gamepads
 
     init() {
         window.addEventListener("gamepadconnected", function(e) {
             console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
                 e.gamepad.index, e.gamepad.id,
                 e.gamepad.buttons.length, e.gamepad.axes.length);
-            g = navigator.getGamepads()[0];
         });
     },
     update() {
         if (!navigator.getGamepads) return;
-        let g = navigator.getGamepads()[0];
-        if (!g || !g.axes) return; // can be null for a few frames
-        this.left = g.axes[0] < -this.dz;
-        this.right = g.axes[0] > this.dz;
-        this.up = g.axes[1] < -this.dz;
-        this.down = g.axes[1] > this.dz;
-        this.aReleased = this.a && !(g.buttons[0].value > this.dz);
-        this.bReleased = this.b && !(g.buttons[1].value > this.dz);
-        this.xReleased = this.x && !(g.buttons[2].value > this.dz);
-        this.yReleased = this.y && !(g.buttons[3].value > this.dz);
-        this.startReleased = this.start && !(g.buttons[9].value > this.dz);
-        this.a = g.buttons[0].value > this.dz;
-        this.b = g.buttons[1].value > this.dz;
-        this.x = g.buttons[2].value > this.dz;
-        this.y = g.buttons[3].value > this.dz;
-        this.start = g.buttons[9].value > this.dz;
+        let allGamepads = navigator.getGamepads();
+        // FIXME: we only use the first gamepad because the "released" logic
+        // gets confused when another controller is in charge
+        for (let num = 0; num<1; num++) {
+        //for (let num=0; num<allGamepads.length; num++) {
+            let g = allGamepads[num];
+            if (!g || !g.axes) break; // can be null for a few frames
+            // left thumbstick or dpad to move
+            this.left = (g.axes[0] < -this.dz) || g.buttons[14].value;
+            this.right = (g.axes[0] > this.dz) || g.buttons[15].value;
+            this.up = (g.axes[1] < -this.dz) || g.buttons[12].value;
+            this.down = (g.axes[1] > this.dz) || g.buttons[13].value;
+            // this logic is buggy if gamepad 2 is controlling things! =(
+            this.aReleased = this.a && !(g.buttons[0].value > this.dz);
+            this.bReleased = this.b && !(g.buttons[1].value > this.dz);
+            this.xReleased = this.x && !(g.buttons[2].value > this.dz);
+            this.yReleased = this.y && !(g.buttons[3].value > this.dz);
+            this.leftTriggerReleased = this.leftTrigger && !(g.buttons[6].value > this.dz);
+            this.rightTriggerReleased = this.rightTrigger && !(g.buttons[7].value > this.dz);
+            this.startReleased = this.start && !(g.buttons[9].value > this.dz);
+            this.a = g.buttons[0].value > this.dz;
+            this.b = g.buttons[1].value > this.dz;
+            this.x = g.buttons[2].value > this.dz;
+            this.y = g.buttons[3].value > this.dz;
+            this.leftTrigger = g.buttons[6].value > this.dz;
+            this.rightTrigger = g.buttons[7].value > this.dz;
+            this.start = g.buttons[9].value > this.dz;
+        }
     }
 };
 
@@ -313,5 +328,74 @@ function emitParticles(x, y, definition, pool=actors){
     }
 }
 
+//color function takes an rgba() string or hex value string fillStyle and returns an object with r, g, b, a values
+function color(colorString) {
+    if (colorString[0] === "#") {
+        const r = parseInt(colorString.slice(1, 3), 16);
+        const g = parseInt(colorString.slice(3, 5), 16);
+        const b = parseInt(colorString.slice(5, 7), 16);
+        const a = 1;
+        //return {r, g, b, a};
+        //return should have named keys
+        return {r: r, g: g, b: b, a: a};
+    } else {
+        const r = parseInt(colorString.slice(5, 8));
+        const g = parseInt(colorString.slice(9, 12));
+        const b = parseInt(colorString.slice(13, 16));
+        const a = 1;
+        return {r: r, g: g, b: b, a: a};
+    }   
+}
+
+//rgbaString takes an object with r, g, b, a values and returns an rgba() string
+function rgbaString(color) {
+    return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+}
+
+//hexString takes a color object with r, g, b, a values and returns a hex string
+function hexString(color) {
+    const r = color.r.toString(16).padStart(2, "0");
+    const g = color.g.toString(16).padStart(2, "0");
+    const b = color.b.toString(16).padStart(2, "0");
+    const a = Math.round(color.a * 255).toString(16).padStart(2, "0");
+    return `#${r}${g}${b}${a}`;
+}
+
+
+//colorLerp takes two colors and a value between 0 and 1 and returns a color between the two
+function colorLerp(color1, color2, t) {
+    const r = lerp(color1.r, color2.r, t);
+    const g = lerp(color1.g, color2.g, t);
+    const b = lerp(color1.b, color2.b, t);
+    const a = lerp(color1.a, color2.a, t);
+    return {r, g, b, a};
+}
+
+//currentColor takes an array of colors and a value between 0 and 1 and returns a color lerped between array values
+function currentColor(colors, t) {
+    const color1 = colors[Math.floor(t * colors.length)];
+    const color2 = colors[Math.ceil(t * colors.length)];
+    if(!color2) return color1;
+    return colorLerp(color1, color2, t * colors.length % 1);
+}
+
+function UIMsg (message, duration=3000) {
+    uiActors.push(new UIMessage(message, duration));
+}
+
+function UIMessage (message, duration) {
+    this.message = message;
+    this.duration = duration;
+    this.timer = 0;
+    this.update = function () {
+        this.timer += elapsed;
+        if (this.timer > this.duration) {
+            uiActors.splice(uiActors.indexOf(this), 1);
+        }
+    }
+    this.draw = function () {
+        gameFont.drawText(this.message, { x: 250, y: 425 }, 0, 0, 1, CENTERED);
+    }
+}
 
 

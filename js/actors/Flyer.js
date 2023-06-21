@@ -87,7 +87,7 @@ class Flyer {
             height: 32
         })
 
-        this.collider.draw();
+        //this.collider.draw();
     }
     update() {
         if (!inView(this)) return;

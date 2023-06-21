@@ -211,9 +211,7 @@ class Player {
                 width: 32,
                 height: 32
             })
-        }
-
-        if (this.digging) {
+        }else if (this.digging) {
             if (!this.diggerang.active) {
 
                 if (Key.isDown(Key.UP) || Joy.up) {
@@ -273,6 +271,7 @@ class Player {
         this.diggerang.draw();
         this.drawDamageTextFX();
         if (this.showShieldCooldown > 0) { this.drawShield(); }
+        if (this.hurtCooldown > 0) { this.drawHealth(); }
 
 
 
@@ -297,7 +296,7 @@ class Player {
         this.showShieldCooldown--;
         this.depth = Math.round(this.y / 8);
         this.shield = Math.min(this.shield, this.limits.shieldMax);
-        this.canDig = this.checkDig() && !this.hovering;
+        this.canDig = this.checkDig() && (!this.hovering || Key.isDown(Key.UP) || Joy.up);
         this.canJump = ( this.isOnFloor() || this.coyoteCooldown > 0) && !this.isOnCeiling();
         this.canHelicopter = !this.diggerang.active && !this.isOnCeiling();
         if (this.canJump) { this.helicopterCapacity = this.limits.helicopterCapacity; }
@@ -329,6 +328,9 @@ class Player {
         //this.hovering = false;
         if (Key.isDown(Key.z) || Joy.x) {
             this.digging = true;
+            if(this.diggerang.active) {
+                UIMsg("Can't dig while diggerang is active!");
+            }
         }
 
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.h) || Joy.left) {
@@ -378,7 +380,7 @@ class Player {
         if (Key.justReleased(Key.z) || Joy.xReleased) { this.digCooldown = 0; }
         if (Key.justReleased(Key.p) || Joy.startReleased) { signal.dispatch('pause'); }
         if (Key.justReleased(Key.i) || Joy.yReleased) { signal.dispatch('inventory'); }
-        if (Key.justReleased(Key.x) || Joy.bReleased) { this.throw() }
+        if (Key.justReleased(Key.x) || Joy.bReleased || Joy.rightTriggerReleased) { this.throw() }
     }
 
     shieldBoost(amount) {
@@ -386,6 +388,14 @@ class Player {
         if (this.shield != this.limits.shieldMax) {
             this.showShieldCooldown = this.limits.showShieldCooldown;
         }
+    }
+
+    healthBoost(amount) {
+        this.health += amount;
+        if(this.health != this.limits.healthMax) {
+            this.hurtCooldown = 20;
+        }
+       
     }
 
     updateCollider(x, y) {
@@ -662,10 +672,11 @@ class Player {
                 this.die();
             } else {
                 this.damageTextFX(damage);
-                tileMap.shakeScreen();
+                this.hurtCooldown = this.limits.hurtCooldown;
+                //tileMap.shakeScreen();
             }
         }
-        this.hurtCooldown = this.limits.hurtCooldown;
+        
     }
 
     shieldHit() {
@@ -684,6 +695,19 @@ class Player {
             let y = Math.floor(this.y + Math.sin(shieldAngle) * shieldRadius) + 9;
             shieldAngle += shieldAngleIncrement;
             canvasContext.fillStyle = "yellow";
+            canvasContext.fillRect(x - view.x, y - view.y, 3, 3);
+        }
+    }
+    //if shield is zero, we'll draw health the same way
+    drawHealth() {
+        let healthRadius = 25;
+        let healthAngle = 0;
+        let healthAngleIncrement = Math.PI * 2 / this.limits.healthMax;
+        for (let i = 0; i < this.health; i++) {
+            let x = Math.floor(this.x + Math.cos(healthAngle) * healthRadius) + 8;
+            let y = Math.floor(this.y + Math.sin(healthAngle) * healthRadius) + 9;
+            healthAngle += healthAngleIncrement;
+            canvasContext.fillStyle = "red";
             canvasContext.fillRect(x - view.x, y - view.y, 3, 3);
         }
     }

@@ -15,7 +15,7 @@ class Stalagmite {
     draw() {
         if (!inView(this)) return;
         drawTileSprite(tileSets.caveTileset, 16 * 10, this.x - view.x, this.y - 12 - view.y)
-        this.collider.draw();
+        //this.collider.draw();
     }
     update() {
         if (!inView(this)) return;

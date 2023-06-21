@@ -43,12 +43,23 @@ const mapScreen = {
                         1, 1,
                     ); 
                 }
+            }
+        }
+        for (let y = this.scrollOffset; y < totalYView + this.scrollOffset; y++) {
+            for (let x = 0; x < tileMap.widthInTiles; x++) {
+
+                xOffset = 15 + Math.floor((y - this.scrollOffset) / canvas.height) * (tileMap.widthInTiles + this.spaceBetweenColumns);
+                yOffset = ((y - this.scrollOffset) % (canvas.height));
+
+                let tile = tileMap.getTileAtPosition(x, y);
+                const treasureHere = tileMap.treasureTiles[x + y * tileMap.widthInTiles]
+
                 if(treasureHere > 0){
                     canvasContext.fillStyle = 'white';
                     fillRect(
                         xOffset + x,
                         yOffset,
-                        1, 1,
+                        2, 2,
                     );
                 }
             }
