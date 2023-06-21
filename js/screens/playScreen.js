@@ -165,5 +165,7 @@ yvel: ${player.yvel.toFixed(1)} xvel: ${player.xvel.toFixed(1)} health: ${player
 diggerang: x: ${player.diggerang.x.toFixed(1)} y: ${player.diggerang.y.toFixed(1)}
 elapsed: ${elapsed.toFixed(1)}`,
             { x: 10, y: 12 }, 0, 0, 1);
-    }
+    },
+
+    
 }

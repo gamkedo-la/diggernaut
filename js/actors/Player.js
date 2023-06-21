@@ -328,6 +328,9 @@ class Player {
         //this.hovering = false;
         if (Key.isDown(Key.z) || Joy.x) {
             this.digging = true;
+            if(this.diggerang.active) {
+                UIMsg("Can't dig while diggerang is active!");
+            }
         }
 
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.a) || Key.isDown(Key.h) || Joy.left) {

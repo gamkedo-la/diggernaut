@@ -385,7 +385,7 @@ function populateMap(config){
         and different subsets of enemies at different depths
     */
 
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < config.flyerSpawnCount; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = config.mapStartY + Math.floor(mapRNG() * tileMap.heightInTiles);
         if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
@@ -395,7 +395,7 @@ function populateMap(config){
         }
     }
 
-    for (let i = 0; i < 2000; i++) {
+    for (let i = 0; i < config.crawlerSpawnCount; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = Math.floor(mapRNG() * tileMap.heightInTiles);
         if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
@@ -407,7 +407,7 @@ function populateMap(config){
         }
     }
 
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < config.stalagmiteSpawnCount; i++) {
         let x = Math.floor(mapRNG() * tileMap.widthInTiles);
         let y = config.mapStartY + 10 + Math.floor(mapRNG() * tileMap.heightInTiles);
         if(tileMap.getTileAtPosition(x, y) === TILE_EMPTY){
@@ -420,7 +420,7 @@ function populateMap(config){
     }
 
      //create tentacles
-     for(let i = 0; i < 1000; i++){
+     for(let i = 0; i < config.tentacleSpawnCount; i++){
         let x = Math.floor(rand(3, 58))
         let y = Math.floor(rand(200, 2000))
         //make x and y multiples of 32

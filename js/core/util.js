@@ -379,5 +379,23 @@ function currentColor(colors, t) {
     return colorLerp(color1, color2, t * colors.length % 1);
 }
 
+function UIMsg (message, duration=3000) {
+    uiActors.push(new UIMessage(message, duration));
+}
+
+function UIMessage (message, duration) {
+    this.message = message;
+    this.duration = duration;
+    this.timer = 0;
+    this.update = function () {
+        this.timer += elapsed;
+        if (this.timer > this.duration) {
+            uiActors.splice(uiActors.indexOf(this), 1);
+        }
+    }
+    this.draw = function () {
+        gameFont.drawText(this.message, { x: 250, y: 425 }, 0, 0, 1, CENTERED);
+    }
+}
 
 

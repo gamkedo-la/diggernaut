@@ -32,6 +32,10 @@ const TILE_DENSE_ROCK = 9;
 const TILE_TREASURE = 10;
 const TILE_TENTACLE = 11;
 
+const ALIGN_LEFT = 0;
+const CENTERED = 1;
+const ALIGN_RIGHT = 2;
+
 
 const TILE_TYPES = [
     "TILE_EMPTY",
@@ -400,14 +404,18 @@ const view = {
 
 const mapConfig = {
     widthInTiles: 60,
-    heightInTiles: 5390, //height in meters is tiles * 4
+    heightInTiles: 4000, //height in meters is tiles * 4
     tileSize: 32,
     mapStartY: 10, //start generating tiles at this Y position
     caveGenPools:{
-        vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,5,6,7,8,9],
+        vanilla: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,4,4,5,6,7,8,9],
         fallingFun: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,1,1,1,4,7,8,9],
         OreGalore: [4,7,8,9.4,7,8,9.4,7,8,9,4,7,8,9,4,7,8,9,5,6]
-    }  
+    },
+    flyerSpawnCount: 2000,
+    crawlerSpawnCount: 2000,
+    TentacleSpawnCount: 1500,
+    stalagmiteSpawnCount: 1000,
 }
 
 const playerSettings = {
