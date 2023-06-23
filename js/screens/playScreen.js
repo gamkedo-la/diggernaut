@@ -117,7 +117,9 @@ const playScreen = {
 
     
     prepareLightingOverlay: function () {
-        let colorLevel = Math.max(0, mapRange(player.depth, 60, 3000, 0, 1));
+        let maxDepth = 9000;
+        let depth = clamp(player.depth, 0, maxDepth-1);
+        let colorLevel = Math.max(0, mapRange(depth, 40, maxDepth, 0, 1));
         let backgroundFill = rgbaString( currentColor(BG_GRADIENT, colorLevel) );
         
         bufferContext.save();
@@ -126,7 +128,8 @@ const playScreen = {
 
 
         bufferContext.globalCompositeOperation = 'screen';
-        let glowSize = Math.max( mapRange(player.depth, 60, 3000, 900, 160), 160);
+        
+        let glowSize = Math.max( mapRange(depth, 40, maxDepth, 900, 160), 160);
         let half = glowSize / 2;
         bufferContext.drawImage(img['big_green_glow'], player.x - view.x - half, player.y - view.y - half, glowSize, glowSize);
         bufferContext.restore();

@@ -383,6 +383,8 @@ const COLORS = [
 ]
 const BG_GRADIENT = [
     color(COLORS[18]),
+    color(COLORS[17]),
+    color(COLORS[6]),
     color(COLORS[5]),
     color(COLORS[4]),
     color(COLORS[1]),
@@ -1009,6 +1011,7 @@ const soundList = [
     { name: "important_pickup", url: "snd/important_pickup.ogg"},
     { name: "downward-music", url: "snd/downward-we-go.ogg"},
     { name: "health-pickup", url: "snd/health_pickup.ogg"},
+    { name: "depth-goal", url: "snd/depth_goal.ogg"},
 ]
 
 //TODO:  shorten digging_dirt sound, make dirt it's own tile type

@@ -659,10 +659,9 @@ class Player {
 
     hurt(damage) {
         if (this.hurtCooldown > 0) { return; }
-        if (this.shield > 0) {
-            this.shield -= damage;
-            this.shieldHit();
-        }
+        if (this.shieldHitCooldown > 0) { return; }
+        
+       
         if (this.shield <= 0) {
             this.collider.emit(particleDefinitions.hurt);
             audio.playSound(sounds[randChoice(player_damages)], 0, 0.3, 1.5, false);
@@ -675,6 +674,10 @@ class Player {
                 this.hurtCooldown = this.limits.hurtCooldown;
                 //tileMap.shakeScreen();
             }
+        }else {
+            this.showShieldCooldown = this.limits.showShieldCooldown;
+            this.shieldHit();
+            this.shield--;
         }
         
     }
