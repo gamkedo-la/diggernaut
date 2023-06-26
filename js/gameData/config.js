@@ -1012,6 +1012,7 @@ const soundList = [
     { name: "downward-music", url: "snd/downward-we-go.ogg"},
     { name: "health-pickup", url: "snd/health_pickup.ogg"},
     { name: "depth-goal", url: "snd/depth_goal.ogg"},
+    { name: "treasure-get", url: "snd/treasure_get.ogg"},
 ]
 
 //TODO:  shorten digging_dirt sound, make dirt it's own tile type
@@ -1025,7 +1026,7 @@ const FOOTSTEP_VOLUME = 0.7;
 const footsteps = [ "footstep-a","footstep-b","footstep-c","footstep-d" ]
 
 const COLLECTIBLE_SOUND_VOLUME = 0.7;
-const collectibleSounds = [ "important_pickup" ]; // "gemstone-a","gemstone-b" ]
+const collectibleSounds = [ "treasure-get" ]; // "gemstone-a","gemstone-b" ]
 
 var caveTileset, damageTileset, splode_7px, splode_17px, splode_25px, gems, bones
 

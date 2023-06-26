@@ -78,6 +78,9 @@ class Crawler {
         if (rectCollision(this.collider, player.diggerang.collider)) {
             this.kill();
         }
+        if(player.digging && rectCollision(this.collider, player.digCollider)) {
+            this.kill();
+        }
         if (rectCollision(this.collider, player.collider)) {
             this.collideWithPlayer();
         }

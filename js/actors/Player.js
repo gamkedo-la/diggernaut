@@ -481,10 +481,6 @@ class Player {
                     this.y = this.previousY;
                     this.updateCollider(this.x, this.y);
                     this.yvel = 0;
-                    if(this.isOnFloor() && !this.previous.onFloor){
-                        console.log('just landed')
-                        audio.playSound(sounds["landing"]);
-                    }
                     break;
                 }
             }
