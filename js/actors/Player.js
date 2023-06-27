@@ -12,6 +12,8 @@ class Player {
         this.showShieldCooldown = 0;
         this.depth = 0;
         this.score = 0;
+        this.kills = 0; // number of enemies killed
+        this.playtime = 0; // in seconds 
         this.gravity = 0.25;
         
         this.hoverSound = audio.playSound(sounds["diggerang_whoosh"], 0, 0, 1.0, true);
@@ -282,6 +284,9 @@ class Player {
     }
 
     update() {
+        
+        this.playtime += 1/60; // FIXME: is this the correct timespan?
+        
         this.previous.x = this.x;
         this.previous.y = this.y;
         this.previous.xVel = this.xVel;

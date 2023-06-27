@@ -42,10 +42,15 @@ const inventoryScreen = {
     drawStats: function () {
         
         let pos = {x:62,y:210};
+
+        let secs = player.playtime;
+        let timefmt = Math.floor(secs/60)+"m "+Math.floor(secs%60)+"s";
         
         let str = "Stats:\n\n"+
         "Score: "+player.score+"\n"+
-        "Depth: "+player.depth+"\n"+
+        "Depth: "+player.depth+"\n\n"+
+        "Enemies Killed: "+player.kills+"\n\n"+
+        "Time played: "+timefmt+"\n\n"+
         "Ore: "+player.inventory.ore+"\n"+
         "Blue Ore: "+player.inventory.blueOre+"\n";
                 
