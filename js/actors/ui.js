@@ -98,8 +98,8 @@ const ui = {
         drawTileSprite(tileSets.ui_icons, 1, ui.oreBar.x - 16, ui.oreBar.y);
 
 
-        // gameFont.drawText(`${player.score.toString().padStart(14, '0')}`, 
-        //     { x: 180, y:8 }, 0, 0, 2);
+        gameFont.drawText(`Depth: ${player.depth} meters`, 
+            { x: 180, y:8 }, 0, 0, 1);
 
         //if (this.miniMap) this.miniMap.draw();
 

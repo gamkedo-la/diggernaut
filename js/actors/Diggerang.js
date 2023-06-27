@@ -73,10 +73,36 @@ class Diggerang {
       (this.x - player.x) ** 2 + (this.y - player.y) ** 2
     );
 
-    if (this.returning && distanceToPlayer < 40) {
+    if (this.returning && distanceToPlayer < 20) {
       this.active = false;
       this.returning = false;
+      UIMsg("Returned Diggerang!");
+      emitParticles(this.x, this.y, particleDefinitions['jumpPuff'])
+      emitParticles(player.x, player.y, particleDefinitions['jumpPuff'])
       return;
+    }
+
+    if(this.timeSinceThrown > 20 && distanceToPlayer < 20) {
+      this.active = false;
+      this.returning = false;
+      emitParticles(this.x, this.y, particleDefinitions['jumpPuff'])
+      emitParticles(player.x, player.y, particleDefinitions['jumpPuff'])
+      UIMsg("Returned Diggerang!");
+      return;
+    }
+
+    if( (this.x + this.xVel) == this.previousX && (this.y + this.yVel) == this.previousY) {
+      this.returning = true;
+    }
+    if(this.returning) {
+      if(this.x == this.previousX && this.y == this.previousY) {
+        this.active = false;
+        this.returning = false;
+        emitParticles(this.x, this.y, particleDefinitions['jumpPuff'])
+        emitParticles(player.x, player.y, particleDefinitions['jumpPuff'])
+        UIMsg("Returned Diggerang!");
+        return;
+      }
     }
 
     if (!this.returning && this.timeSinceThrown > this.limits.timeBeforeReturn) {

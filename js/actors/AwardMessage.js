@@ -17,6 +17,8 @@ class AwardMessage {
     this.drawY = this.y + Math.sin(this.timer / 10) * 10;
     if(!this.started) {
       this.started = true;
+      console.log("playing sound")
+      audio.playSound(sounds["depth-goal"], 0, 1, 1,  false);
       emitParticles(view.x + canvas.width/2, this.y, this.particleDef, uiActors);
     }
     this.timer++;

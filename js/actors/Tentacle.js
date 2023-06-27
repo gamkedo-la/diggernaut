@@ -149,6 +149,9 @@ class Tentacle {
         if (rectCollision(this.collider, player.diggerang.collider)) {
             this.kill();
         }
+        if(player.digging && rectCollision(this.collider, player.digCollider)) {
+            this.kill();
+        }
         //diggerang bounces off tentacle
         if (rectCollision(this.tipCollider, player.diggerang.collider)) {
             player.diggerang.xvel = -player.diggerang.xvel;

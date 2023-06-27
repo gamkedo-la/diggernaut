@@ -113,7 +113,7 @@ class Player {
             minYAccel: -3,
             maxYAccel: 5,
             digCooldown: 12,
-            hurtCooldown: 50,
+            hurtCooldown: 120,
             healthMax: 50,
             moveLeftCooldown: 20,
             moveRightCooldown: 20,
@@ -481,10 +481,6 @@ class Player {
                     this.y = this.previousY;
                     this.updateCollider(this.x, this.y);
                     this.yvel = 0;
-                    if(this.isOnFloor() && !this.previous.onFloor){
-                        console.log('just landed')
-                        audio.playSound(sounds["landing"]);
-                    }
                     break;
                 }
             }
@@ -659,10 +655,9 @@ class Player {
 
     hurt(damage) {
         if (this.hurtCooldown > 0) { return; }
-        if (this.shield > 0) {
-            this.shield -= damage;
-            this.shieldHit();
-        }
+        if (this.shieldHitCooldown > 0) { return; }
+        
+       
         if (this.shield <= 0) {
             this.collider.emit(particleDefinitions.hurt);
             audio.playSound(sounds[randChoice(player_damages)], 0, 0.3, 1.5, false);
@@ -675,6 +670,10 @@ class Player {
                 this.hurtCooldown = this.limits.hurtCooldown;
                 //tileMap.shakeScreen();
             }
+        }else {
+            this.showShieldCooldown = this.limits.showShieldCooldown;
+            this.shieldHit();
+            this.shield--;
         }
         
     }

@@ -78,6 +78,9 @@ class Crawler {
         if (rectCollision(this.collider, player.diggerang.collider)) {
             this.kill();
         }
+        if(player.digging && rectCollision(this.collider, player.digCollider)) {
+            this.kill();
+        }
         if (rectCollision(this.collider, player.collider)) {
             this.collideWithPlayer();
         }
@@ -128,21 +131,22 @@ class Crawler {
 
     collideWithPlayer() {
         emitParticles(this.x, this.y, particleDefinitions.hurt)
+        player.hurt(5);
         let repelX = normalize(this.x - player.x, -player.width / 2, player.width / 2);
         let repelY = normalize(this.y - player.y, -player.height / 2, player.height / 2);
-        if (player.collider.bottomFeeler.y >= this.y) {
-            player.hurt(5)
-            player.stop();
-            player.xAccel = -repelX * 2;
-            player.yAccel = -repelY * 2;
+        // if (player.collider.bottomFeeler.y >= this.y) {
+        //     player.hurt(5)
+            //player.stop();
+            player.xAccel = -repelX;
+            player.yVel = -0.5;
 
-        }
-        else {
-            this.kill()
-            player.yvel = 0;
-            player.yAccel = player.limits.minYAccel * 2;
-            player.helicopterCapacity = player.limits.helicopterCapacity;
-        }
+        // }
+        // else {
+        //     this.kill()
+        //     player.yvel = 0;
+        //     player.yAccel = player.limits.minYAccel * 2;
+        //     player.helicopterCapacity = player.limits.helicopterCapacity;
+        // }
     }
 
     play(animationName) {

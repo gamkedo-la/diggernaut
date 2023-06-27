@@ -53,12 +53,14 @@ const titleScreen = {
         for (let i = 0; i < titleOffsets.length; i++) {
             bigFontOrangeGradient.drawText("DIGGERNAUTS", { x: 185 + titleOffsets[i].x, y: 60 + titleOffsets[i].y }, 2, 1, 3);
         }
+        gameFont.drawText("Press C to view Game Credits", { x: 320, y: 160 }, 0, 1);
 
         let xoffset = 130, yoffset = 140
         gameFont.drawText("Hit F to go Fullscreen", { x: 215 + xoffset, y: 240+yoffset - 40 }, 0, 0, 1, 'yellow');
         gameFont.drawText("Arrows to move, Z to dig, X to throw, SPACE to jump, I for inventory", { x: 70+xoffset, y: 256+yoffset - 40 }, 0, 0);
         
-            gameFont.drawText("Awesome! Hit Z to start", { x: 140+xoffset, y: 270+yoffset - 40 }, 0, 0, 2);
+        
+            gameFont.drawText("Awesome! Hit Z to start", { x: 140+xoffset, y: 290+yoffset - 40 }, 0, 0, 2);
             if(!titleScreen.music){
                 titleScreen.music = audio.playSound(sounds['explore-music'], 0, 0.5, 1, true);
             }
@@ -71,6 +73,9 @@ const titleScreen = {
         Joy.update();
         if (titleScreen.clicked && (Key.justReleased(Key.z) || Joy.start || Joy.x || Joy.a || Joy.aReleased || Joy.startReleased || Joy.xReleased)) {
             signal.dispatch('resetGame');
+        }
+        if (titleScreen.clicked && (Key.justReleased(Key.c)) ) {
+            signal.dispatch('creditScreen');
         }
 
     }
