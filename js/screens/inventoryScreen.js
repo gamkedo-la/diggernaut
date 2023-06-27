@@ -48,9 +48,15 @@ const inventoryScreen = {
         
         let str = "Stats:\n\n"+
         "Score: "+player.score+"\n"+
-        "Depth: "+player.depth+"\n\n"+
-        "Enemies Killed: "+player.kills+"\n\n"+
-        "Time played: "+timefmt+"\n\n"+
+        "Depth: "+player.depth+"\n"+
+        "\n"+
+        "Steps taken: "+player.stepCounter+"\n"+
+        "Jumps made: "+player.jumpCounter+"\n"+
+        "Helicopters: "+player.heliCounter+"\n"+
+        "\n"+
+        "Enemies Killed: "+player.kills+"\n"+
+        "Time played: "+timefmt+"\n"+
+        "\n"+
         "Ore: "+player.inventory.ore+"\n"+
         "Blue Ore: "+player.inventory.blueOre+"\n";
                 

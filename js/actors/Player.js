@@ -13,6 +13,9 @@ class Player {
         this.depth = 0;
         this.score = 0;
         this.kills = 0; // number of enemies killed
+        this.stepCounter = 0;
+        this.jumpCounter = 0;
+        this.heliCounter = 0;
         this.playtime = 0; // in seconds 
         this.gravity = 0.25;
         
@@ -536,6 +539,7 @@ class Player {
             //console.log("step! footstepLast="+this.footstepLast.toFixed(2)+" now="+now.toFixed(2));
             audio.playSound(sounds[randChoice(footsteps)], 0, FOOTSTEP_VOLUME);
             this.footstepLast = now;
+            this.stepCounter++; // track stats
         }
     }
 
@@ -791,6 +795,7 @@ class Player {
     }
 
     helicopter() {
+        if (!this.hovering) this.heliCounter++; // track stats
         this.hovering = true;
         if (this.helicopterCapacity <= 0) { this.hovering = false; return };
         this.yVel -= 0.1;
@@ -804,6 +809,7 @@ class Player {
         this.play("jump");
         if(this.coyoteCooldown == this.limits.coyoteCooldown){
             audio.playSound(sounds["jump"], 0, 0.3, 3, false)
+            this.jumpCounter++; // track stats
         }
         this.collider.emit(particleDefinitions.jumpPuff);
     }
