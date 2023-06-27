@@ -1,17 +1,17 @@
 const ui = {
 
-    healthBar: {
-        x: 700,
-        y: 10,
-        width: 100,
-        height: 5,
-        value: 0,
-        color: "red"
-    },
+    // healthBar: {
+    //     x: 700,
+    //     y: 10,
+    //     width: 100,
+    //     height: 5,
+    //     value: 0,
+    //     color: "red"
+    // },
 
     oreBar: {
         x: 700,
-        y: 24,
+        y: 10,
         width: 100,
         height: 5,
         value: 0,
@@ -26,7 +26,7 @@ const ui = {
 
     energyBar: {
         x: 700,
-        y: 44,
+        y: 24,
         width: 100,
         height: 5,
         value: 0,
@@ -45,10 +45,10 @@ const ui = {
     draw: function () {
         canvasContext.save();
 
-        // Health Bar
-        canvasContext.fillStyle = ui.healthBar.color;
-        canvasContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.value, ui.healthBar.height);
-        drawTileSprite(tileSets.ui_icons, 0, ui.healthBar.x - 16, ui.healthBar.y - 4);
+        // // Health Bar
+        // canvasContext.fillStyle = ui.healthBar.color;
+        // canvasContext.fillRect(ui.healthBar.x, ui.healthBar.y, ui.healthBar.value, ui.healthBar.height);
+        // drawTileSprite(tileSets.ui_icons, 0, ui.healthBar.x - 16, ui.healthBar.y - 4);
 
         // Energy Bar
         const energyCrates = Math.floor(ui.energyBar.value / 500);
@@ -110,7 +110,7 @@ const ui = {
 
     update: function () {
         ui.energyBar.value = player.inventory.blueOre;
-        ui.healthBar.value = player.health;
+        // ui.healthBar.value = player.health;
         ui.oreBar.value = player.inventory.ore;
     }
 
