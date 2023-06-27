@@ -1063,7 +1063,7 @@ const destroyTileWithEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
-        audio.playSound(sounds[randChoice(rock_crumbles)], 0, 0.5, 1.25, false)
+        audio.playSound(sounds[randChoice(rock_crumbles)], 0, 0.5, 1.25, false);
     },
 
     TILE_UNBREAKABLE_METAL : function (tileIndex) {
@@ -1071,7 +1071,7 @@ const destroyTileWithEffects = {
         let x = tileMap.tileIndexToPixelX(tileIndex) + 16;
         let y = tileMap.tileIndexToPixelY(tileIndex) + 16;
         emitParticles(x, y, particleDefinitions.destroyDirt);
-        audio.playSound(sounds[randChoice(rock_crumbles)], 0, 0.5, 1.25, false)
+        audio.playSound(sounds[randChoice(rock_crumbles)], 0, 0.5, 1.25, false);
     },
 
     TILE_GOLD_ORE : function (tileIndex) {

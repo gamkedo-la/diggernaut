@@ -17,6 +17,7 @@ const inventoryScreen = {
 
 
         inventoryScreen.drawMinimap();
+        inventoryScreen.drawStats();
 
         drawTransition();
 
@@ -36,6 +37,23 @@ const inventoryScreen = {
             this.activeTab++;
             if (this.activeTab > this.totalTabs - 1) { this.activeTab = 0; }
         }
+    },
+
+    drawStats: function () {
+        
+        let pos = {x:62,y:210};
+        
+        let str = "Stats:\n\n"+
+        "Score: "+player.score+"\n"+
+        "Depth: "+player.depth+"\n"+
+        "Ore: "+player.inventory.ore+"\n"+
+        "Blue Ore: "+player.inventory.blueOre+"\n";
+                
+        canvasContext.fillStyle = '#222';
+        canvasContext.fillRect(pos.x-4, pos.y-4, 400, 15); 
+
+        gameFont.drawText(str,pos);
+
     },
 
     drawMinimap: function () {
